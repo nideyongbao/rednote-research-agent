@@ -1,0 +1,16 @@
+services:
+  rednote-research:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    image: brooksli1/rednote-research-agent:latest
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env.docker
+    volumes:
+      - ./reports:/app/reports # 报告输出目录
+      - ./.mcp/rednote:/root/.mcp/rednote # MCP cookie 持久化（需要子目录）
+    restart: unless-stopped
+    environment:
+      - PYTHONUNBUFFERED=1

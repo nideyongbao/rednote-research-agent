@@ -1,0 +1,52 @@
+# Dependencies (installed in container)
+**/node_modules/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.eggs/
+venv/
+.venv/
+
+# Build artifacts (built in container)
+rednote_research/frontend/dist/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Git
+.git/
+.gitignore
+
+# Test and coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment files (use .env.docker instead)
+.env
+.env.local
+rednote_research/.env
+
+# Reports (mounted as volume)
+reports/
+
+# MCP cookies (mounted as volume)
+.mcp/
+
+# Playwright cache (installed in container)
+**/playwright-cache/
+
+# Gemini artifacts
+.gemini/

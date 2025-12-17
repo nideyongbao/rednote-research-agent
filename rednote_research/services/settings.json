@@ -1,0 +1,19 @@
+{
+  "llm": {
+    "api_key": "",
+    "base_url": "https://api.openai.com/v1",
+    "model": "gpt-4otest-model-name"
+  },
+  "vlm": {
+    "enabled": false,
+    "api_key": "",
+    "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+    "model": "qwen-vl-plus"
+  },
+  "imageGen": {
+    "enabled": false,
+    "api_key": "",
+    "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+    "model": "wanx-v1"
+  }
+}
