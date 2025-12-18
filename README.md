@@ -2,6 +2,8 @@
 
 基于 MCP 协议的小红书深度研究智能体，一键 Docker 部署。
 
+> ⚠️ **重要提示**：本项目使用 Git Submodule 集成 [RedNote-MCP](https://github.com/iFurySt/RedNote-MCP)。克隆时请使用 `--recursive` 参数，或在克隆后执行 `git submodule update --init`。
+
 ## 功能特性
 
 - 🔍 智能搜索：自动拆解研究主题为多个搜索关键词
@@ -62,15 +64,17 @@ OPENAI_MODEL=gpt-4o
 首次使用需要在本地完成小红书登录：
 
 ```bash
-# 克隆 rednote-mcp 仓库
-git clone https://github.com/user/rednote-mcp.git
-cd rednote-mcp
+# 克隆 RedNote-MCP 仓库（用于本地登录）
+git clone https://github.com/iFurySt/RedNote-MCP.git
+cd RedNote-MCP
 
-# 安装依赖
+# 安装依赖并安装 Playwright 浏览器
 npm install
+npx playwright install chromium
 
-# 登录（会打开浏览器扫码）
-npm run dev -- init
+# 登录（会打开浏览器扫码，超时时间 60 秒）
+npm run build
+node dist/cli.js init 60
 
 # 复制 cookie 到项目目录
 mkdir -p ../rednote-research/.mcp/rednote
@@ -93,8 +97,11 @@ docker-compose up -d
 ### 1. 克隆项目
 
 ```bash
-git clone https://github.com/user/rednote-research-agent.git
+git clone --recursive https://github.com/user/rednote-research-agent.git
 cd rednote-research-agent
+
+# 如果忘记使用 --recursive，可以执行：
+# git submodule update --init
 ```
 
 ### 2. 配置环境变量
@@ -112,8 +119,12 @@ OPENAI_MODEL=gpt-4o
 ```bash
 cd rednote-mcp
 npm install
-npm run dev -- init
+npx playwright install chromium
+npm run build
+node dist/cli.js init 60
 ```
+
+> 💡 登录时会弹出浏览器窗口，请用小红书 APP 扫码登录。超时时间为 60 秒。
 
 登录成功后，复制 cookie：
 
@@ -137,8 +148,11 @@ docker-compose up -d
 ### 1. 克隆项目
 
 ```bash
-git clone https://github.com/user/rednote-research-agent.git
+git clone --recursive https://github.com/user/rednote-research-agent.git
 cd rednote-research-agent
+
+# 如果忘记使用 --recursive，执行：
+# git submodule update --init
 ```
 
 ### 2. 安装依赖
@@ -151,12 +165,13 @@ pip install -e ./rednote_research
 cd rednote-mcp
 npm install
 npx playwright install chromium
+npm run build
 ```
 
 ### 3. 小红书登录
 
 ```bash
-# 首次使用需要登录
+# 首次使用需要登录（会弹出浏览器窗口扫码）
 cd rednote-mcp
 node dist/cli.js init 60
 ```

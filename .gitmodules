@@ -1,0 +1,3 @@
+[submodule "rednote-mcp"]
+	path = rednote-mcp
+	url = https://github.com/iFurySt/RedNote-MCP.git

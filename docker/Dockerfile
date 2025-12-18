@@ -106,9 +106,9 @@ COPY --from=frontend-builder /frontend/dist ./rednote_research/web/static
 # Create reports directory
 RUN mkdir -p /app/reports
 
-# Copy entrypoint script
+# Copy entrypoint script and convert CRLF to LF (in case of Windows line endings)
 COPY docker/entrypoint.sh ./
-RUN chmod +x entrypoint.sh
+RUN sed -i 's/\r$//' entrypoint.sh && chmod +x entrypoint.sh
 
 # Expose port
 EXPOSE 8000
