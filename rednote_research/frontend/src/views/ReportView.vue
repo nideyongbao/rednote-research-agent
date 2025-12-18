@@ -143,6 +143,8 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useResearchStore } from '../stores/research'
+import { marked } from 'marked'
+import DOMPurify from 'dompurify'
 
 const router = useRouter()
 const store = useResearchStore()
@@ -167,19 +169,18 @@ const totalImages = computed(() => {
   return store.outline.reduce((sum, section) => sum + (section.images?.length || 0), 0)
 })
 
-// 格式化内容（简单 Markdown 转换）
+// 配置 marked 选项
+marked.setOptions({
+  breaks: true,        // 支持 GFM 换行
+  gfm: true,           // 启用 GitHub Flavored Markdown
+})
+
+// 格式化内容（使用 marked 库进行标准 Markdown 渲染）
 const formatContent = (content: string) => {
   if (!content) return ''
-  return content
-    .replace(/^### (.+)$/gm, '<h4>$1</h4>')
-    .replace(/^## (.+)$/gm, '<h3>$1</h3>')
-    .replace(/^# (.+)$/gm, '<h2>$1</h2>')
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.+?)\*/g, '<em>$1</em>')
-    .replace(/^\d+\.\s+(.+)$/gm, '<li>$1</li>')
-    .replace(/^-\s+(.+)$/gm, '<li>$1</li>')
-    .replace(/\n\n/g, '</p><p>')
-    .replace(/\n/g, '<br>')
+  // 使用 marked 解析 markdown，DOMPurify 过滤 XSS
+  const html = marked.parse(content) as string
+  return DOMPurify.sanitize(html)
 }
 
 // 滚动到章节

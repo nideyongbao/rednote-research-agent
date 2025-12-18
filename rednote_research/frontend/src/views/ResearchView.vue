@@ -216,9 +216,15 @@ const handleSSEMessage = (data: any) => {
       store.setNotes(data.notes)
     }
     
-    // 构建大纲
-    buildOutlineFromInsights(data.insights, data.notes || [])
-    addLog('success', '报告数据已加载')
+    // 优先使用后端返回的结构化大纲
+    if (data.outline && data.outline.length > 0) {
+      loadOutlineFromBackend(data.outline)
+      addLog('success', `加载了 ${data.outline.length} 个结构化章节`)
+    } else {
+      // 回退：从 insights 构建大纲
+      buildOutlineFromInsights(data.insights, data.notes || [])
+      addLog('success', '报告数据已加载')
+    }
   } else if (data.type === 'complete') {
     completedStages.value.push(currentStage.value)
     isCompleted.value = true
@@ -230,7 +236,29 @@ const handleSSEMessage = (data: any) => {
   }
 }
 
-// 从 insights 构建大纲
+// 从后端结构化大纲加载到 store
+const loadOutlineFromBackend = (outline: any[]) => {
+  // 清空现有大纲
+  store.outline.length = 0
+  
+  for (const section of outline) {
+    // 添加章节到 store
+    store.addSection(
+      section.type || 'content',
+      section.content || ''
+    )
+    // 更新标题和图片
+    const lastSection = store.outline[store.outline.length - 1]
+    if (lastSection) {
+      lastSection.title = section.title || ''
+      lastSection.images = section.images || []
+    }
+  }
+  
+  store.markCompleted()
+}
+
+// 从 insights 构建大纲（备用方案）
 const buildOutlineFromInsights = (insights: any, notes: any[]) => {
   // 清空现有大纲
   store.outline.length = 0

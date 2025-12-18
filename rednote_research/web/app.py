@@ -189,8 +189,20 @@ async def research_stream(topic: str = Query(None), task: str = Query(None, min_
                 yield make_msg("stats", stats=stats)
                 yield make_msg("log", level="success", message=f"🧠 [Analyzer] 提取了 {stats['insightsExtracted']} 条核心发现")
             
-            # 阶段4: 生成报告
+            # 阶段4: 生成结构化大纲
             yield make_msg("stage", stage="generating")
+            yield make_msg("log", level="info", message="📑 [OutlineGenerator] 生成结构化大纲...")
+            
+            from ..output.outline_generator import OutlineGenerator
+            outline_generator = OutlineGenerator(_config.get_llm_client(), model=_config.llm.model)
+            
+            try:
+                structured_outline = await outline_generator.generate(state)
+                yield make_msg("log", level="success", message=f"📑 [OutlineGenerator] 生成了 {len(structured_outline)} 个章节")
+            except Exception as e:
+                yield make_msg("log", level="warning", message=f"⚠ 大纲生成失败: {str(e)[:100]}, 使用备用方案")
+                structured_outline = outline_generator._generate_fallback_outline(state)
+            
             yield make_msg("log", level="info", message="📝 [Writer] 生成图文交错报告...")
             html_generator = HTMLReportGenerator(_config.get_llm_client(), model=_config.llm.model)
             
@@ -202,10 +214,11 @@ async def research_stream(topic: str = Query(None), task: str = Query(None, min_
             
             yield make_msg("log", level="success", message="✅ 报告生成完成！")
             
-            # 传递报告数据给前端
+            # 传递报告数据给前端（包含结构化大纲）
             report_data = {
                 "topic": research_topic,
                 "insights": state.insights,
+                "outline": structured_outline,  # 新增：结构化大纲
                 "notes": [
                     {
                         "id": note.preview.id,
