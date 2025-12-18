@@ -65,277 +65,16 @@ def create_app() -> FastAPI:
     # 挂载静态文件（生产环境：前端构建产物）
     static_dir = Path(__file__).parent / "static"
     if static_dir.exists():
-        # 挂载静态资源（CSS、JS 等）
-        app.mount("/assets", StaticFiles(directory=str(static_dir / "assets")), name="assets")
-        
-        # SPA 路由支持：所有未匹配的 GET 请求返回 index.html
-        @app.get("/{full_path:path}", include_in_schema=False)
-        async def serve_spa(full_path: str):
-            # API 路由不处理
-            if full_path.startswith("api/"):
-                raise HTTPException(status_code=404)
-            
-            index_file = static_dir / "index.html"
-            if index_file.exists():
-                return FileResponse(str(index_file))
-            raise HTTPException(status_code=404, detail="Frontend not found")
+        assets_dir = static_dir / "assets"
+        if assets_dir.exists():
+            app.mount("/assets", StaticFiles(directory=str(assets_dir)), name="assets")
     
+    # 注意：SPA catch-all 路由在文件末尾注册，确保 API 路由优先匹配
     return app
 
 
 app = create_app()
 
-
-@app.get("/", response_class=HTMLResponse)
-async def index():
-    """Web界面首页"""
-    return """
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RedNote 深度研究助手</title>
-    <style>
-        :root {
-            --primary: #ff2442;
-            --bg: linear-gradient(135deg, #fff5f5 0%, #fff 100%);
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: var(--bg);
-            min-height: 100vh;
-            padding: 20px;
-        }
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-        h1 {
-            color: var(--primary);
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 2em;
-        }
-        .search-box {
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 4px 20px rgba(255, 36, 66, 0.1);
-            margin-bottom: 20px;
-        }
-        textarea {
-            width: 100%;
-            min-height: 100px;
-            padding: 15px;
-            border: 2px solid #eee;
-            border-radius: 12px;
-            font-size: 16px;
-            resize: vertical;
-            transition: border-color 0.3s;
-        }
-        textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-        button {
-            width: 100%;
-            padding: 15px;
-            margin-top: 15px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 18px;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(255, 36, 66, 0.3);
-        }
-        button:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none;
-        }
-        .log-panel {
-            background: #1a1a2e;
-            color: #0f0;
-            padding: 20px;
-            border-radius: 12px;
-            font-family: 'Consolas', monospace;
-            font-size: 14px;
-            max-height: 300px;
-            overflow-y: auto;
-            margin-bottom: 20px;
-            display: none;
-        }
-        .log-panel.active { display: block; }
-        .log-item {
-            padding: 5px 0;
-            border-bottom: 1px solid #333;
-        }
-        .report-panel {
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            display: none;
-        }
-        .report-panel.active { display: block; }
-        .report-panel iframe {
-            width: 100%;
-            min-height: 600px;
-            border: none;
-        }
-        .toolbar {
-            padding: 15px;
-            background: #f5f5f5;
-            display: flex;
-            gap: 10px;
-        }
-        .toolbar button {
-            width: auto;
-            padding: 10px 20px;
-            font-size: 14px;
-        }
-        .examples {
-            margin-top: 20px;
-            padding: 15px;
-            background: #fff5f5;
-            border-radius: 12px;
-        }
-        .examples h3 { color: var(--primary); margin-bottom: 10px; }
-        .example-item {
-            padding: 8px 12px;
-            background: white;
-            border-radius: 8px;
-            margin: 5px 0;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .example-item:hover { background: #ffecef; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>🔍 RedNote 深度研究助手</h1>
-        
-        <div class="search-box">
-            <form id="research-form">
-                <textarea id="task" placeholder="输入您的研究主题，例如：分析2025年小红书上关于露营装备的新兴趋势和用户痛点"></textarea>
-                <button type="submit" id="submit-btn">🚀 开始研究</button>
-            </form>
-            
-            <div class="examples">
-                <h3>💡 示例主题</h3>
-                <div class="example-item" onclick="setExample(this)">冬天上海旅游3天2晚攻略</div>
-                <div class="example-item" onclick="setExample(this)">2025年露营装备推荐和避坑指南</div>
-                <div class="example-item" onclick="setExample(this)">日本旅游签证办理流程和注意事项</div>
-            </div>
-        </div>
-        
-        <div id="logs" class="log-panel"></div>
-        
-        <div id="report-container" class="report-panel">
-            <div class="toolbar">
-                <button onclick="downloadReport()">💾 下载HTML报告</button>
-                <button onclick="openInNewTab()">🔗 新窗口打开</button>
-            </div>
-            <iframe id="report-frame"></iframe>
-        </div>
-    </div>
-
-    <script>
-        let currentReport = '';
-        
-        function setExample(el) {
-            document.getElementById('task').value = el.textContent;
-        }
-        
-        document.getElementById('research-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const task = document.getElementById('task').value.trim();
-            if (!task) return;
-            
-            const logsPanel = document.getElementById('logs');
-            const reportContainer = document.getElementById('report-container');
-            const submitBtn = document.getElementById('submit-btn');
-            
-            // 重置UI
-            logsPanel.innerHTML = '';
-            logsPanel.classList.add('active');
-            reportContainer.classList.remove('active');
-            submitBtn.disabled = true;
-            submitBtn.textContent = '⏳ 研究中...';
-            currentReport = '';
-            
-            try {
-                const eventSource = new EventSource(`/api/research?task=${encodeURIComponent(task)}`);
-                
-                eventSource.addEventListener('log', (e) => {
-                    const logItem = document.createElement('div');
-                    logItem.className = 'log-item';
-                    logItem.textContent = e.data;
-                    logsPanel.appendChild(logItem);
-                    logsPanel.scrollTop = logsPanel.scrollHeight;
-                });
-                
-                eventSource.addEventListener('report', (e) => {
-                    currentReport = e.data;
-                    const iframe = document.getElementById('report-frame');
-                    iframe.srcdoc = currentReport;
-                    reportContainer.classList.add('active');
-                });
-                
-                eventSource.addEventListener('error', (e) => {
-                    const logItem = document.createElement('div');
-                    logItem.className = 'log-item';
-                    logItem.style.color = '#ff6b6b';
-                    logItem.textContent = '❌ 发生错误: ' + (e.data || '连接中断');
-                    logsPanel.appendChild(logItem);
-                    eventSource.close();
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = '🚀 开始研究';
-                });
-                
-                eventSource.addEventListener('complete', (e) => {
-                    eventSource.close();
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = '🚀 开始研究';
-                });
-                
-            } catch (err) {
-                alert('请求失败: ' + err.message);
-                submitBtn.disabled = false;
-                submitBtn.textContent = '🚀 开始研究';
-            }
-        });
-        
-        function downloadReport() {
-            if (!currentReport) return;
-            const blob = new Blob([currentReport], { type: 'text/html' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `research_report_${Date.now()}.html`;
-            a.click();
-            URL.revokeObjectURL(url);
-        }
-        
-        function openInNewTab() {
-            if (!currentReport) return;
-            const blob = new Blob([currentReport], { type: 'text/html' });
-            const url = URL.createObjectURL(blob);
-            window.open(url, '_blank');
-        }
-    </script>
-</body>
-</html>
-"""
 
 
 @app.get("/api/research")
@@ -753,8 +492,27 @@ async def test_llm_connection(data: LLMTestRequest):
         raise HTTPException(status_code=400, detail=str(e))
 
 
+# ========== SPA 路由（必须在所有 API 路由之后注册）==========
+
+_static_dir = Path(__file__).parent / "static"
+if _static_dir.exists() and (_static_dir / "index.html").exists():
+    @app.get("/{full_path:path}", include_in_schema=False)
+    async def serve_spa(full_path: str):
+        """SPA 兜底路由：返回 index.html 或静态文件"""
+        # API 路由不处理（正常情况下不会到这里，因为 API 路由已先注册）
+        if full_path.startswith("api/"):
+            raise HTTPException(status_code=404, detail="API not found")
+        
+        # 检查是否请求静态文件
+        requested_file = _static_dir / full_path
+        if requested_file.exists() and requested_file.is_file():
+            return FileResponse(str(requested_file))
+        
+        # 其他所有请求返回 index.html（SPA 路由）
+        return FileResponse(str(_static_dir / "index.html"))
+
+
 # 直接运行入口
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
-
