@@ -330,20 +330,24 @@ async def test_vlm_connection(request: VLMTestRequest):
     try:
         client = AsyncOpenAI(
             api_key=request.apiKey,
-            base_url=request.baseUrl
+            base_url=request.baseUrl,
+            timeout=30.0  # 添加超时设置
         )
         
-        # 发送简单的图片理解请求（使用一个公开的小图片URL）
+        # 使用一个简单的 base64 编码的测试图片（100x100 红色方块）
+        # 满足模型对图片尺寸的最低要求(宽高>10)
+        test_image_base64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAIAAAD/gAIDAAAAaklEQVR42u3QMQEAAAwCIPuX1hjL8AETDlNVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVXVH2YBy8IABVQAAABJRU5ErkJggg=="
+        
         response = await client.chat.completions.create(
             model=request.model,
             messages=[{
                 "role": "user",
                 "content": [
-                    {"type": "text", "text": "请用一个词描述这张图片"},
+                    {"type": "text", "text": "What color is this image? Answer in one word."},
                     {
                         "type": "image_url",
                         "image_url": {
-                            "url": "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
+                            "url": test_image_base64
                         }
                     }
                 ]
@@ -582,7 +586,7 @@ async def save_settings(data: SettingsUpdateRequest):
     # 转换字段名（前端使用 camelCase，后端使用 snake_case）
     llm_data = {
         "api_key": data.llm.get("apiKey", ""),
-        "base_url": data.llm.get("baseUrl", "https://api.openai.com/v1"),
+        "base_url": data.llm.get("baseUrl", "https://api-inference.modelscope.cn/v1"),
         "model": data.llm.get("model", "gpt-4o")
     }
     vlm_data = {

@@ -9,7 +9,7 @@ from pydantic import BaseModel
 class LLMSettings(BaseModel):
     """LLM 配置"""
     api_key: str = ""
-    base_url: str = "https://api.openai.com/v1"
+    base_url: str = "https://api-inference.modelscope.cn/v1"
     model: str = "gpt-4o"
 
 
@@ -17,7 +17,7 @@ class VLMSettings(BaseModel):
     """VLM 配置（图片验证）"""
     enabled: bool = False
     api_key: str = ""
-    base_url: str = "https://dashscope.aliyuncs.com/compatible-mode/v1"
+    base_url: str = "https://api-inference.modelscope.cn/v1"
     model: str = "qwen-vl-plus"
 
 
@@ -25,7 +25,7 @@ class ImageGenSettings(BaseModel):
     """图片生成配置"""
     enabled: bool = False
     api_key: str = ""
-    base_url: str = "https://dashscope.aliyuncs.com/compatible-mode/v1"
+    base_url: str = "https://api-inference.modelscope.cn/v1"
     model: str = "wanx-v1"
 
 

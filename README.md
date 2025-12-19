@@ -56,7 +56,7 @@ node dist/cli.js init
 
 ```env
 OPENAI_API_KEY=your-api-key-here
-OPENAI_BASE_URL=https://api.openai.com/v1
+OPENAI_BASE_URL=https://api-inference.modelscope.cn/v1
 OPENAI_MODEL=gpt-4o
 REDNOTE_MCP_PATH=rednote-mcp/dist/index.js
 ```

@@ -1,5 +1,17 @@
 [
   {
+    "id": "a6a49cce-88bb-4f2e-ac6c-b9c09bb12198",
+    "topic": "穿搭分享",
+    "status": "completed",
+    "created_at": "2025-12-19T11:46:15.448599",
+    "updated_at": "2025-12-19T11:54:08.075169",
+    "summary": null,
+    "key_findings": [],
+    "notes_count": 5,
+    "sections_count": 3,
+    "report_path": null
+  },
+  {
     "id": "79fb9658-7ae6-41f9-b9a0-e6158998ca69",
     "topic": "旅行攻略",
     "status": "completed",

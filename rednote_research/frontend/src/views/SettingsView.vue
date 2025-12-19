@@ -30,7 +30,7 @@
             v-model="settings.llm.baseUrl"
             type="text"
             class="form-input"
-            placeholder="https://api.openai.com/v1"
+            placeholder="https://api-inference.modelscope.cn/v1"
           />
         </div>
         
@@ -44,13 +44,12 @@
             list="llm-models"
           />
           <datalist id="llm-models">
-            <option value="gpt-4o"></option>
-            <option value="gpt-4o-mini"></option>
-            <option value="qwen-plus"></option>
-            <option value="qwen-max"></option>
-            <option value="qwen-turbo"></option>
-            <option value="Qwen/Qwen3-235B-A22B-Thinking-2507"></option>
-            <option value="claude-3-5-sonnet"></option>
+            <option value="Qwen/Qwen3-235B-A22B-Thinking-2507">Qwen3 235B</option>
+            <option value="Qwen/Qwen3-235B-A22B-Instruct-2507">Qwen3 235B</option>
+            <option value="Qwen/Qwen2.5-72B-Instruct">Qwen2.5 72B</option>
+            <option value="gpt-4o">GPT-4o</option>
+            <option value="gpt-4o-mini">GPT-4o Mini</option>
+            <option value="claude-3-5-sonnet">Claude 3.5 Sonnet</option>
           </datalist>
           <p class="form-hint">可选择常用模型或输入自定义模型名称</p>
         </div>
@@ -99,7 +98,7 @@
               v-model="settings.vlm.baseUrl"
               type="text"
               class="form-input"
-              placeholder="https://dashscope.aliyuncs.com/compatible-mode/v1"
+              placeholder="https://api-inference.modelscope.cn/v1"
             />
           </div>
           
@@ -113,11 +112,11 @@
               list="vlm-models"
             />
             <datalist id="vlm-models">
+              <option value="Qwen/Qwen2.5-VL-32B-Instruct">Qwen2.5 VL 32B</option>
+              <option value="Qwen/Qwen2-VL-7B-Instruct">Qwen2 VL 7B</option>
               <option value="qwen-vl-plus">Qwen-VL-Plus</option>
               <option value="qwen-vl-max">Qwen-VL-Max</option>
               <option value="gpt-4o">GPT-4o</option>
-              <option value="gpt-4-vision-preview">GPT-4 Vision</option>
-              <option value="claude-3-5-sonnet-20241022">Claude 3.5 Sonnet</option>
             </datalist>
             <p class="form-hint">可选择常用模型或输入自定义模型名称</p>
           </div>
@@ -167,7 +166,7 @@
               v-model="settings.imageGen.baseUrl"
               type="text"
               class="form-input"
-              placeholder="https://dashscope.aliyuncs.com/compatible-mode/v1"
+              placeholder="https://api-inference.modelscope.cn/v1"
             />
           </div>
           
@@ -181,11 +180,11 @@
               list="imagegen-models"
             />
             <datalist id="imagegen-models">
+              <option value="Tongyi-MAI/Z-Image-Turbo">Z-Image-Turbo</option>
               <option value="wanx-v1">通义万相 (wanx-v1)</option>
               <option value="flux-schnell">Flux Schnell</option>
               <option value="stable-diffusion-3">Stable Diffusion 3</option>
               <option value="dalle-3">DALL-E 3</option>
-              <option value="midjourney">Midjourney</option>
             </datalist>
             <p class="form-hint">可选择常用模型或输入自定义模型名称</p>
           </div>
@@ -257,20 +256,20 @@ interface Settings {
 const settings = ref<Settings>({
   llm: {
     apiKey: '',
-    baseUrl: 'https://api.openai.com/v1',
-    model: 'gpt-4o'
+    baseUrl: 'https://api-inference.modelscope.cn/v1',
+    model: 'Qwen/Qwen3-235B-A22B-Thinking-2507'
   },
   vlm: {
     enabled: false,
     apiKey: '',
-    baseUrl: 'https://dashscope.aliyuncs.com/compatible-mode/v1',
-    model: 'qwen-vl-plus'
+    baseUrl: 'https://api-inference.modelscope.cn/v1',
+    model: 'Qwen/Qwen2.5-VL-32B-Instruct'
   },
   imageGen: {
     enabled: false,
     apiKey: '',
-    baseUrl: 'https://dashscope.aliyuncs.com/compatible-mode/v1',
-    model: 'wanx-v1'
+    baseUrl: 'https://api-inference.modelscope.cn/v1',
+    model: 'Tongyi-MAI/Z-Image-Turbo'
   }
 })
 

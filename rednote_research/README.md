@@ -48,7 +48,7 @@ pip install -e .
 ```bash
 # OpenAI API配置
 OPENAI_API_KEY=your-api-key
-OPENAI_BASE_URL=https://api.openai.com/v1  # 可选，自定义端点
+OPENAI_BASE_URL=https://api-inference.modelscope.cn/v1  # 可选，自定义端点
 OPENAI_MODEL=gpt-4o  # 可选，默认gpt-4o
 
 # MCP服务器路径
