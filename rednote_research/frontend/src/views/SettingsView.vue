@@ -105,12 +105,30 @@
           
           <div class="form-group">
             <label class="form-label">VLM 模型</label>
-            <select v-model="settings.vlm.model" class="form-select">
+            <input 
+              v-model="settings.vlm.model"
+              type="text"
+              class="form-input"
+              placeholder="qwen-vl-plus 或自定义模型名称"
+              list="vlm-models"
+            />
+            <datalist id="vlm-models">
               <option value="qwen-vl-plus">Qwen-VL-Plus</option>
               <option value="qwen-vl-max">Qwen-VL-Max</option>
               <option value="gpt-4o">GPT-4o</option>
-            </select>
+              <option value="gpt-4-vision-preview">GPT-4 Vision</option>
+              <option value="claude-3-5-sonnet-20241022">Claude 3.5 Sonnet</option>
+            </datalist>
+            <p class="form-hint">可选择常用模型或输入自定义模型名称</p>
           </div>
+          
+          <button class="btn btn-secondary" @click="testVLM" :disabled="isTestingVLM">
+            <span v-if="isTestingVLM" class="spinner-sm"></span>
+            <span v-else>测试 VLM 连接</span>
+          </button>
+          <span v-if="vlmTestResult" class="test-result" :class="vlmTestResult.success ? 'success' : 'error'">
+            {{ vlmTestResult.message }}
+          </span>
         </div>
       </div>
       
@@ -155,14 +173,50 @@
           
           <div class="form-group">
             <label class="form-label">图片生成模型</label>
-            <select v-model="settings.imageGen.model" class="form-select">
+            <input 
+              v-model="settings.imageGen.model"
+              type="text"
+              class="form-input"
+              placeholder="wanx-v1 或自定义模型名称"
+              list="imagegen-models"
+            />
+            <datalist id="imagegen-models">
               <option value="wanx-v1">通义万相 (wanx-v1)</option>
               <option value="flux-schnell">Flux Schnell</option>
               <option value="stable-diffusion-3">Stable Diffusion 3</option>
               <option value="dalle-3">DALL-E 3</option>
-            </select>
+              <option value="midjourney">Midjourney</option>
+            </datalist>
+            <p class="form-hint">可选择常用模型或输入自定义模型名称</p>
           </div>
+          
+          <button class="btn btn-secondary" @click="testImageGen" :disabled="isTestingImageGen">
+            <span v-if="isTestingImageGen" class="spinner-sm"></span>
+            <span v-else>测试图片生成</span>
+          </button>
+          <span v-if="imageGenTestResult" class="test-result" :class="imageGenTestResult.success ? 'success' : 'error'">
+            {{ imageGenTestResult.message }}
+          </span>
         </div>
+      </div>
+      
+      <!-- MCP 连通性测试 -->
+      <div class="settings-section card">
+        <h2 class="section-title">
+          🔗 小红书 MCP 连通性
+        </h2>
+        
+        <p class="form-hint" style="margin-bottom: 16px;">
+          测试 MCP 服务是否正常运行，检查小红书登录状态
+        </p>
+        
+        <button class="btn btn-secondary" @click="testMCP" :disabled="isTestingMCP">
+          <span v-if="isTestingMCP" class="spinner-sm"></span>
+          <span v-else>测试 MCP 连接</span>
+        </button>
+        <span v-if="mcpTestResult" class="test-result" :class="mcpTestResult.success ? 'success' : 'error'">
+          {{ mcpTestResult.message }}
+        </span>
       </div>
       
       <!-- 保存按钮 -->
@@ -258,10 +312,76 @@ const testLLM = async () => {
       model: settings.value.llm.model
     })
     llmTestResult.value = { success: true, message: '连接成功！' }
-  } catch (error) {
-    llmTestResult.value = { success: false, message: '连接失败，请检查配置' }
+  } catch (error: any) {
+    const detail = error.response?.data?.detail || '连接失败，请检查配置'
+    llmTestResult.value = { success: false, message: detail }
   } finally {
     isTestingLLM.value = false
+  }
+}
+
+// VLM 测试
+const isTestingVLM = ref(false)
+const vlmTestResult = ref<{ success: boolean; message: string } | null>(null)
+
+const testVLM = async () => {
+  isTestingVLM.value = true
+  vlmTestResult.value = null
+  
+  try {
+    const response = await axios.post('/api/settings/test-vlm', {
+      apiKey: settings.value.vlm.apiKey,
+      baseUrl: settings.value.vlm.baseUrl,
+      model: settings.value.vlm.model
+    })
+    vlmTestResult.value = { success: true, message: response.data.message || 'VLM 连接成功！' }
+  } catch (error: any) {
+    const detail = error.response?.data?.detail || 'VLM 连接失败，请检查配置'
+    vlmTestResult.value = { success: false, message: detail }
+  } finally {
+    isTestingVLM.value = false
+  }
+}
+
+// 图片生成模型测试
+const isTestingImageGen = ref(false)
+const imageGenTestResult = ref<{ success: boolean; message: string } | null>(null)
+
+const testImageGen = async () => {
+  isTestingImageGen.value = true
+  imageGenTestResult.value = null
+  
+  try {
+    const response = await axios.post('/api/settings/test-imagegen', {
+      apiKey: settings.value.imageGen.apiKey,
+      baseUrl: settings.value.imageGen.baseUrl,
+      model: settings.value.imageGen.model
+    })
+    imageGenTestResult.value = { success: true, message: response.data.message || '图片生成模型连接成功！' }
+  } catch (error: any) {
+    const detail = error.response?.data?.detail || '图片生成模型连接失败，请检查配置'
+    imageGenTestResult.value = { success: false, message: detail }
+  } finally {
+    isTestingImageGen.value = false
+  }
+}
+
+// MCP 连通性测试
+const isTestingMCP = ref(false)
+const mcpTestResult = ref<{ success: boolean; message: string } | null>(null)
+
+const testMCP = async () => {
+  isTestingMCP.value = true
+  mcpTestResult.value = null
+  
+  try {
+    const response = await axios.post('/api/settings/test-mcp')
+    mcpTestResult.value = { success: true, message: response.data.message || 'MCP 连接成功！' }
+  } catch (error: any) {
+    const detail = error.response?.data?.detail || 'MCP 连接失败，请检查配置'
+    mcpTestResult.value = { success: false, message: detail }
+  } finally {
+    isTestingMCP.value = false
   }
 }
 

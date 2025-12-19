@@ -315,7 +315,139 @@ async def test_llm_connection(request: LLMTestRequest):
         raise HTTPException(status_code=400, detail=f"连接失败: {str(e)}")
 
 
-# ========== 历史记录 API ==========
+class VLMTestRequest(BaseModel):
+    """VLM 测试请求"""
+    apiKey: str
+    baseUrl: str
+    model: str
+
+
+@app.post("/api/settings/test-vlm")
+async def test_vlm_connection(request: VLMTestRequest):
+    """测试 VLM 连接（发送图片验证请求）"""
+    from openai import AsyncOpenAI
+    
+    try:
+        client = AsyncOpenAI(
+            api_key=request.apiKey,
+            base_url=request.baseUrl
+        )
+        
+        # 发送简单的图片理解请求（使用一个公开的小图片URL）
+        response = await client.chat.completions.create(
+            model=request.model,
+            messages=[{
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": "请用一个词描述这张图片"},
+                    {
+                        "type": "image_url",
+                        "image_url": {
+                            "url": "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
+                        }
+                    }
+                ]
+            }],
+            max_tokens=10
+        )
+        
+        return {"status": "ok", "message": f"VLM 连接成功！模型: {request.model}"}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"VLM 连接失败: {str(e)}")
+
+
+class ImageGenTestRequest(BaseModel):
+    """图片生成模型测试请求"""
+    apiKey: str
+    baseUrl: str
+    model: str
+
+
+@app.post("/api/settings/test-imagegen")
+async def test_imagegen_connection(request: ImageGenTestRequest):
+    """测试图片生成模型连接"""
+    import httpx
+    
+    try:
+        # 根据模型类型选择不同的测试方式
+        if "wanx" in request.model.lower():
+            # 通义万相使用阿里云 DashScope API
+            async with httpx.AsyncClient(timeout=30.0) as client:
+                response = await client.post(
+                    f"{request.baseUrl}/services/aigc/text2image/image-synthesis",
+                    headers={
+                        "Authorization": f"Bearer {request.apiKey}",
+                        "Content-Type": "application/json"
+                    },
+                    json={
+                        "model": request.model,
+                        "input": {"prompt": "test"},
+                        "parameters": {"n": 1, "size": "256*256"}
+                    }
+                )
+                if response.status_code in [200, 202]:  # 202 表示异步任务已接受
+                    return {"status": "ok", "message": f"图片生成模型连接成功！模型: {request.model}"}
+                else:
+                    raise Exception(f"HTTP {response.status_code}: {response.text[:200]}")
+        else:
+            # 其他模型使用 OpenAI 兼容接口
+            from openai import AsyncOpenAI
+            client = AsyncOpenAI(
+                api_key=request.apiKey,
+                base_url=request.baseUrl
+            )
+            # 只测试连接，不实际生成图片（避免消耗配额）
+            # 通过 models.list 来验证 API 是否可用
+            await client.models.list()
+            return {"status": "ok", "message": f"图片生成模型 API 连接成功！模型: {request.model}"}
+            
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"图片生成模型连接失败: {str(e)}")
+
+
+@app.post("/api/settings/test-mcp")
+async def test_mcp_connection():
+    """测试 MCP 连接（检查小红书登录状态）"""
+    global _mcp_client
+    
+    if not _mcp_client:
+        raise HTTPException(
+            status_code=400, 
+            detail="MCP 客户端未配置。请确保 REDNOTE_MCP_PATH 环境变量已设置。"
+        )
+    
+    try:
+        # 连接 MCP
+        await _mcp_client.connect()
+        
+        # 尝试搜索一个测试关键词
+        results = await _mcp_client.search_notes("测试", limit=1)
+        
+        # 断开连接
+        await _mcp_client.disconnect()
+        
+        if results:
+            return {
+                "status": "ok", 
+                "message": f"MCP 连接成功！小红书登录状态正常，找到 {len(results)} 条测试结果。"
+            }
+        else:
+            return {
+                "status": "ok", 
+                "message": "MCP 连接成功！但未找到测试结果，可能需要重新登录小红书。"
+            }
+            
+    except Exception as e:
+        error_msg = str(e)
+        if "login" in error_msg.lower() or "登录" in error_msg:
+            raise HTTPException(
+                status_code=400, 
+                detail=f"MCP 连接失败：需要重新登录小红书。错误: {error_msg[:100]}"
+            )
+        raise HTTPException(status_code=400, detail=f"MCP 连接失败: {error_msg[:200]}")
+
+
+
 
 from ..services.history import get_history_service, ResearchRecord
 

@@ -108,7 +108,14 @@
               :key="imgIdx"
               class="section-image"
             >
-              <img :src="img" :alt="`图片 ${imgIdx + 1}`" @click="viewImage(img)" />
+              <img 
+                :src="img" 
+                :alt="`图片 ${imgIdx + 1}`" 
+                referrerpolicy="no-referrer"
+                loading="lazy"
+                @click="viewImage(img)"
+                @error="handleImageError($event)" 
+              />
             </div>
           </div>
         </div>
@@ -197,6 +204,14 @@ const viewImage = (url: string) => {
   window.open(url, '_blank')
 }
 
+// 图片加载失败处理
+const handleImageError = (event: Event) => {
+  const img = event.target as HTMLImageElement
+  if (img) {
+    img.style.display = 'none'
+  }
+}
+
 // 导出报告
 const exportReport = () => {
   const report = store.getReport
@@ -212,6 +227,12 @@ const exportReport = () => {
 }
 
 const generateReportHTML = (report: any) => {
+  // 使用 marked 解析 markdown 内容
+  const renderMarkdown = (content: string) => {
+    if (!content) return ''
+    return marked.parse(content) as string
+  }
+  
   return `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -219,21 +240,78 @@ const generateReportHTML = (report: any) => {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${report.topic} - 研究报告</title>
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 800px; margin: 0 auto; padding: 40px 20px; color: #333; }
-    h1 { color: #ff2442; }
-    .section { margin: 40px 0; padding: 20px; background: #f9f9f9; border-radius: 12px; }
-    .finding { background: white; padding: 12px 16px; margin: 8px 0; border-radius: 8px; border-left: 3px solid #ff2442; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+      max-width: 900px; 
+      margin: 0 auto; 
+      padding: 40px 20px; 
+      color: #333;
+      line-height: 1.8;
+      background: linear-gradient(135deg, #fff5f5 0%, #fff 100%);
+    }
+    h1 { color: #ff2442; font-size: 28px; margin-bottom: 16px; }
+    h2 { color: #333; font-size: 22px; margin: 24px 0 16px; border-bottom: 2px solid #ff2442; padding-bottom: 8px; }
+    h3 { color: #555; font-size: 18px; margin: 20px 0 12px; }
+    h4 { color: #666; font-size: 16px; margin: 16px 0 10px; }
+    p { margin: 12px 0; }
+    ul, ol { margin: 12px 0; padding-left: 24px; }
+    li { margin: 6px 0; }
+    strong { color: #ff2442; }
+    .section { 
+      margin: 32px 0; 
+      padding: 24px; 
+      background: white; 
+      border-radius: 16px; 
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+    .finding { 
+      background: #fff5f5; 
+      padding: 14px 18px; 
+      margin: 10px 0; 
+      border-radius: 10px; 
+      border-left: 4px solid #ff2442; 
+    }
+    .images-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+      margin: 20px 0;
+    }
+    .images-grid img {
+      width: 100%;
+      border-radius: 12px;
+      object-fit: cover;
+      aspect-ratio: 4/3;
+    }
+    .section-content { font-size: 15px; }
+    .section-content h2 { font-size: 20px; }
+    .section-content h3 { font-size: 17px; }
+    footer { 
+      text-align: center; 
+      color: #999; 
+      margin-top: 60px; 
+      padding-top: 20px; 
+      border-top: 1px solid #eee;
+      font-size: 14px;
+    }
+    .meta { color: #888; font-size: 14px; margin-bottom: 24px; }
   </style>
 </head>
 <body>
   <h1>${report.topic}</h1>
-  <p><strong>生成时间：</strong>${new Date(report.createdAt).toLocaleString('zh-CN')}</p>
+  <p class="meta"><strong>生成时间：</strong>${new Date(report.createdAt).toLocaleString('zh-CN')}</p>
   
-  ${report.summary ? `<div class="section"><h2>研究摘要</h2><p>${report.summary}</p></div>` : ''}
+  ${report.summary ? `
+    <div class="section">
+      <h2>📋 研究摘要</h2>
+      <p>${report.summary}</p>
+    </div>
+  ` : ''}
   
   ${report.keyFindings.length > 0 ? `
     <div class="section">
-      <h2>关键发现</h2>
+      <h2>✨ 关键发现</h2>
       ${report.keyFindings.map((f: string, i: number) => `<div class="finding">${i + 1}. ${f}</div>`).join('')}
     </div>
   ` : ''}
@@ -241,12 +319,19 @@ const generateReportHTML = (report: any) => {
   ${report.sections.map((section: any, i: number) => `
     <div class="section">
       <h2>${i + 1}. ${section.title || `章节 ${i + 1}`}</h2>
-      <p>${section.content?.replace(/\n/g, '<br>') || ''}</p>
+      <div class="section-content">
+        ${renderMarkdown(section.content)}
+      </div>
+      ${section.images && section.images.length > 0 ? `
+        <div class="images-grid">
+          ${section.images.map((img: string) => `<img src="${img}" referrerpolicy="no-referrer" loading="lazy" alt="研究配图" />`).join('')}
+        </div>
+      ` : ''}
     </div>
   `).join('')}
   
-  <footer style="text-align: center; color: #999; margin-top: 60px; padding-top: 20px; border-top: 1px solid #eee;">
-    由 RedNote Research Agent 生成
+  <footer>
+    由 RedNote Research Agent 生成 | 基于 ${report.notes?.length || 0} 篇笔记的深度分析
   </footer>
 </body>
 </html>`

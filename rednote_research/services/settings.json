@@ -2,18 +2,18 @@
   "llm": {
     "api_key": "",
     "base_url": "https://api.openai.com/v1",
-    "model": "gpt-4otest-model-name"
+    "model": "Qwen/Qwen3-235B-A22B-Thinking-2507"
   },
   "vlm": {
-    "enabled": false,
+    "enabled": true,
     "api_key": "",
     "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
-    "model": "qwen-vl-plus"
+    "model": "Qwen/Qwen3-VL-30B-A3B-Instruct"
   },
   "imageGen": {
-    "enabled": false,
+    "enabled": true,
     "api_key": "",
     "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
-    "model": "wanx-v1"
+    "model": "Tongyi-MAI/Z-Image-Turbo"
   }
 }
