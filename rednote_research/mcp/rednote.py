@@ -54,22 +54,61 @@ class RedNoteMCPClient(MCPClientBase):
         })
         
         notes = []
-        if isinstance(result, str):
-            # 解析文本格式的返回结果
-            notes = self._parse_search_result(result)
-        elif isinstance(result, list):
+        
+        # 处理多种返回格式
+        if isinstance(result, list):
+            # 新格式：每篇笔记是一个字符串（MCP返回多个content）
             for item in result:
-                notes.append(NotePreview(
-                    id=item.get("id", ""),
-                    title=item.get("title", ""),
-                    author=item.get("author", ""),
-                    content_preview=item.get("content", ""),
-                    likes=item.get("likes", 0),
-                    comments=item.get("comments", 0),
-                    url=item.get("url", "")
-                ))
+                if isinstance(item, str):
+                    # 解析单条文本格式的笔记
+                    parsed = self._parse_single_note(item)
+                    if parsed:
+                        notes.append(parsed)
+                elif isinstance(item, dict):
+                    # JSON格式笔记
+                    notes.append(NotePreview(
+                        id=item.get("id", ""),
+                        title=item.get("title", ""),
+                        author=item.get("author", ""),
+                        content_preview=item.get("content", ""),
+                        likes=item.get("likes", 0),
+                        comments=item.get("comments", 0),
+                        url=item.get("url", "")
+                    ))
+        elif isinstance(result, str):
+            # 旧格式：所有笔记在一个字符串中
+            notes = self._parse_search_result(result)
         
         return notes
+    
+    def _parse_single_note(self, text: str) -> NotePreview | None:
+        """解析单条文本格式的笔记"""
+        note_data = {}
+        
+        for line in text.split("\n"):
+            line = line.strip()
+            if line.startswith("标题:"):
+                note_data["title"] = line[3:].strip()
+            elif line.startswith("作者:"):
+                note_data["author"] = line[3:].strip()
+            elif line.startswith("内容:"):
+                note_data["content_preview"] = line[3:].strip()
+            elif line.startswith("点赞:"):
+                try:
+                    note_data["likes"] = int(line[3:].strip())
+                except ValueError:
+                    note_data["likes"] = 0
+            elif line.startswith("评论:"):
+                try:
+                    note_data["comments"] = int(line[3:].strip())
+                except ValueError:
+                    note_data["comments"] = 0
+            elif line.startswith("链接:"):
+                note_data["url"] = line[3:].strip()
+        
+        if note_data.get("title") or note_data.get("url"):
+            return NotePreview(**note_data)
+        return None
     
     def _parse_search_result(self, text: str) -> list[NotePreview]:
         """解析文本格式的搜索结果"""

@@ -1,19 +1,36 @@
 {
   "llm": {
-    "api_key": "",
-    "base_url": "https://api.openai.com/v1",
-    "model": "Qwen/Qwen3-235B-A22B-Thinking-2507"
+    "api_key": "ms-04d662ab-d9b4-46db-a13e-9082887778d3",
+    "base_url": "https://api-inference.modelscope.cn/v1",
+    "model": "Qwen/Qwen3-235B-A22B-Thinking-2507",
+    "temperature": 0.6,
+    "top_p": 0.95,
+    "top_k": 20,
+    "max_tokens": 130000,
+    "presence_penalty": 1.5,
+    "enable_thinking": true
   },
   "vlm": {
     "enabled": true,
-    "api_key": "",
-    "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
-    "model": "Qwen/Qwen3-VL-30B-A3B-Instruct"
+    "api_key": "ms-04d662ab-d9b4-46db-a13e-9082887778d3",
+    "base_url": "https://api-inference.modelscope.cn/v1",
+    "model": "Qwen/Qwen2.5-VL-32B-Instruct",
+    "temperature": 0.7,
+    "top_p": 0.8,
+    "max_tokens": 8192,
+    "repetition_penalty": 1.1,
+    "rate_limit_mode": true
   },
   "imageGen": {
     "enabled": true,
-    "api_key": "",
-    "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
-    "model": "Tongyi-MAI/Z-Image-Turbo"
+    "api_key": "ms-04d662ab-d9b4-46db-a13e-9082887778d3",
+    "base_url": "https://api-inference.modelscope.cn/v1",
+    "model": "Tongyi-MAI/Z-Image-Turbo",
+    "num_inference_steps": 8,
+    "guidance_scale": 0.0,
+    "width": 1024,
+    "height": 1024,
+    "sampler_name": "Euler",
+    "rate_limit_mode": true
   }
 }

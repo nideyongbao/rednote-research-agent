@@ -47,7 +47,7 @@ class PlannerAgent(BaseAgent):
     输出：搜索关键词列表 + 研究维度
     """
     
-    def __init__(self, llm_client: AsyncOpenAI, model: str = "gpt-4o"):
+    def __init__(self, llm_client: AsyncOpenAI, model: str):
         super().__init__(
             name="Planner",
             llm_client=llm_client,

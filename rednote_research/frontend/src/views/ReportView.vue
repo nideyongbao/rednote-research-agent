@@ -9,14 +9,24 @@
         <button class="btn btn-secondary" @click="goBack">
           返回编辑
         </button>
-        <button class="btn btn-primary" @click="exportReport">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-            <polyline points="7 10 12 15 17 10"/>
-            <line x1="12" y1="15" x2="12" y2="3"/>
-          </svg>
-          导出 HTML
-        </button>
+        <div class="export-dropdown">
+          <button class="btn btn-primary" @click="toggleExportMenu">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            导出
+            <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+          <div v-if="showExportMenu" class="export-menu">
+            <button @click="exportReport('html')">📄 HTML</button>
+            <button @click="exportReport('markdown')">📝 Markdown</button>
+            <button @click="exportReport('pdf')">📕 PDF</button>
+          </div>
+        </div>
       </div>
     </div>
     
@@ -126,11 +136,23 @@
           <p class="sources-desc">本研究基于 {{ store.notes.length }} 篇小红书笔记进行分析</p>
           <div class="sources-list">
             <div 
-              v-for="note in store.notes.slice(0, 5)" 
+              v-for="note in store.notes" 
               :key="note.id"
               class="source-item"
             >
-              <div class="source-title">{{ note.title }}</div>
+              <a 
+                :href="note.url" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                class="source-title source-link"
+              >
+                {{ note.title }}
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                  <polyline points="15 3 21 3 21 9"/>
+                  <line x1="10" y1="14" x2="21" y2="3"/>
+                </svg>
+              </a>
               <div class="source-meta">
                 <span>{{ note.author }}</span>
                 <span>❤️ {{ note.likes }}</span>
@@ -143,6 +165,24 @@
         </div>
       </main>
     </div>
+    
+    <!-- Lightbox 图片查看器 -->
+    <Teleport to="body">
+      <div v-if="lightboxVisible" class="lightbox-overlay" @click="closeLightbox">
+        <button class="lightbox-close" @click="closeLightbox">×</button>
+        <img 
+          :src="lightboxImage" 
+          class="lightbox-image" 
+          referrerpolicy="no-referrer"
+          @click.stop
+        />
+        <div v-if="lightboxImages.length > 1" class="lightbox-nav">
+          <button @click.stop="prevImage" :disabled="lightboxIndex <= 0">‹</button>
+          <span>{{ lightboxIndex + 1 }} / {{ lightboxImages.length }}</span>
+          <button @click.stop="nextImage" :disabled="lightboxIndex >= lightboxImages.length - 1">›</button>
+        </div>
+      </div>
+    </Teleport>
   </div>
 </template>
 
@@ -157,6 +197,19 @@ const router = useRouter()
 const store = useResearchStore()
 
 const activeSection = ref('')
+const showExportMenu = ref(false)
+
+const toggleExportMenu = () => {
+  showExportMenu.value = !showExportMenu.value
+}
+
+// 点击外部关闭菜单
+const closeExportMenu = (e: Event) => {
+  const target = e.target as HTMLElement
+  if (!target.closest('.export-dropdown')) {
+    showExportMenu.value = false
+  }
+}
 
 const getTypeName = (type: string) => {
   const names: Record<string, string> = {
@@ -199,9 +252,57 @@ const scrollToSection = (id: string) => {
   }
 }
 
-// 查看大图
+// Lightbox 图片查看器状态
+const lightboxVisible = ref(false)
+const lightboxImage = ref('')
+const lightboxImages = ref<string[]>([])
+const lightboxIndex = ref(0)
+
+// 查看大图（使用 Lightbox）
 const viewImage = (url: string) => {
-  window.open(url, '_blank')
+  // 收集所有图片
+  const allImages: string[] = []
+  store.outline.forEach(section => {
+    if (section.images) {
+      allImages.push(...section.images)
+    }
+  })
+  
+  lightboxImages.value = allImages
+  lightboxIndex.value = allImages.indexOf(url)
+  if (lightboxIndex.value === -1) lightboxIndex.value = 0
+  lightboxImage.value = url
+  lightboxVisible.value = true
+  
+  // 禁止背景滚动
+  document.body.style.overflow = 'hidden'
+}
+
+const closeLightbox = () => {
+  lightboxVisible.value = false
+  document.body.style.overflow = ''
+}
+
+const prevImage = () => {
+  if (lightboxIndex.value > 0) {
+    lightboxIndex.value--
+    lightboxImage.value = lightboxImages.value[lightboxIndex.value]
+  }
+}
+
+const nextImage = () => {
+  if (lightboxIndex.value < lightboxImages.value.length - 1) {
+    lightboxIndex.value++
+    lightboxImage.value = lightboxImages.value[lightboxIndex.value]
+  }
+}
+
+// 键盘导航
+const handleKeydown = (e: KeyboardEvent) => {
+  if (!lightboxVisible.value) return
+  if (e.key === 'Escape') closeLightbox()
+  if (e.key === 'ArrowLeft') prevImage()
+  if (e.key === 'ArrowRight') nextImage()
 }
 
 // 图片加载失败处理
@@ -213,17 +314,55 @@ const handleImageError = (event: Event) => {
 }
 
 // 导出报告
-const exportReport = () => {
-  const report = store.getReport
-  const html = generateReportHTML(report)
+const exportReport = async (format: 'html' | 'markdown' | 'pdf') => {
+  showExportMenu.value = false
   
-  const blob = new Blob([html], { type: 'text/html' })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = `research_report_${Date.now()}.html`
-  a.click()
-  URL.revokeObjectURL(url)
+  if (format === 'html') {
+    // HTML导出使用前端逻辑
+    const report = store.getReport
+    const html = generateReportHTML(report)
+    
+    const blob = new Blob([html], { type: 'text/html' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `research_report_${Date.now()}.html`
+    a.click()
+    URL.revokeObjectURL(url)
+  } else {
+    // Markdown/PDF调用后端API
+    try {
+      const response = await fetch('/api/export', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          format,
+          topic: store.topic,
+          insights: store.getReport.insights || {},
+          outline: store.outline,
+          notes: store.notes
+        })
+      })
+      
+      if (!response.ok) {
+        const error = await response.json()
+        alert(error.detail || '导出失败')
+        return
+      }
+      
+      // 下载文件
+      const blob = await response.blob()
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `research_report_${Date.now()}.${format === 'markdown' ? 'md' : 'pdf'}`
+      a.click()
+      URL.revokeObjectURL(url)
+    } catch (error) {
+      console.error('Export failed:', error)
+      alert('导出失败，请重试')
+    }
+  }
 }
 
 const generateReportHTML = (report: any) => {
@@ -330,6 +469,25 @@ const generateReportHTML = (report: any) => {
     </div>
   `).join('')}
   
+  ${report.notes && report.notes.length > 0 ? `
+    <div class="section">
+      <h2>📚 数据来源</h2>
+      <p style="color: #666; margin-bottom: 16px;">本研究基于 ${report.notes.length} 篇小红书笔记进行分析</p>
+      <ul style="list-style: none; padding: 0;">
+        ${report.notes.map((note: any) => `
+          <li style="padding: 12px 16px; background: #f9f9f9; border-radius: 8px; margin-bottom: 8px;">
+            <a href="${note.url}" target="_blank" rel="noopener" style="color: #ff2442; text-decoration: none; font-weight: 500;">
+              ${note.title}
+            </a>
+            <div style="color: #888; font-size: 12px; margin-top: 4px;">
+              ${note.author} · ❤️ ${note.likes}
+            </div>
+          </li>
+        `).join('')}
+      </ul>
+    </div>
+  ` : ''}
+  
   <footer>
     由 RedNote Research Agent 生成 | 基于 ${report.notes?.length || 0} 篇笔记的深度分析
   </footer>
@@ -370,12 +528,15 @@ onMounted(() => {
   }
   
   window.addEventListener('scroll', scrollHandler)
+  window.addEventListener('keydown', handleKeydown)
 })
 
 onUnmounted(() => {
   if (scrollHandler) {
     window.removeEventListener('scroll', scrollHandler)
   }
+  window.removeEventListener('keydown', handleKeydown)
+  document.body.style.overflow = ''
 })
 </script>
 
@@ -393,6 +554,48 @@ onUnmounted(() => {
 
 .header-actions .btn svg {
   margin-right: 6px;
+}
+
+/* 导出下拉菜单 */
+.export-dropdown {
+  position: relative;
+}
+
+.export-dropdown .dropdown-arrow {
+  margin-left: 4px;
+  margin-right: 0;
+}
+
+.export-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 8px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  overflow: hidden;
+  z-index: 100;
+  min-width: 140px;
+}
+
+.export-menu button {
+  width: 100%;
+  padding: 12px 16px;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.export-menu button:hover {
+  background: #f5f5f5;
+}
+
+.export-menu button:not(:last-child) {
+  border-bottom: 1px solid #f0f0f0;
 }
 
 /* 布局 */
@@ -687,6 +890,120 @@ onUnmounted(() => {
   font-size: 13px;
   color: var(--text-secondary);
   padding-top: 12px;
+}
+
+/* 笔记来源链接 */
+.source-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  color: var(--text-main);
+  transition: color 0.2s;
+}
+
+.source-link:hover {
+  color: var(--primary);
+}
+
+.source-link svg {
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.source-item:hover .source-link svg {
+  opacity: 1;
+}
+
+/* Lightbox 图片查看器 */
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 44px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.lightbox-image {
+  max-width: 90vw;
+  max-height: 85vh;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.lightbox-nav {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 10px 24px;
+  border-radius: 100px;
+}
+
+.lightbox-nav button {
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.lightbox-nav button:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.lightbox-nav button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.lightbox-nav span {
+  color: white;
+  font-size: 14px;
+  min-width: 60px;
+  text-align: center;
 }
 
 /* 响应式 */

@@ -1,74 +1,285 @@
-"""HTML报告生成器 - 使用LLM生成图文交错的HTML报告"""
+"""HTML报告生成器 - 使用LLM分章节生成图文交错的HTML报告"""
 
 import re
-from typing import Optional
+import logging
+from typing import Optional, Callable, AsyncGenerator
 from openai import AsyncOpenAI
 from ..state import ResearchState
+from ..services.settings import get_settings_service
+
+logger = logging.getLogger(__name__)
 
 
-HTML_WRITER_PROMPT = '''你是一个专业的HTML报告撰写专家。根据提供的研究数据，生成一份精美的图文交错HTML报告。
+# 章节生成Prompt
+SECTION_WRITER_PROMPT = '''你是一个专业的内容撰写专家。根据提供的章节数据，生成该章节的HTML内容片段。
 
-## 核心要求
-1. **图文交错**：图片应该自然地嵌入在文字段落之间，而不是集中在最后
-2. **防盗链处理**：所有图片必须使用 `referrerpolicy="no-referrer"` 属性
-3. **美观排版**：使用现代CSS，Card布局，渐变背景
-4. **响应式设计**：适配手机和电脑
-5. **引用标注**：每个论点需标注来源笔记标题
+## 要求
+1. 只生成该章节的内容，不要包含HTML文档结构
+2. 图文交错：图片自然嵌入文字段落间
+3. 图片使用 `referrerpolicy="no-referrer"` 属性
+4. 标注来源：引用内容需标注笔记标题
+5. 使用div和p标签组织内容
 
-## 图片标签格式（必须严格遵守）
+## 图片格式
 ```html
 <figure class="note-image">
-  <img src="{image_url}" alt="相关描述" referrerpolicy="no-referrer" loading="lazy">
+  <img src="{url}" alt="描述" referrerpolicy="no-referrer" loading="lazy">
   <figcaption>来源：{笔记标题}</figcaption>
 </figure>
 ```
 
-## HTML结构要求
-1. 包含完整的 <!DOCTYPE html> 声明
-2. 使用内联CSS样式（不依赖外部CSS文件）
-3. 主色调使用小红书红色 #ff2442
-4. 背景使用浅色渐变 linear-gradient(135deg, #fff5f5 0%, #fff 100%)
-
-## 报告结构
-1. 标题区：研究主题 + 生成时间
-2. 摘要区：核心发现（3-5条）
-3. 正文区：按维度分章节，每章节包含图片和文字
-4. 结论区：总结建议
-5. 来源区：列出引用的笔记
-
-## 输出
-直接输出完整的HTML代码（从<!DOCTYPE html>开始），不要包含任何解释性文字、markdown代码块标记。'''
+直接输出HTML片段，不要包含markdown代码块标记。'''
 
 
 class HTMLReportGenerator:
     """
-    使用LLM生成图文交错的HTML报告
+    使用LLM分章节生成图文交错的HTML报告
     
-    设计理念：让LLM直接生成完整HTML，实现精细的图文排版控制
+    设计理念：按章节逐步生成，降低单次LLM调用复杂度，支持流式返回
     """
     
-    def __init__(self, llm_client: AsyncOpenAI, model: str = "gpt-4o"):
-        """
-        初始化HTML生成器
-        
-        Args:
-            llm_client: OpenAI客户端
-            model: 使用的模型
-        """
+    def __init__(self, llm_client: AsyncOpenAI, model: str):
         self.llm = llm_client
         self.model = model
+        self.settings = get_settings_service().load()
     
-    async def generate(self, state: ResearchState) -> str:
+    async def generate(self, state: ResearchState, on_progress: Optional[Callable[[int, str], None]] = None) -> str:
         """
-        生成图文交错的HTML报告
+        分章节生成HTML报告
         
         Args:
-            state: 包含研究数据的状态对象
+            state: 研究状态
+            on_progress: 进度回调 (章节索引, 章节标题)
             
         Returns:
-            完整的HTML字符串
+            完整HTML文档
         """
-        # 构建给LLM的数据摘要
+        # 获取结构化大纲（由ImageProcessor处理后的）
+        outline = getattr(state, 'processed_outline', None)
+        if not outline and hasattr(state, 'outline'):
+            outline = state.outline
+        
+        # 如果没有大纲，使用旧的单次生成方式
+        if not outline:
+            logger.info("[HTMLGenerator] 无结构化大纲，使用单次生成模式")
+            return await self._generate_single(state)
+        
+        logger.info(f"[HTMLGenerator] 分章节生成模式，共 {len(outline)} 个章节")
+        
+        # 构建各章节内容
+        sections_html = []
+        for i, section in enumerate(outline):
+            section_title = section.get('title', f'章节 {i+1}')
+            
+            if on_progress:
+                on_progress(i, section_title)
+            
+            logger.info(f"[HTMLGenerator] 生成章节 {i+1}/{len(outline)}: {section_title}")
+            
+            try:
+                section_html = await self._generate_section(section, state)
+                sections_html.append(section_html)
+            except Exception as e:
+                logger.warning(f"[HTMLGenerator] 章节生成失败: {e}, 使用备用内容")
+                sections_html.append(self._generate_fallback_section(section))
+        
+        # 组装完整HTML
+        return self._assemble_html(state.task, state.insights, sections_html, state.documents)
+    
+    async def _generate_section(self, section: dict, state: ResearchState) -> str:
+        """生成单个章节的HTML"""
+        section_type = section.get('type', 'content')
+        section_title = section.get('title', '')
+        section_content = section.get('content', '')
+        images = section.get('images', [])
+        source_notes = section.get('source_notes', [])
+        
+        # 准备引用的笔记数据
+        notes_context = ""
+        for idx in source_notes:  # 全量引用
+            if idx < len(state.documents):
+                note = state.documents[idx]
+                notes_context += f"\n- {note.detail.title}: {note.detail.content}"
+        
+        # 构建章节Prompt
+        prompt = f"""## 章节信息
+类型: {section_type}
+标题: {section_title}
+内容提纲: {section_content}
+
+## 可用图片
+{chr(10).join([f'- {img}' for img in images[:4]])}
+
+## 引用笔记
+{notes_context if notes_context else '无特定引用'}
+
+请生成这个章节的HTML内容片段，图文交错排版。"""
+        
+        messages = [
+            {"role": "system", "content": SECTION_WRITER_PROMPT},
+            {"role": "user", "content": prompt}
+        ]
+        
+        response = await self.llm.chat.completions.create(
+            model=self.model,
+            messages=messages,
+            max_tokens=self.settings.llm.max_tokens // 2,  # 单章节用一半token
+            temperature=self.settings.llm.temperature
+        )
+        
+        html = response.choices[0].message.content or ""
+        html = self._clean_markdown_wrapper(html)
+        html = self._ensure_referrer_policy(html)
+        
+        return f'''<section class="report-section" data-type="{section_type}">
+    <h2>{section_title}</h2>
+    {html}
+</section>'''
+    
+    def _generate_fallback_section(self, section: dict) -> str:
+        """生成章节备用HTML"""
+        section_type = section.get('type', 'content')
+        section_title = section.get('title', '章节')
+        section_content = section.get('content', '')
+        images = section.get('images', [])
+        
+        images_html = ""
+        for img in images:  # 全量图片
+            images_html += f'''
+            <figure class="note-image">
+                <img src="{img}" referrerpolicy="no-referrer" loading="lazy" alt="{section_title}">
+            </figure>'''
+        
+        return f'''<section class="report-section" data-type="{section_type}">
+    <h2>{section_title}</h2>
+    <p>{section_content}</p>
+    {images_html}
+</section>'''
+    
+    def _assemble_html(self, topic: str, insights: dict, sections_html: list, documents: list) -> str:
+        """组装完整HTML文档"""
+        from datetime import datetime
+        
+        # 关键发现
+        findings_html = ""
+        if insights and "key_findings" in insights:
+            findings_html = '<div class="findings-section"><h2>✨ 关键发现</h2><ul>'
+            for finding in insights["key_findings"]:  # 全量展示
+                findings_html += f'<li>{finding}</li>'
+            findings_html += '</ul></div>'
+        
+        # 数据来源
+        sources_html = '<div class="sources-section"><h2>📚 数据来源</h2><ul>'
+        for note in documents:  # 全量展示
+            sources_html += f'''<li>
+                <a href="{note.detail.url}" target="_blank" rel="noopener">{note.detail.title}</a>
+                <span class="source-meta">{note.detail.author} · ❤️ {note.detail.likes}</span>
+            </li>'''
+        sources_html += '</ul></div>'
+        
+        return f'''<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{topic} - 研究报告</title>
+    <style>
+        :root {{ --primary: #ff2442; }}
+        * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+        body {{
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #fff5f5 0%, #fff 100%);
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            line-height: 1.8;
+            color: #333;
+        }}
+        h1 {{ color: var(--primary); font-size: 28px; margin-bottom: 8px; }}
+        h2 {{ font-size: 20px; margin: 24px 0 16px; border-bottom: 2px solid var(--primary); padding-bottom: 8px; }}
+        .meta {{ color: #888; font-size: 14px; margin-bottom: 32px; }}
+        .report-section {{
+            background: white;
+            padding: 24px;
+            border-radius: 16px;
+            margin: 20px 0;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }}
+        .note-image img {{
+            max-width: 100%;
+            border-radius: 12px;
+            margin: 16px 0;
+        }}
+        .note-image figcaption {{
+            font-size: 12px;
+            color: #888;
+            text-align: center;
+        }}
+        .findings-section ul, .sources-section ul {{
+            list-style: none;
+            padding: 0;
+        }}
+        .findings-section li {{
+            background: #fff5f5;
+            padding: 12px 16px;
+            margin: 8px 0;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+        }}
+        .sources-section li {{
+            padding: 12px 16px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            margin: 8px 0;
+        }}
+        .sources-section a {{
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }}
+        .source-meta {{
+            display: block;
+            font-size: 12px;
+            color: #888;
+            margin-top: 4px;
+        }}
+        footer {{
+            text-align: center;
+            color: #999;
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid #eee;
+            font-size: 13px;
+        }}
+    </style>
+</head>
+<body>
+    <h1>📝 {topic}</h1>
+    <p class="meta">生成时间：{datetime.now().strftime("%Y-%m-%d %H:%M")} | 基于 {len(documents)} 篇笔记分析</p>
+    
+    {findings_html}
+    
+    {''.join(sections_html)}
+    
+    {sources_html}
+    
+    <footer>由 RedNote Research Agent 生成</footer>
+</body>
+</html>'''
+    
+    async def _generate_single(self, state: ResearchState) -> str:
+        """单次生成完整报告（旧模式兼容）"""
+        # 保留原有的单次生成逻辑
+        HTML_WRITER_PROMPT = '''你是一个专业的HTML报告撰写专家。根据提供的研究数据，生成一份精美的图文交错HTML报告。
+
+## 核心要求
+1. 图文交错：图片自然嵌入文字段落间
+2. 防盗链处理：所有图片必须使用 referrerpolicy="no-referrer"
+3. 美观排版：使用现代CSS，Card布局
+4. 引用标注：每个论点标注来源笔记
+
+直接输出完整的HTML代码，不要包含markdown代码块标记。'''
+        
         data_summary = self._prepare_data_for_llm(state)
         
         messages = [
@@ -77,32 +288,25 @@ class HTMLReportGenerator:
 ## 研究主题
 {state.task}
 
-## 研究计划
-{state.plan.model_dump_json(indent=2) if state.plan else "无"}
-
 ## 分析洞察
 {self._format_insights(state.insights)}
 
-## 收集到的笔记数据
+## 笔记数据
 {data_summary}
 
-请生成一份精美的图文交错HTML报告。确保图片和文字自然交错，每个关键论点都有配图。
+请生成图文交错HTML报告。
 """}
         ]
         
         response = await self.llm.chat.completions.create(
             model=self.model,
             messages=messages,
-            max_tokens=8000,
-            temperature=0.7
+            max_tokens=self.settings.llm.max_tokens,
+            temperature=self.settings.llm.temperature
         )
         
         html = response.choices[0].message.content or ""
-        
-        # 清理markdown代码块标记
         html = self._clean_markdown_wrapper(html)
-        
-        # 后处理：确保所有图片都有防盗链属性
         html = self._ensure_referrer_policy(html)
         
         return html
@@ -111,26 +315,26 @@ class HTMLReportGenerator:
         """将笔记数据整理为LLM可理解的格式"""
         summaries = []
         
-        for i, note in enumerate(state.documents[:10]):  # 限制数量避免超出token
+        for i, note in enumerate(state.documents):  # 全量处理
             detail = note.detail
             preview = note.preview
             
             title = detail.title or preview.title
-            content = (detail.content or preview.content_preview)[:300]
-            images = detail.images[:3]  # 每篇最多3张图
+            content = detail.content or preview.content_preview  # 全量内容
+            images = detail.images  # 全量图片
             
             summary = f"""
 ### 笔记 {i+1}: {title}
 - 作者: {detail.author or preview.author}
 - 点赞: {detail.likes or preview.likes}
-- 内容摘要: {content}...
+- 内容: {content}
 - 可用图片链接:"""
             
             for j, img in enumerate(images):
                 summary += f"\n  图片{j+1}: {img}"
             
             if detail.tags:
-                summary += f"\n- 标签: {', '.join(detail.tags[:5])}"
+                summary += f"\n- 标签: {', '.join(detail.tags)}"  # 全量标签
             
             summaries.append(summary)
         

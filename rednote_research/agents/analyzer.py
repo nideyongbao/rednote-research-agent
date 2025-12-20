@@ -47,7 +47,7 @@ class AnalyzerAgent(BaseAgent):
     输出：结构化洞察 + 最终报告
     """
     
-    def __init__(self, llm_client: AsyncOpenAI, model: str = "gpt-4o"):
+    def __init__(self, llm_client: AsyncOpenAI, model: str):
         super().__init__(
             name="Analyzer",
             llm_client=llm_client,
@@ -143,7 +143,7 @@ class AnalyzerAgent(BaseAgent):
         """准备数据摘要供LLM分析"""
         summaries = []
         
-        for i, note in enumerate(state.documents[:15]):  # 限制数量
+        for i, note in enumerate(state.documents):  # 全量处理
             detail = note.detail
             preview = note.preview
             
@@ -151,8 +151,8 @@ class AnalyzerAgent(BaseAgent):
 ### 笔记 {i+1}: {detail.title or preview.title}
 - 作者: {detail.author or preview.author}
 - 点赞: {detail.likes or preview.likes}
-- 内容摘要: {(detail.content or preview.content_preview)[:300]}...
-- 标签: {', '.join(detail.tags[:5]) if detail.tags else '无'}
+- 内容: {detail.content or preview.content_preview}
+- 标签: {', '.join(detail.tags) if detail.tags else '无'}
 - 图片数量: {len(detail.images)}
 """
             summaries.append(summary)

@@ -7,26 +7,48 @@ from pydantic import BaseModel
 
 
 class LLMSettings(BaseModel):
-    """LLM 配置"""
-    api_key: str = ""
+    """LLM 配置 - Qwen3-235B-A22B-Thinking-2507"""
+    api_key: str = "ms-04d662ab-d9b4-46db-a13e-9082887778d3"
     base_url: str = "https://api-inference.modelscope.cn/v1"
-    model: str = "gpt-4o"
+    model: str = "Qwen/Qwen3-235B-A22B-Thinking-2507"
+    # 推理参数
+    temperature: float = 0.6  # Thinking模型推荐值
+    top_p: float = 0.95
+    top_k: int = 20
+    max_tokens: int = 130000  # 长上下文全量处理
+    presence_penalty: float = 1.5  # 防止重复循环
+    enable_thinking: bool = True  # 启用思维链
 
 
 class VLMSettings(BaseModel):
-    """VLM 配置（图片验证）"""
+    """VLM 配置 - Qwen2.5-VL-32B-Instruct"""
     enabled: bool = False
-    api_key: str = ""
+    api_key: str = "ms-04d662ab-d9b4-46db-a13e-9082887778d3"
     base_url: str = "https://api-inference.modelscope.cn/v1"
-    model: str = "qwen-vl-plus"
+    model: str = "Qwen/Qwen2.5-VL-32B-Instruct"
+    # 推理参数
+    temperature: float = 0.7  # 标准对话推荐；OCR建议0.1
+    top_p: float = 0.8  # 略窄采样保证准确性
+    max_tokens: int = 8192  # VLM模型限制最大8192
+    repetition_penalty: float = 1.1  # 防止词汇卡死
+    # 速率限制模式
+    rate_limit_mode: bool = True  # True=串行延迟(稳定), False=快速并行
 
 
 class ImageGenSettings(BaseModel):
-    """图片生成配置"""
+    """图片生成配置 - Tongyi-MAI/Z-Image-Turbo"""
     enabled: bool = False
-    api_key: str = ""
+    api_key: str = "ms-04d662ab-d9b4-46db-a13e-9082887778d3"
     base_url: str = "https://api-inference.modelscope.cn/v1"
-    model: str = "wanx-v1"
+    model: str = "Tongyi-MAI/Z-Image-Turbo"
+    # 图片生成参数（蒸馏模型特有）
+    num_inference_steps: int = 8  # Turbo甜点区8-9
+    guidance_scale: float = 0.0  # 蒸馏模型不需CFG
+    width: int = 1024
+    height: int = 1024
+    sampler_name: str = "Euler"
+    # 速率限制模式
+    rate_limit_mode: bool = True  # True=串行延迟(稳定), False=快速并行
 
 
 class Settings(BaseModel):

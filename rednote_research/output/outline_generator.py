@@ -92,7 +92,7 @@ class OutlineGenerator:
     3. 确保每个论点都有数据来源标注
     """
     
-    def __init__(self, llm_client: AsyncOpenAI, model: str = "gpt-4o"):
+    def __init__(self, llm_client: AsyncOpenAI, model: str):
         self.llm = llm_client
         self.model = model
     
@@ -105,7 +105,7 @@ class OutlineGenerator:
         生成结构化大纲
         
         Args:
-            state: 包含 insights 和 documents 的研究状态
+            state: 包含 insights, documents 和 image_analyses 的研究状态
             on_log: 可选的日志回调
             
         Returns:
@@ -117,6 +117,7 @@ class OutlineGenerator:
         # 准备数据
         notes_summary = self._prepare_notes_summary(state)
         insights_text = self._format_insights(state.insights)
+        image_context = self._prepare_image_context(state)
         
         messages = [
             {"role": "system", "content": OUTLINE_GENERATOR_PROMPT},
@@ -127,10 +128,13 @@ class OutlineGenerator:
 ## 分析洞察
 {insights_text}
 
+## 可用图片统计
+{image_context}
+
 ## 笔记数据（共 {len(state.documents)} 篇）
 {notes_summary}
 
-请生成结构化大纲。
+请生成结构化大纲，根据图片分布合理规划每章节建议配图数量（suggested_image_count）和偏好类型（preferred_image_types）。
 """}
         ]
         
@@ -201,6 +205,28 @@ class OutlineGenerator:
             parts.append("\n### 建议")
             for rec in insights["recommendations"]:
                 parts.append(f"- {rec}")
+        
+        return "\n".join(parts)
+    
+    def _prepare_image_context(self, state: ResearchState) -> str:
+        """准备图片上下文信息供大纲生成参考"""
+        if not state.image_analyses:
+            return "暂无图片分析结果"
+        
+        # 统计分类
+        categories = {}
+        usable_count = 0
+        for result in state.image_analyses.values():
+            cat = result.category or "未分类"
+            categories[cat] = categories.get(cat, 0) + 1
+            if result.should_use:
+                usable_count += 1
+        
+        parts = [f"- 总图片数: {len(state.image_analyses)}"]
+        parts.append(f"- 可用图片: {usable_count}")
+        parts.append("- 分类统计:")
+        for cat, count in categories.items():
+            parts.append(f"  - {cat}: {count}张")
         
         return "\n".join(parts)
     

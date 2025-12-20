@@ -35,7 +35,7 @@ class SearcherAgent(BaseAgent):
         self, 
         llm_client: AsyncOpenAI, 
         mcp_client: RedNoteMCPClient,
-        model: str = "gpt-4o"
+        model: str
     ):
         super().__init__(
             name="Searcher",
@@ -83,7 +83,7 @@ class SearcherAgent(BaseAgent):
                 
                 # 2. 按点赞数排序，取Top N
                 sorted_previews = sorted(previews, key=lambda x: x.likes, reverse=True)
-                top_previews = sorted_previews[:3]  # 每个关键词取Top3
+                top_previews = sorted_previews  # 全量处理、不截断
                 
                 # 3. 获取详情
                 for j, preview in enumerate(top_previews):
@@ -137,7 +137,7 @@ class SearcherAgent(BaseAgent):
         # 构建筛选请求
         notes_summary = "\n".join([
             f"- {n.preview.title} (点赞: {n.preview.likes})"
-            for n in notes[:20]  # 最多筛选20篇
+            for n in notes  # 全量筛选、不截断
         ])
         
         messages = [
@@ -145,7 +145,7 @@ class SearcherAgent(BaseAgent):
             {"role": "user", "content": f"""
 研究主题：{state.task}
 
-以下是搜索到的笔记，请选出与主题最相关的5篇（返回序号，用逗号分隔）：
+以下是搜索到的笔记，请选出与主题最相关的笔记（返回序号，用逗号分隔，可以选多篇）：
 
 {notes_summary}
 """}
@@ -158,4 +158,4 @@ class SearcherAgent(BaseAgent):
             indices = [int(x.strip()) - 1 for x in response.split(",")]
             return [notes[i] for i in indices if 0 <= i < len(notes)]
         except:
-            return notes[:5]  # 解析失败时返回前5篇
+            return notes  # 解析失败时返回全部

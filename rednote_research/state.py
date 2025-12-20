@@ -42,6 +42,17 @@ class ResearchPlan(BaseModel):
     keywords: list[str] = Field(default_factory=list, description="搜索关键词列表")
 
 
+class ImageAnalysisResult(BaseModel):
+    """图片分析结果"""
+    image_url: str = ""
+    description: str = ""
+    tags: list[str] = []
+    category: str = ""  # 实景/攻略/装饰/广告
+    quality_score: int = 5
+    should_use: bool = True
+    matched_sections: list[str] = []  # 适合的章节标题列表
+
+
 class ResearchState(BaseModel):
     """
     共享状态：所有智能体读写的统一数据结构
@@ -62,6 +73,9 @@ class ResearchState(BaseModel):
     # 分析阶段
     insights: Optional[dict] = None
     final_report: str = ""
+    
+    # 图片分析阶段（新增）
+    image_analyses: dict[str, ImageAnalysisResult] = Field(default_factory=dict, description="图片分析结果 {url: result}")
     
     # 控制流
     is_complete: bool = False

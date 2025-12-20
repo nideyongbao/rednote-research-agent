@@ -128,6 +128,18 @@
           <span v-if="vlmTestResult" class="test-result" :class="vlmTestResult.success ? 'success' : 'error'">
             {{ vlmTestResult.message }}
           </span>
+          
+          <div class="switch-container" style="margin-top: 20px;">
+            <div>
+              <div class="form-label" style="margin-bottom: 0;">稳定模式（防速率限制）</div>
+              <p class="form-hint">开启后会串行处理+延迟，避免触发API频率限制；关闭则快速并行</p>
+            </div>
+            <div 
+              class="switch" 
+              :class="{ active: settings.vlm.rateLimitMode }"
+              @click="settings.vlm.rateLimitMode = !settings.vlm.rateLimitMode"
+            ></div>
+          </div>
         </div>
       </div>
       
@@ -196,6 +208,18 @@
           <span v-if="imageGenTestResult" class="test-result" :class="imageGenTestResult.success ? 'success' : 'error'">
             {{ imageGenTestResult.message }}
           </span>
+          
+          <div class="switch-container" style="margin-top: 20px;">
+            <div>
+              <div class="form-label" style="margin-bottom: 0;">稳定模式（防速率限制）</div>
+              <p class="form-hint">开启后会串行处理+延迟，避免触发API频率限制；关闭则快速并行</p>
+            </div>
+            <div 
+              class="switch" 
+              :class="{ active: settings.imageGen.rateLimitMode }"
+              @click="settings.imageGen.rateLimitMode = !settings.imageGen.rateLimitMode"
+            ></div>
+          </div>
         </div>
       </div>
       
@@ -244,12 +268,14 @@ interface Settings {
     apiKey: string
     baseUrl: string
     model: string
+    rateLimitMode: boolean
   }
   imageGen: {
     enabled: boolean
     apiKey: string
     baseUrl: string
     model: string
+    rateLimitMode: boolean
   }
 }
 
@@ -263,13 +289,15 @@ const settings = ref<Settings>({
     enabled: false,
     apiKey: '',
     baseUrl: 'https://api-inference.modelscope.cn/v1',
-    model: 'Qwen/Qwen2.5-VL-32B-Instruct'
+    model: 'Qwen/Qwen2.5-VL-32B-Instruct',
+    rateLimitMode: true
   },
   imageGen: {
     enabled: false,
     apiKey: '',
     baseUrl: 'https://api-inference.modelscope.cn/v1',
-    model: 'Tongyi-MAI/Z-Image-Turbo'
+    model: 'Tongyi-MAI/Z-Image-Turbo',
+    rateLimitMode: true
   }
 })
 

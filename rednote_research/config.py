@@ -29,7 +29,7 @@ class LLMConfig(BaseModel):
     provider: str = "openai"
     api_key: Optional[str] = None
     base_url: Optional[str] = None
-    model: str = "gpt-4o"
+    model: str = "Qwen/Qwen3-235B-A22B-Thinking-2507"  # 默认使用Qwen3
 
 
 class Config(BaseModel):

@@ -163,23 +163,46 @@ async def research_stream(topic: str = Query(None), task: str = Query(None, min_
             state = ResearchState(task=research_topic)
             
             # 阶段1: 规划
+            yield make_msg("progress", percent=10)
             yield make_msg("log", level="info", message="📋 [Planner] 分析研究主题...")
             state = await orchestrator.planner.run(state)
             if state.plan:
                 yield make_msg("log", level="success", message=f"📋 [Planner] 生成了 {len(state.plan.keywords)} 个搜索关键词")
+                yield make_msg("log", level="info", message=f"💡 理解: {state.plan.understanding}")
+                yield make_msg("log", level="info", message=f"📊 维度: {', '.join(state.plan.dimensions)}")
                 for kw in state.plan.keywords:
                     yield make_msg("log", level="info", message=f"  - {kw}")
+                yield make_msg("log", level="info", message=f"📐 [阶段1统计] 关键词: {len(state.plan.keywords)}个 | 维度: {len(state.plan.dimensions)}个 | LLM调用: 1次")
             
             # 阶段2: 搜索
             yield make_msg("stage", stage="searching")
+            yield make_msg("progress", percent=25)
             yield make_msg("log", level="info", message="🔍 [Searcher] 开始搜索笔记...")
-            state = await orchestrator.searcher.run(state)
+            
+            # 收集搜索日志用于前端显示
+            search_logs = []
+            def capture_log(msg):
+                search_logs.append(msg)
+            
+            state = await orchestrator.searcher.run(state, on_log=capture_log)
+            
+            # 输出每个关键词的搜索结果到前端
+            for log in search_logs:
+                yield make_msg("log", level="info", message=f"  {log}")
+            
             stats["notesFound"] = len(state.documents)
             yield make_msg("stats", stats=stats)
             yield make_msg("log", level="success", message=f"🔍 [Searcher] 收集了 {stats['notesFound']} 篇笔记")
             
+            # 计算并输出详细统计
+            total_images = sum(len(note.detail.images) for note in state.documents if note.detail.images)
+            total_text_length = sum(len(note.detail.content or "") for note in state.documents)
+            avg_text_length = total_text_length // len(state.documents) if state.documents else 0
+            yield make_msg("log", level="info", message=f"📊 [统计] 共 {total_images} 张图片，总文本 {total_text_length} 字，平均每篇 {avg_text_length} 字")
+            
             # 阶段3: 分析
             yield make_msg("stage", stage="analyzing")
+            yield make_msg("progress", percent=45)
             yield make_msg("log", level="info", message="🧠 [Analyzer] 分析数据中...")
             state = await orchestrator.analyzer.run(state)
             stats["contentsAnalyzed"] = len(state.documents)
@@ -188,10 +211,35 @@ async def research_stream(topic: str = Query(None), task: str = Query(None, min_
                 stats["insightsExtracted"] = len(findings)
                 yield make_msg("stats", stats=stats)
                 yield make_msg("log", level="success", message=f"🧠 [Analyzer] 提取了 {stats['insightsExtracted']} 条核心发现")
+                yield make_msg("log", level="info", message=f"📐 [阶段3统计] 分析笔记: {len(state.documents)}篇 | 提取发现: {stats['insightsExtracted']}条 | LLM调用: 1次")
             
-            # 阶段4: 生成结构化大纲
+            # 阶段4: 图片VLM分析（提前到大纲之前）
+            yield make_msg("progress", percent=55)
+            yield make_msg("log", level="info", message="🖼️ [ImageAnalyzer] VLM分析图片...")
+            
+            from ..output.image_analyzer import ImageAnalyzer
+            image_analyzer = ImageAnalyzer()
+            
+            try:
+                state = await image_analyzer.analyze(state)
+                analyzed_count = len(state.image_analyses)
+                usable_count = sum(1 for r in state.image_analyses.values() if r.should_use)
+                yield make_msg("log", level="success", message=f"🖼️ [ImageAnalyzer] 分析了 {analyzed_count} 张图片，{usable_count} 张可用")
+                
+                # 统计分类
+                categories = {}
+                for r in state.image_analyses.values():
+                    cat = r.category or "未分类"
+                    categories[cat] = categories.get(cat, 0) + 1
+                cat_str = ", ".join(f"{k}:{v}" for k, v in categories.items())
+                yield make_msg("log", level="info", message=f"📐 [阶段4统计] 分类: {cat_str}")
+            except Exception as e:
+                yield make_msg("log", level="warning", message=f"⚠ 图片分析失败: {str(e)[:100]}")
+            
+            # 阶段5: 生成结构化大纲（含图片上下文）
             yield make_msg("stage", stage="generating")
-            yield make_msg("log", level="info", message="📑 [OutlineGenerator] 生成结构化大纲...")
+            yield make_msg("progress", percent=65)
+            yield make_msg("log", level="info", message="📑 [OutlineGenerator] 生成结构化大纲（含图片上下文）...")
             
             from ..output.outline_generator import OutlineGenerator
             outline_generator = OutlineGenerator(_config.get_llm_client(), model=_config.llm.model)
@@ -199,10 +247,28 @@ async def research_stream(topic: str = Query(None), task: str = Query(None, min_
             try:
                 structured_outline = await outline_generator.generate(state)
                 yield make_msg("log", level="success", message=f"📑 [OutlineGenerator] 生成了 {len(structured_outline)} 个章节")
+                yield make_msg("log", level="info", message=f"📐 [阶段5统计] 章节数: {len(structured_outline)} | LLM调用: 1次")
             except Exception as e:
                 yield make_msg("log", level="warning", message=f"⚠ 大纲生成失败: {str(e)[:100]}, 使用备用方案")
                 structured_outline = outline_generator._generate_fallback_outline(state)
             
+            # 阶段6: 图片分配（基于VLM分析结果）
+            yield make_msg("progress", percent=75)
+            yield make_msg("log", level="info", message="🎯 [ImageAssigner] 分配图片到章节...")
+            
+            from ..output.image_assigner import ImageAssigner
+            image_assigner = ImageAssigner()
+            
+            try:
+                structured_outline = await image_assigner.assign(state, structured_outline)
+                assigned_count = sum(len(section.get('images', [])) for section in structured_outline)
+                yield make_msg("log", level="success", message=f"🎯 [ImageAssigner] 分配了 {assigned_count} 张图片")
+                yield make_msg("log", level="info", message=f"📐 [阶段6统计] 分配图片: {assigned_count}张")
+            except Exception as e:
+                yield make_msg("log", level="warning", message=f"⚠ 图片分配失败: {str(e)[:100]}")
+            
+            # 阶段7: 生成HTML报告
+            yield make_msg("progress", percent=85)
             yield make_msg("log", level="info", message="📝 [Writer] 生成图文交错报告...")
             html_generator = HTMLReportGenerator(_config.get_llm_client(), model=_config.llm.model)
             
@@ -212,7 +278,9 @@ async def research_stream(topic: str = Query(None), task: str = Query(None, min_
                 yield make_msg("log", level="warning", message=f"⚠ LLM生成失败: {str(e)[:100]}, 使用备用模板")
                 html_report = html_generator.generate_fallback_html(state)
             
+            yield make_msg("progress", percent=100)
             yield make_msg("log", level="success", message="✅ 报告生成完成！")
+            yield make_msg("log", level="info", message=f"📐 [阶段7统计] 报告HTML长度: {len(html_report)}字符 | 章节数: {len(structured_outline)} | LLM调用: {len(structured_outline)+1}次")
             
             # 传递报告数据给前端（包含结构化大纲）
             report_data = {
@@ -223,13 +291,13 @@ async def research_stream(topic: str = Query(None), task: str = Query(None, min_
                     {
                         "id": note.preview.id,
                         "title": note.detail.title or note.preview.title,
-                        "content": (note.detail.content or note.preview.content_preview)[:500],
+                        "content": note.detail.content or note.preview.content_preview,  # 全量内容
                         "author": note.detail.author or note.preview.author,
                         "likes": note.detail.likes or note.preview.likes,
-                        "images": note.detail.images[:3] if note.detail.images else [],
+                        "images": note.detail.images if note.detail.images else [],  # 全量图片
                         "url": note.detail.url or note.preview.url
                     }
-                    for note in state.documents[:10]
+                    for note in state.documents  # 全量笔记
                 ]
             }
             yield make_msg("report", **report_data)
@@ -543,6 +611,70 @@ async def validate_images_batch(request: BatchImageValidateRequest):
     return results
 
 
+# ========== 报告导出 API ==========
+
+class ExportRequest(BaseModel):
+    """导出请求"""
+    format: str  # 'markdown' | 'pdf'
+    topic: str
+    insights: dict = {}
+    outline: list = []
+    notes: list = []
+
+
+@app.post("/api/export")
+async def export_report(request: ExportRequest):
+    """导出报告为不同格式"""
+    from fastapi.responses import Response
+    from ..output.exporter import ReportExporter
+    
+    if request.format == "markdown":
+        content = ReportExporter.to_markdown(
+            topic=request.topic,
+            insights=request.insights,
+            outline=request.outline,
+            notes=request.notes
+        )
+        return Response(
+            content=content,
+            media_type="text/markdown",
+            headers={
+                "Content-Disposition": f'attachment; filename="report_{datetime.now().strftime("%Y%m%d_%H%M%S")}.md"'
+            }
+        )
+    
+    elif request.format == "pdf":
+        # PDF需要先生成HTML再转换
+        html = f"""<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><title>{request.topic}</title>
+<style>body{{font-family:sans-serif;max-width:800px;margin:0 auto;padding:20px;}}
+h1{{color:#ff2442;}}h2{{border-bottom:2px solid #ff2442;padding-bottom:8px;}}</style>
+</head><body>
+<h1>{request.topic}</h1>
+{"".join([f'<section><h2>{s.get("title","")}</h2><p>{s.get("content","")}</p></section>' for s in request.outline])}
+</body></html>"""
+        
+        try:
+            pdf_bytes = await ReportExporter.to_pdf(html)
+            if pdf_bytes:
+                return Response(
+                    content=pdf_bytes,
+                    media_type="application/pdf",
+                    headers={
+                        "Content-Disposition": f'attachment; filename="report_{datetime.now().strftime("%Y%m%d_%H%M%S")}.pdf"'
+                    }
+                )
+            else:
+                raise HTTPException(status_code=500, detail="PDF转换返回空结果")
+        except ImportError as e:
+            raise HTTPException(status_code=500, detail=str(e))
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"PDF导出失败: {str(e)}")
+    
+    else:
+        raise HTTPException(status_code=400, detail=f"不支持的格式: {request.format}")
+
+
 # ============ 设置相关 API ============
 
 def get_effective_config() -> Config:
@@ -587,7 +719,7 @@ async def save_settings(data: SettingsUpdateRequest):
     llm_data = {
         "api_key": data.llm.get("apiKey", ""),
         "base_url": data.llm.get("baseUrl", "https://api-inference.modelscope.cn/v1"),
-        "model": data.llm.get("model", "gpt-4o")
+        "model": data.llm.get("model", "")
     }
     vlm_data = {
         "enabled": data.vlm.get("enabled", False),

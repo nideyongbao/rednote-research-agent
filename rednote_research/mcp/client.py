@@ -82,26 +82,33 @@ class MCPClientBase(ABC):
             arguments: 工具参数
             
         Returns:
-            工具执行结果
+            工具执行结果（单个值或列表）
         """
         response = await self._send_request("tools/call", {
             "name": name,
             "arguments": arguments
         })
         
-        # 解析响应内容
+        # 解析响应内容 - 修复：处理所有 content 元素
         content = response.get("content", [])
-        if content and len(content) > 0:
-            first_content = content[0]
-            if first_content.get("type") == "text":
-                text = first_content.get("text", "")
+        if not content:
+            return response
+        
+        results = []
+        for item in content:
+            if item.get("type") == "text":
+                text = item.get("text", "")
                 # 尝试解析为JSON
                 try:
-                    return json.loads(text)
+                    results.append(json.loads(text))
                 except json.JSONDecodeError:
-                    return text
+                    results.append(text)
         
-        return response
+        # 如果只有一个结果，返回单个值（保持向后兼容）
+        if len(results) == 1:
+            return results[0]
+        
+        return results if results else response
     
     async def _send_request(self, method: str, params: dict) -> dict:
         """发送JSON-RPC请求"""
