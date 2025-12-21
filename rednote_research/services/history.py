@@ -2,18 +2,19 @@
 历史记录服务
 
 管理研究任务的历史记录存储和检索
+支持保存完整报告数据以便历史恢复编辑
 """
 
 import json
 import uuid
 from datetime import datetime
 from pathlib import Path
-from typing import Optional, List
+from typing import Optional, List, Any
 from pydantic import BaseModel
 
 
 class ResearchRecord(BaseModel):
-    """研究记录"""
+    """研究记录（元数据）"""
     id: str
     topic: str
     status: str  # pending, running, completed, failed
@@ -24,6 +25,13 @@ class ResearchRecord(BaseModel):
     notes_count: int = 0
     sections_count: int = 0
     report_path: Optional[str] = None
+
+
+class FullResearchRecord(ResearchRecord):
+    """完整研究记录（包含报告数据，用于历史恢复编辑）"""
+    outline: List[dict] = []   # 完整大纲数据
+    notes: List[dict] = []     # 完整笔记数据
+    insights: dict = {}        # 分析洞察数据
 
 
 class HistoryService:
@@ -78,11 +86,21 @@ class HistoryService:
         return record
     
     def get(self, record_id: str) -> Optional[ResearchRecord]:
-        """获取单个记录"""
+        """获取单个记录（元数据）"""
         records = self._load_all()
         for r in records:
             if r["id"] == record_id:
-                return ResearchRecord(**r)
+                # 只返回元数据字段
+                return ResearchRecord(**{k: v for k, v in r.items() 
+                    if k in ResearchRecord.model_fields})
+        return None
+    
+    def get_full(self, record_id: str) -> Optional[FullResearchRecord]:
+        """获取完整记录（包含报告数据）"""
+        records = self._load_all()
+        for r in records:
+            if r["id"] == record_id:
+                return FullResearchRecord(**r)
         return None
     
     def update(self, record_id: str, updates: dict) -> Optional[ResearchRecord]:
@@ -94,7 +112,33 @@ class HistoryService:
                 r["updated_at"] = datetime.now().isoformat()
                 records[i] = r
                 self._save_all(records)
-                return ResearchRecord(**r)
+                return ResearchRecord(**{k: v for k, v in r.items() 
+                    if k in ResearchRecord.model_fields})
+        return None
+    
+    def save_report_data(
+        self, 
+        record_id: str, 
+        outline: List[dict],
+        notes: List[dict],
+        insights: dict
+    ) -> Optional[FullResearchRecord]:
+        """保存完整报告数据（用于历史恢复编辑）"""
+        records = self._load_all()
+        for i, r in enumerate(records):
+            if r["id"] == record_id:
+                r["outline"] = outline
+                r["notes"] = notes
+                r["insights"] = insights
+                r["notes_count"] = len(notes)
+                r["sections_count"] = len(outline)
+                # 从insights提取key_findings
+                if insights and "key_findings" in insights:
+                    r["key_findings"] = insights["key_findings"]
+                r["updated_at"] = datetime.now().isoformat()
+                records[i] = r
+                self._save_all(records)
+                return FullResearchRecord(**r)
         return None
     
     def delete(self, record_id: str) -> bool:

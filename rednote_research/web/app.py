@@ -221,9 +221,10 @@ async def research_stream(topic: str = Query(None), task: str = Query(None, min_
             image_analyzer = ImageAnalyzer()
             
             try:
-                state = await image_analyzer.analyze(state)
+                state, img_stats = await image_analyzer.analyze(state)
                 analyzed_count = len(state.image_analyses)
                 usable_count = sum(1 for r in state.image_analyses.values() if r.should_use)
+                vlm_calls = img_stats.get("vlm_calls", 0)
                 yield make_msg("log", level="success", message=f"🖼️ [ImageAnalyzer] 分析了 {analyzed_count} 张图片，{usable_count} 张可用")
                 
                 # 统计分类
@@ -232,7 +233,7 @@ async def research_stream(topic: str = Query(None), task: str = Query(None, min_
                     cat = r.category or "未分类"
                     categories[cat] = categories.get(cat, 0) + 1
                 cat_str = ", ".join(f"{k}:{v}" for k, v in categories.items())
-                yield make_msg("log", level="info", message=f"📐 [阶段4统计] 分类: {cat_str}")
+                yield make_msg("log", level="info", message=f"📐 [阶段4统计] 分类: {cat_str} | VLM调用: {vlm_calls}次")
             except Exception as e:
                 yield make_msg("log", level="warning", message=f"⚠ 图片分析失败: {str(e)[:100]}")
             
@@ -303,11 +304,16 @@ async def research_stream(topic: str = Query(None), task: str = Query(None, min_
             yield make_msg("report", **report_data)
             
             final_status = "completed"
-            history_service.update(record_id, {
-                "status": "completed",
-                "notes_count": stats["notesFound"],
-                "sections_count": stats["insightsExtracted"]
-            })
+            
+            # 保存完整报告数据到历史记录（用于历史恢复编辑）
+            history_service.save_report_data(
+                record_id=record_id,
+                outline=structured_outline,
+                notes=report_data["notes"],
+                insights=state.insights or {}
+            )
+            history_service.update(record_id, {"status": "completed"})
+            
             yield make_msg("complete")
             
         except Exception as e:
@@ -537,9 +543,19 @@ async def list_history(
 
 @app.get("/api/history/{record_id}")
 async def get_history_record(record_id: str):
-    """获取单个历史记录"""
+    """获取单个历史记录（元数据）"""
     service = get_history_service()
     record = service.get(record_id)
+    if not record:
+        raise HTTPException(status_code=404, detail="记录不存在")
+    return record.model_dump()
+
+
+@app.get("/api/history/{record_id}/full")
+async def get_history_record_full(record_id: str):
+    """获取完整历史记录（包含报告数据，用于历史恢复编辑）"""
+    service = get_history_service()
+    record = service.get_full(record_id)
     if not record:
         raise HTTPException(status_code=404, detail="记录不存在")
     return record.model_dump()

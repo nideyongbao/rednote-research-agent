@@ -36,7 +36,7 @@ class ImageAnalyzer:
             base_url=self.settings.vlm.base_url
         )
     
-    async def analyze(self, state: ResearchState) -> ResearchState:
+    async def analyze(self, state: ResearchState) -> tuple[ResearchState, dict]:
         """
         分析所有图片并更新state.image_analyses
         
@@ -44,22 +44,26 @@ class ImageAnalyzer:
             state: 包含documents的研究状态
             
         Returns:
-            更新了image_analyses的状态
+            (更新了image_analyses的状态, 统计信息)
         """
+        stats = {"vlm_calls": 0, "total_images": 0, "usable_images": 0}
+        
         if not self.settings.vlm.enabled:
             logger.info("[ImageAnalyzer] VLM未启用，跳过图片分析")
-            return state
+            return state, stats
         
         # 1. 收集所有图片
         images = self._collect_images(state)
         if not images:
             logger.info("[ImageAnalyzer] 没有找到图片")
-            return state
+            return state, stats
         
         logger.info(f"[ImageAnalyzer] 收集了 {len(images)} 张图片，开始VLM分析")
+        stats["total_images"] = len(images)
         
         # 2. 分批分析
-        analyses = await self._analyze_images_batch(images, state.task)
+        analyses, vlm_calls = await self._analyze_images_batch(images, state.task)
+        stats["vlm_calls"] = vlm_calls
         
         # 3. 更新state
         state.image_analyses = analyses
@@ -71,10 +75,11 @@ class ImageAnalyzer:
             categories[cat] = categories.get(cat, 0) + 1
         
         usable = sum(1 for r in analyses.values() if r.should_use)
-        logger.info(f"[ImageAnalyzer] 分析完成 | 总计: {len(analyses)}张 | 可用: {usable}张")
+        stats["usable_images"] = usable
+        logger.info(f"[ImageAnalyzer] 分析完成 | 总计: {len(analyses)}张 | 可用: {usable}张 | VLM调用: {vlm_calls}次")
         logger.info(f"[ImageAnalyzer] 分类统计: {categories}")
         
-        return state
+        return state, stats
     
     def _collect_images(self, state: ResearchState) -> list[str]:
         """收集所有笔记图片"""
@@ -132,8 +137,12 @@ class ImageAnalyzer:
         self,
         images: list[str],
         topic: str
-    ) -> dict[str, ImageAnalysisResult]:
-        """分批分析图片"""
+    ) -> tuple[dict[str, ImageAnalysisResult], int]:
+        """分批分析图片
+        
+        Returns:
+            (分析结果字典, VLM调用次数)
+        """
         
         # 参数配置
         BATCH_SIZE = 10  # 减小批次大小，提高稳定性
@@ -143,6 +152,7 @@ class ImageAnalyzer:
         
         all_analyses = {}
         total_batches = (len(images) + BATCH_SIZE - 1) // BATCH_SIZE
+        vlm_call_count = 0  # VLM调用计数器
         
         # 优化后的prompt - 明确要求JSON输出
         prompt = f"""你是图片分析专家。请分析以下图片并以JSON数组格式输出分析结果。
@@ -215,6 +225,7 @@ class ImageAnalyzer:
                         temperature=self.settings.vlm.temperature,
                         response_format={"type": "json_object"}  # Qwen支持
                     )
+                    vlm_call_count += 1  # VLM调用成功，计数+1
                     
                     result_text = response.choices[0].message.content or "{}"
                     
@@ -259,6 +270,7 @@ class ImageAnalyzer:
                                 max_tokens=self.settings.vlm.max_tokens,
                                 temperature=self.settings.vlm.temperature
                             )
+                            vlm_call_count += 1  # fallback调用也计数
                             result_text = response.choices[0].message.content or "[]"
                             logger.info(f"[ImageAnalyzer] 批次{batch_idx+1} VLM响应(无format): {result_text[:300]}...")
                             analyses_list = self._parse_json_robust(result_text, batch_idx, batch_count)
@@ -294,7 +306,7 @@ class ImageAnalyzer:
             if batch_idx < total_batches - 1 and BATCH_DELAY > 0:
                 await asyncio.sleep(BATCH_DELAY)
         
-        return all_analyses
+        return all_analyses, vlm_call_count
     
     def _add_default_analyses(
         self, 

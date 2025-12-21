@@ -233,6 +233,33 @@ success
 
 ```
 
+## 数据流设计：
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                        数据流隔离设计                            │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  【进行中任务】                    【历史编辑】                   │
+│                                                                 │
+│  activeTask.ts (NEW)              research.ts (原有)            │
+│  ├── taskId                       ├── topic                    │
+│  ├── topic                        ├── outline                  │
+│  └── isRunning                    ├── notes                    │
+│          ↓                        └── keyFindings              │
+│  HomeView（显示入口卡片）                   ↑                    │
+│          ↓                                 │                    │
+│  ResearchView（进度日志）          HistoryView（点击加载）       │
+│          ↓ 完成                            │                    │
+│  clearTask()                      /api/history/{id}/full       │
+│                                            ↓                    │
+│                                   loadFromJSON()               │
+│                                            ↓                    │
+│                                   OutlineView（编辑）           │
+│                                            ↓                    │
+│                                   ReportView（预览）            │
+└─────────────────────────────────────────────────────────────────┘
+```
 
 ## License
 

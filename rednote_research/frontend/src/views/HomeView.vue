@@ -53,17 +53,65 @@
         </div>
       </div>
     </div>
+    
+    <!-- 进行中任务入口（仅进行中显示，完成后消失）-->
+    <div v-if="activeTaskStore.hasActiveTask" class="active-task-section">
+      <div class="active-task-card" @click="goToResearch">
+        <div class="task-icon">
+          <span class="icon-spinning">🔄</span>
+        </div>
+        <div class="task-info">
+          <div class="task-status">进行中</div>
+          <div class="task-topic">{{ activeTaskStore.topic }}</div>
+          <div class="task-meta">
+            <span class="task-stage">{{ getStageName(activeTaskStore.stage) }}</span>
+            <span class="task-time">{{ formatTime(activeTaskStore.elapsedTime) }}</span>
+          </div>
+        </div>
+        <div class="task-action">
+          <button class="task-btn">
+            查看进度
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 任务运行中确认弹窗 -->
+    <div v-if="showTaskDialog" class="dialog-overlay" @click.self="showTaskDialog = false">
+      <div class="dialog-box">
+        <div class="dialog-icon">🔄</div>
+        <h3 class="dialog-title">有任务正在运行</h3>
+        <p class="dialog-message">
+          当前正在研究「{{ activeTaskStore.topic }}」，是否查看进度？
+        </p>
+        <div class="dialog-actions">
+          <button class="dialog-btn secondary" @click="showTaskDialog = false">
+            取消
+          </button>
+          <button class="dialog-btn primary" @click="confirmGoToResearch">
+            查看进度
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import ShowcaseBackground from '../components/home/ShowcaseBackground.vue'
+import { useActiveTaskStore } from '../stores/activeTask'
 
 const router = useRouter()
+const activeTaskStore = useActiveTaskStore()
 const topic = ref('')
 const isLoading = ref(false)
+const showTaskDialog = ref(false)
+let timer: number | null = null
 
 const hotTags = [
   '咖啡店创业',
@@ -76,12 +124,33 @@ const hotTags = [
   '数码测评'
 ]
 
+const stageNames: Record<string, string> = {
+  planning: '规划中',
+  searching: '搜索中',
+  analyzing: '分析中',
+  generating: '生成中'
+}
+
+const getStageName = (stage: string) => stageNames[stage] || stage
+
+const formatTime = (seconds: number): string => {
+  const mins = Math.floor(seconds / 60)
+  const secs = seconds % 60
+  return `${mins}:${secs.toString().padStart(2, '0')}`
+}
+
 const selectTag = (tag: string) => {
   topic.value = tag
 }
 
 const startResearch = async () => {
   if (!topic.value.trim() || isLoading.value) return
+  
+  // 如果有进行中的任务，显示确认弹窗
+  if (activeTaskStore.hasActiveTask) {
+    showTaskDialog.value = true
+    return
+  }
   
   isLoading.value = true
   
@@ -90,6 +159,30 @@ const startResearch = async () => {
     query: { topic: topic.value }
   })
 }
+
+const goToResearch = () => {
+  router.push('/research')
+}
+
+const confirmGoToResearch = () => {
+  showTaskDialog.value = false
+  router.push('/research')
+}
+
+// 启动定时器刷新耗时显示
+onMounted(() => {
+  if (activeTaskStore.hasActiveTask) {
+    timer = window.setInterval(() => {
+      activeTaskStore.updateTick()
+    }, 1000)
+  }
+})
+
+onUnmounted(() => {
+  if (timer) {
+    clearInterval(timer)
+  }
+})
 </script>
 
 <style scoped>
@@ -221,9 +314,200 @@ const startResearch = async () => {
   margin-bottom: 16px;
 }
 
+/* 进行中任务入口 */
+.active-task-section {
+  margin-top: 24px;
+  animation: slideUp 0.4s ease-out;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.active-task-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: white;
+  padding: 20px 28px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid rgba(255, 36, 66, 0.2);
+}
+
+.active-task-card:hover {
+  border-color: var(--primary);
+  box-shadow: 0 8px 32px rgba(255, 36, 66, 0.12);
+  transform: translateY(-2px);
+}
+
+.task-icon {
+  font-size: 32px;
+}
+
+.icon-spinning {
+  display: inline-block;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.task-info {
+  flex: 1;
+  text-align: left;
+}
+
+.task-status {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.task-topic {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.task-meta {
+  display: flex;
+  gap: 12px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.task-stage {
+  color: var(--primary);
+  font-weight: 500;
+}
+
+.task-action {
+  flex-shrink: 0;
+}
+
+.task-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, var(--primary) 0%, #FF5C72 100%);
+  color: white;
+  border: none;
+  border-radius: 100px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.task-btn:hover {
+  transform: scale(1.05);
+}
+
 /* 动画 */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* 确认弹窗 */
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+.dialog-box {
+  background: white;
+  border-radius: 20px;
+  padding: 32px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  animation: dialogSlideIn 0.3s ease;
+}
+
+@keyframes dialogSlideIn {
+  from { 
+    opacity: 0; 
+    transform: scale(0.9) translateY(20px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: scale(1) translateY(0); 
+  }
+}
+
+.dialog-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  animation: spin 2s linear infinite;
+}
+
+.dialog-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 12px;
+}
+
+.dialog-message {
+  font-size: 15px;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+
+.dialog-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.dialog-btn {
+  padding: 12px 28px;
+  border-radius: 100px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.dialog-btn.secondary {
+  background: #f0f0f0;
+  color: var(--text-main);
+}
+
+.dialog-btn.secondary:hover {
+  background: #e0e0e0;
+}
+
+.dialog-btn.primary {
+  background: linear-gradient(135deg, var(--primary) 0%, #FF5C72 100%);
+  color: white;
+}
+
+.dialog-btn.primary:hover {
+  transform: scale(1.05);
 }
 </style>

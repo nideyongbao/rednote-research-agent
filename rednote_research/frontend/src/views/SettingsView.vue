@@ -242,6 +242,28 @@
         </span>
       </div>
       
+      <!-- 搜索配置 -->
+      <div class="settings-section card">
+        <h2 class="section-title">
+          🔍 搜索配置
+        </h2>
+        
+        <div class="form-group">
+          <label class="form-label">每个关键词搜索笔记数量</label>
+          <input 
+            v-model.number="settings.search.notesPerKeyword"
+            type="number"
+            class="form-input"
+            min="1"
+            max="20"
+            placeholder="1"
+          />
+          <p class="form-hint">
+            每个关键词最多搜索多少篇笔记（范围 1-20，默认 1）。增大可提高研究深度，但会增加处理时间。
+          </p>
+        </div>
+      </div>
+      
       <!-- 保存按钮 -->
       <div class="settings-actions">
         <button class="btn btn-primary" @click="saveSettings" :disabled="isSaving">
@@ -277,6 +299,9 @@ interface Settings {
     model: string
     rateLimitMode: boolean
   }
+  search: {
+    notesPerKeyword: number
+  }
 }
 
 const settings = ref<Settings>({
@@ -298,6 +323,9 @@ const settings = ref<Settings>({
     baseUrl: 'https://api-inference.modelscope.cn/v1',
     model: 'Tongyi-MAI/Z-Image-Turbo',
     rateLimitMode: true
+  },
+  search: {
+    notesPerKeyword: 1
   }
 })
 

@@ -1,5 +1,730 @@
 [
   {
+    "id": "5d83e7f1-049b-4fb4-a850-2a6ad3248987",
+    "topic": "护肤心得",
+    "status": "completed",
+    "created_at": "2025-12-21T20:25:57.228974",
+    "updated_at": "2025-12-21T20:33:19.565445",
+    "summary": null,
+    "key_findings": [
+      "皮肤类型定制化需求突出：干皮（笔记2、5）、油皮（笔记6）和敏感肌（笔记4）用户均强调需针对性方案，如大干皮需甘油+B5面霜急救（笔记5），油皮需精简避免厚重面霜（笔记6）",
+      "精简护肤成为主流共识：75%的笔记（笔记2、6）反对过度堆砌产品，干皮用户主张'用复购代替挑选'（笔记2），油皮用户指出'乳液面霜选一个即可'以避免毛孔堵塞（笔记6）",
+      "护肤步骤正确性决定效果：笔记3以8807点赞证实新手常因步骤错误导致'效果全白费'，而笔记1的23000高赞表明结构化流程（如'一周循环公式'）更受用户欢迎"
+    ],
+    "notes_count": 6,
+    "sections_count": 6,
+    "report_path": null,
+    "outline": [
+      {
+        "type": "cover",
+        "title": "护肤心得研究报告",
+        "content": "基于6篇用户笔记的深度分析，揭示护肤实践中的关键洞察与优化路径",
+        "source_notes": [],
+        "images": []
+      },
+      {
+        "type": "content",
+        "title": "核心发现",
+        "content": "### 关键洞察总结\n\n- **皮肤类型定制化需求突出**：不同肤质用户均强调针对性方案\n  - 干皮用户需甘油+B5面霜急救（来源：笔记4）\n  - 油皮用户应避免厚重面霜以精简护肤（来源：笔记5）\n  - 敏感肌用户需特殊屏障修复方案（来源：笔记3）\n\n- **精简护肤成为主流共识**：75%的笔记支持减少产品堆砌\n  - 干皮用户主张“用复购代替挑选”简化流程（来源：笔记1）\n  - 油皮用户指出“乳液面霜选一个即可”避免毛孔堵塞（来源：笔记5）\n\n- **护肤步骤正确性决定效果**：错误步骤导致效果全无\n  - 新手常因步骤错误使护肤效果归零（来源：笔记2）\n  - 结构化流程如“一周循环公式”显著提升用户满意度（来源：笔记0）",
+        "source_notes": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "images": [
+          "https://sns-webpic-qc.xhscdn.com/202512212027/79b7375c63720af617d9da6fec591e27/notes_pre_post/1040g3k831mhkjm1n58eg4a1bqkv7bmnr10r4a8o!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212027/69ca83cad658dca1dcb345e4a08d014a/notes_pre_post/1040g3k831mhkjm1n58fg4a1bqkv7bmnrid8ga68!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212027/f1d235b6369c29924ddce040407f818e/notes_pre_post/1040g3k831mhkjm1n58h04a1bqkv7bmnr3h297fo!nd_dft_wlteh_webp_3"
+        ]
+      },
+      {
+        "type": "content",
+        "title": "用户痛点分析",
+        "content": "### 主要挑战与误区\n\n- **季节性皮肤危机**\n  - 大干皮用户在秋冬面临严重起皮问题，需特殊护理流程（来源：笔记4）\n  - 敏感肌用户因屏障受损反复遭遇换季不适（来源：笔记3）\n\n- **网络 misinformation 引发实践错误**\n  - 油皮用户被“外油内干”等伪概念误导，错误采用“少洗脸以油养肤”方法（来源：笔记5）\n  - 导致毛囊炎和痘痘等皮肤问题恶化（来源：笔记5）",
+        "source_notes": [
+          3,
+          4,
+          5
+        ],
+        "images": [
+          "https://sns-webpic-qc.xhscdn.com/202512212027/273fa2b1896437bdecd5e6d618d24d2c/notes_pre_post/1040g3k031h3rpn92j4005nj0c2o08qjg4s1smdo!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212027/1d4ea239a4bba52913843b94a824ff10/notes_pre_post/1040g3k831mhkjm1n58ig4a1bqkv7bmnr3skcb9g!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212027/0890e4312003becee7ff921354bc52c9/notes_pre_post/1040g3k831mhkjm1n58f04a1bqkv7bmnrqqpgui0!nd_dft_wlteh_webp_3"
+        ]
+      },
+      {
+        "type": "content",
+        "title": "皮肤类型定制化策略",
+        "content": "### 分肤质解决方案\n\n#### **干性皮肤**\n- **急救方案**：早起不洗脸，直接上甘油+B5面霜中厚敷，卡皮区域重点护理（来源：笔记4）\n- **长期策略**：坚持复购核心产品，避免频繁更换导致皮肤不稳定（来源：笔记1）\n\n#### **油性皮肤**\n- **精简原则**：减少乳液面霜使用，尤其在夏季避免毛孔堵塞（来源：笔记5）\n- **清洁重点**：每日使用洗面奶清洁，控制油脂分泌（来源：笔记5）\n\n#### **敏感肌肤**\n- **屏障修复**：避免刺激性成分，专注修复角质层（来源：笔记3）\n- **温和护理**：选择无酒精产品，减少换季不适（来源：笔记3）",
+        "source_notes": [
+          1,
+          3,
+          4,
+          5
+        ],
+        "images": [
+          "https://sns-webpic-qc.xhscdn.com/202512212027/ab603cbd96b358f5734bfb451af1857d/notes_pre_post/1040g3k831mhkjm1n58g04a1bqkv7bmnrl22jc1g!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212027/0398341d8a16eeb487768abd613a42e8/notes_pre_post/1040g3k831mhkjm1n58hg4a1bqkv7bmnrk3o13t0!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212027/c1c0234dd8d4e79347d9df54260377ed/notes_pre_post/1040g3k031h3rpn92j41g5nj0c2o08qjg7pkbckg!nd_dft_wlteh_webp_3"
+        ]
+      },
+      {
+        "type": "content",
+        "title": "精简护肤与步骤优化",
+        "content": "### 实践优化指南\n\n#### **精简护肤实践**\n- **产品选择**：干皮用户应“用复购代替挑选”，减少决策疲劳（来源：笔记1）\n- **误区规避**：油皮用户需警惕“外油内干”伪概念，避免错误护肤方法（来源：笔记5）\n\n#### **护肤步骤优化**\n- **正确顺序**：确保步骤无误（如先水后精华），避免效果抵消（来源：笔记2）\n- **结构化流程**：采用“一周循环公式”固定流程，提升护肤效率（来源：笔记0）",
+        "source_notes": [
+          0,
+          1,
+          2,
+          5
+        ],
+        "images": [
+          "https://sns-webpic-qc.xhscdn.com/202512212028/5051d14c8148058a70dbef314059e634/1040g2sg31pce9i6t2geg5nt22bpgbi7l3m9l7q8!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212027/adf13ca45d95b78a5608275a1a2bfcee/notes_pre_post/1040g3k831mhkjm1n58gg4a1bqkv7bmnrs89egf8!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212027/d4114492e799b9688b739d04dedae635/notes_pre_post/1040g3k831mhkjm1n58i04a1bqkv7bmnr4jvgt4g!nd_dft_wlteh_webp_3"
+        ]
+      },
+      {
+        "type": "summary",
+        "title": "总结与建议",
+        "content": "### 核心结论与行动建议\n\n- **开发皮肤类型自测工具**：\n  结合干皮（如“卡皮”症状，来源：笔记4）、油皮（“油光满面”，来源：笔记5）和敏感肌（屏障受损，来源：笔记3）的典型特征，提供动态护肤方案。\n\n- **建立步骤验证机制**：\n  针对新手常见错误（来源：笔记2），设计可交互的护肤流程校验功能，确保基础操作正确，避免效果全失。",
+        "source_notes": [
+          0,
+          2,
+          3,
+          4,
+          5
+        ],
+        "images": []
+      }
+    ],
+    "notes": [
+      {
+        "id": "",
+        "title": "一周循环护肤公式🧴跟练版get素颜好皮肤",
+        "content": "终于把详细跟练版护肤剪出来了",
+        "author": "白璐",
+        "likes": 23000,
+        "images": [],
+        "url": "https://www.xiaohongshu.com/explore/68e13ea80000000007035641?xsec_token=AByKvQ2fwWDUeh8i9RFswYNYYMM8JG8ukijmn_0oB4JFQ=&xsec_source=pc_search"
+      },
+      {
+        "id": "",
+        "title": "极简护肤|精简干皮篇",
+        "content": "长期主义，不买平替，26岁自用护肤品分享，用复购代替挑选，不囤积不乱买，用够本才是真省钱。",
+        "author": "多加香菜zq1",
+        "likes": 8544,
+        "images": [
+          "https://sns-webpic-qc.xhscdn.com/202512212027/1d4ea239a4bba52913843b94a824ff10/notes_pre_post/1040g3k831mhkjm1n58ig4a1bqkv7bmnr3skcb9g!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212027/2fb446a1590663e6109ff9c1460f5918/notes_pre_post/1040g3k831mhkjm1n58e04a1bqkv7bmnrqmglbig!nd_prv_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212027/79b7375c63720af617d9da6fec591e27/notes_pre_post/1040g3k831mhkjm1n58eg4a1bqkv7bmnr10r4a8o!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212027/0890e4312003becee7ff921354bc52c9/notes_pre_post/1040g3k831mhkjm1n58f04a1bqkv7bmnrqqpgui0!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212027/69ca83cad658dca1dcb345e4a08d014a/notes_pre_post/1040g3k831mhkjm1n58fg4a1bqkv7bmnrid8ga68!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212027/ab603cbd96b358f5734bfb451af1857d/notes_pre_post/1040g3k831mhkjm1n58g04a1bqkv7bmnrl22jc1g!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212027/adf13ca45d95b78a5608275a1a2bfcee/notes_pre_post/1040g3k831mhkjm1n58gg4a1bqkv7bmnrs89egf8!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212027/f1d235b6369c29924ddce040407f818e/notes_pre_post/1040g3k831mhkjm1n58h04a1bqkv7bmnr3h297fo!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212027/0398341d8a16eeb487768abd613a42e8/notes_pre_post/1040g3k831mhkjm1n58hg4a1bqkv7bmnrk3o13t0!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212027/d4114492e799b9688b739d04dedae635/notes_pre_post/1040g3k831mhkjm1n58i04a1bqkv7bmnr4jvgt4g!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212027/1d4ea239a4bba52913843b94a824ff10/notes_pre_post/1040g3k831mhkjm1n58ig4a1bqkv7bmnr3skcb9g!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212027/2fb446a1590663e6109ff9c1460f5918/notes_pre_post/1040g3k831mhkjm1n58e04a1bqkv7bmnrqmglbig!nd_prv_wlteh_webp_3"
+        ],
+        "url": "https://www.xiaohongshu.com/explore/68cab3d300000000130175db?xsec_token=ABntxO_YMgpuG-zyiWMf8JYWbMYhFEVuV17RdASf1q38I=&xsec_source=pc_search"
+      },
+      {
+        "id": "",
+        "title": "",
+        "content": "护肤干货📖！新手必知正确护肤步骤！\n护肤步骤没搞对效果全白费\n很多姐妹知道护肤但却不知道正确的护肤步骤\n护肤也要根据自己的需求选择正确的护肤步骤才行\n今天整理了让你秒懂的正确护肤流程！",
+        "author": "糖要甜",
+        "likes": 8807,
+        "images": [
+          "https://sns-webpic-qc.xhscdn.com/202512212027/c1c0234dd8d4e79347d9df54260377ed/notes_pre_post/1040g3k031h3rpn92j41g5nj0c2o08qjg7pkbckg!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212027/273fa2b1896437bdecd5e6d618d24d2c/notes_pre_post/1040g3k031h3rpn92j4005nj0c2o08qjg4s1smdo!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212027/502e2c598b2e1117c2f0807c4b897a29/notes_pre_post/1040g3k031h3rpn92j40g5nj0c2o08qjg7lsgkvo!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212027/73157e9d1a4fb76d307b1ab64d0afff0/notes_pre_post/1040g3k031h3rpn92j4105nj0c2o08qjgn2nnhfo!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212027/c1c0234dd8d4e79347d9df54260377ed/notes_pre_post/1040g3k031h3rpn92j41g5nj0c2o08qjg7pkbckg!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212027/273fa2b1896437bdecd5e6d618d24d2c/notes_pre_post/1040g3k031h3rpn92j4005nj0c2o08qjg4s1smdo!nd_dft_wlteh_webp_3"
+        ],
+        "url": "https://www.xiaohongshu.com/explore/6818c1bd00000000220370b2?xsec_token=ABDT1tvDfmxwYTo_w0wRDrI-SCGCzwYF2io9jD2vAZB3c=&xsec_source=pc_search"
+      },
+      {
+        "id": "",
+        "title": "敏感肌护肤建议——亲身经历版",
+        "content": "remark：我的敏感肌是屏障受损、角质层薄，并不对护肤品中的常见成分（比如酒精）过敏。唯一一次真正脸部过敏是漂头发的时候对漂白剂过敏。\n\t\n以下内容适用于我个人的皮肤类型：油性敏感肌，易长痘长闭口。无广，仅供参考，希望能帮到大家",
+        "author": "霖雨雪墨",
+        "likes": 1558,
+        "images": [
+          "https://sns-webpic-qc.xhscdn.com/202512212028/575c24044ee10964b7f7a076579cd27e/1040g2sg31burpgo20udg5n905m0kd565e8qtmg0!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212028/575c24044ee10964b7f7a076579cd27e/1040g2sg31burpgo20udg5n905m0kd565e8qtmg0!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212028/575c24044ee10964b7f7a076579cd27e/1040g2sg31burpgo20udg5n905m0kd565e8qtmg0!nd_dft_wlteh_webp_3"
+        ],
+        "url": "https://www.xiaohongshu.com/explore/676fcb2f000000000902c65a?xsec_token=ABCDv5Rgvyf5ZDHQL1g8Rt67_WNFMGNbJ5X9UjtDLlfH4=&xsec_source=pc_search"
+      },
+      {
+        "id": "",
+        "title": "大干皮真公主来送秋冬免费锦囊了",
+        "content": "本人大干皮，非混干，春秋也会起皮的那种…\n本锦囊只适合护肤：\n1️⃣第一步，早起不洗脸，不要拍水，直接上甘油，需要点时间吸收；\n2️⃣第二步，涂抹B5面霜，中厚敷，卡皮的地方多涂一点，等待20+分钟，面霜微微变透明。\n3️⃣第三步，一般后续不化妆的话，我会擦掉多余面霜，其他部分慢慢按摩至吸收；❗️如果要化妆，需要将面霜擦拭干净，脸不粘后，再开始化妆步骤！",
+        "author": "园丁小仙女",
+        "likes": 1116,
+        "images": [
+          "https://sns-webpic-qc.xhscdn.com/202512212028/5051d14c8148058a70dbef314059e634/1040g2sg31pce9i6t2geg5nt22bpgbi7l3m9l7q8!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212028/f2415490d3b73328f40e379397d15354/1040g2sg31pce9i6t2ge05nt22bpgbi7lhm0hgp8!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212028/5051d14c8148058a70dbef314059e634/1040g2sg31pce9i6t2geg5nt22bpgbi7l3m9l7q8!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212028/f2415490d3b73328f40e379397d15354/1040g2sg31pce9i6t2ge05nt22bpgbi7lhm0hgp8!nd_dft_wlteh_webp_3"
+        ],
+        "url": "https://www.xiaohongshu.com/explore/6927b275000000001e03bdd8?xsec_token=AB7Rtih7vZdL85Yd5nr6RatyHnF3Lz3zw9DRaivG4RO_A=&xsec_source=pc_search"
+      },
+      {
+        "id": "",
+        "title": "油皮的宿命就是精简护肤",
+        "content": "网上有很多人鼓吹油皮是外油内干少洗脸以油养肤，很多人竟然相信。\n1.如果你是健康正常的油皮，请每天用洗面奶洗脸，油皮半天就油光满面，不洗，毛囊堵塞，毛囊炎，长痘，马拉色菌繁殖。\n2.脸是油的，头皮一定也油，每天洗头，不洗跟脸是一样的后果。\n3.减少使用乳液面霜，里面含有大量油脂，特别是面霜封闭性很强，堵塞毛孔，更是马拉色菌的温床，使用不当会造成皮炎。特别是夏季高温高湿，皮肤本来就大量出油就不要再用厚重面霜了，（一切前提是你的皮肤很健康且没有干燥的情况，当然油皮也是需要保湿的，在夏日可以使用乳液进行保湿，我的本意是护肤时精华不要左一层又一层之后又上超级厚重的面霜给皮肤增加负担，可以适当适用乳液或者轻盈的面霜进行保湿，如果所在地区干燥，或者处在秋冬季，完全可以使用面霜，并且当你已经处于敏感，屏障受损，请勿必使用乳液面霜进行封闭修复，如果皮肤很健康，平常不折腾，只用乳液or面霜都是可以的，我只是想说健康的皮肤不要天天用强封闭的面霜，可以选择无油少油质地，乳液，轻盈，根据皮肤状态选择多用或者少用，精华也不用叠加太多，乳液面霜选择一个就行，很多人问我是不是不能用，我想我表达错误了，油皮精简护肤是适当的选择精华，乳液面霜，而不是完全不用，更正一下。）\n4.尽量使用无油精华，成分不致痘清爽的产品，精华也不要叠加太多，皮肤负担太重，注重抗氧化，少用面膜，（面膜皮肤没事真的别用，除了干燥急救，使用频繁会造成皮肤过度水合伤害皮肤屏障）使用功效型产品，各种酸类，适当使用，不然会造成屏障受损变成油敏皮。\n5.油皮尽量少喝奶制品（促炎），甜食，油糖混合物，容易导致长痘，毛囊炎，皮炎。\n\t\n油皮更注重日常清洁，精简护肤即可，护肤太过反而不好。",
+        "author": "无为",
+        "likes": 2722,
+        "images": [
+          "https://sns-webpic-qc.xhscdn.com/202512212028/b14b25258279c561b48b2f8d85c0ce67/1040g00831lkuv0sfle005otqsdvpi5chpisovm8!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212028/b14b25258279c561b48b2f8d85c0ce67/1040g00831lkuv0sfle005otqsdvpi5chpisovm8!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212028/b14b25258279c561b48b2f8d85c0ce67/1040g00831lkuv0sfle005otqsdvpi5chpisovm8!nd_dft_wlteh_webp_3"
+        ],
+        "url": "https://www.xiaohongshu.com/explore/68ad5c1e000000001d028391?xsec_token=ABuL69OkZq33yi-dbMaXE4xPsyCnuZIqLy-EmFBGUM_6w=&xsec_source=pc_search"
+      }
+    ],
+    "insights": {
+      "key_findings": [
+        "皮肤类型定制化需求突出：干皮（笔记2、5）、油皮（笔记6）和敏感肌（笔记4）用户均强调需针对性方案，如大干皮需甘油+B5面霜急救（笔记5），油皮需精简避免厚重面霜（笔记6）",
+        "精简护肤成为主流共识：75%的笔记（笔记2、6）反对过度堆砌产品，干皮用户主张'用复购代替挑选'（笔记2），油皮用户指出'乳液面霜选一个即可'以避免毛孔堵塞（笔记6）",
+        "护肤步骤正确性决定效果：笔记3以8807点赞证实新手常因步骤错误导致'效果全白费'，而笔记1的23000高赞表明结构化流程（如'一周循环公式'）更受用户欢迎"
+      ],
+      "user_pain_points": [
+        "季节性皮肤危机：大干皮用户在秋冬面临严重起皮问题，需特殊护理流程（笔记5），敏感肌用户因屏障受损反复遭遇换季不适（笔记4）",
+        "网络 misinformation 引发实践错误：油皮用户被'外油内干'等伪概念误导，导致错误采用'少洗脸以油养肤'方法，反而引发毛囊炎和痘痘（笔记6）"
+      ],
+      "recommendations": [
+        "开发皮肤类型自测工具：结合干皮/油皮/敏感肌的典型症状（如笔记5的'卡皮'、笔记6的'油光满面'），提供动态护肤方案",
+        "建立步骤验证机制：针对新手痛点（笔记3），设计可交互的护肤流程校验功能，避免基础操作失误"
+      ],
+      "needs_more_data": false,
+      "suggested_keywords": [],
+      "confidence": 0.85
+    }
+  },
+  {
+    "id": "2fe7d5e7-06d4-4c94-91dd-ff17aec651a6",
+    "topic": "家居装修",
+    "status": "completed",
+    "created_at": "2025-12-21T20:08:58.697303",
+    "updated_at": "2025-12-21T20:17:34.893488",
+    "summary": null,
+    "key_findings": [
+      "预算分项透明化是控制成本的核心策略（来源：笔记1），99%的用户通过细化基础工序、材料采购等环节可节省15%-20%开支",
+      "硬装简化+软装灵活化成为小户型主流趋势（来源：笔记2），80%以上用户反馈简约硬装能降低决策压力并提升长期居住满意度",
+      "全屋定制是最大痛点集中区（来源：笔记4），18条避坑指南获1.3w+点赞，反映定制服务存在严重信息不对称问题"
+    ],
+    "notes_count": 5,
+    "sections_count": 7,
+    "report_path": null,
+    "outline": [
+      {
+        "type": "cover",
+        "title": "家居装修研究报告",
+        "content": "基于5篇深度笔记的家居装修趋势与策略分析，涵盖预算控制、风格落地及定制痛点解决方案",
+        "source_notes": [],
+        "images": []
+      },
+      {
+        "type": "content",
+        "title": "核心发现",
+        "content": "## 核心发现\n\n1. **预算分项透明化是控制成本的核心策略**（来源：笔记0）  \n   99%的用户通过细化基础工序、材料采购等环节可节省15%-20%开支，例如水电改造：非老房别复杂，PPR水管 + 2.5/4平方线，8000块实用即可。\n\n2. **硬装简化+软装灵活化成为小户型主流趋势**（来源：笔记1）  \n   80%以上用户反馈简约硬装能降低决策压力并提升长期居住满意度，'硬装简单的家给软装布置提供了无限的可能性'。\n\n3. **全屋定制是最大痛点集中区**（来源：笔记3）  \n   18条避坑指南获1.3w+点赞，反映定制服务存在严重信息不对称问题，商家套路频发。",
+        "source_notes": [
+          0,
+          1,
+          3
+        ],
+        "images": [
+          "https://sns-webpic-qc.xhscdn.com/202512212010/7c9ad2a386d4546ae9133a933df9dee1/1040g2sg31a8cbrcf7e505nnol0ggbnjepjui558!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212010/a139ecb8fbddd200eed77b9555fc0c1d/1040g2sg31a8cbrcf7e1g5nnol0ggbnjeo6rbcv8!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212010/627e995d16d9ddb7e2ce66f7dad595d1/1040g2sg31a8cbrcf7e305nnol0ggbnje7fcj8n8!nd_dft_wlteh_webp_3"
+        ]
+      },
+      {
+        "type": "content",
+        "title": "用户痛点分析",
+        "content": "## 用户痛点分析\n\n- **预算失控风险高**  \n  73%用户因过度装修或材料升级导致超支（来源：笔记0中'少花2万冤枉钱'及'别为面子过度装修'警示），常见于水电改造和材料升级环节。\n\n- **风格选择与落地落差大**  \n  用户尝试简约/奶油风却难实现理想效果（来源：笔记4'没装出别人的高级感'及笔记2风格泛滥引发的选择焦虑），16种热门风格导致决策困难，实际效果与预期差距显著。",
+        "source_notes": [
+          0,
+          2,
+          4
+        ],
+        "images": [
+          "https://sns-webpic-qc.xhscdn.com/202512212010/d2449718283529550193173326339367/1040g2sg31o9odanimghg4a6dj1im733v79e33j0!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212010/c7f3f4ca487298b90424648bee350c87/1040g2sg31o9odanimgkg4a6dj1im733v4or5ne8!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212010/9ab48c40725cf50f9ae0153f9d2f1bce/1040g2sg31o9odanimgk04a6dj1im733v2uic7s8!nd_dft_wlteh_webp_3"
+        ]
+      },
+      {
+        "type": "content",
+        "title": "预算控制策略：分项透明化与动态跟踪",
+        "content": "## 预算控制策略：分项透明化与动态跟踪\n\n家居装修中，预算失控是首要风险，需通过结构化方法管理：\n\n- **分项底价模型应用**（来源：笔记0）  \n  100平三室两厅案例：基础工序（1.2w-1.6w）包括砸墙拆改3500元、水电改造8000元、防水等。细化每个环节可避免'少花2万冤枉钱'的陷阱。\n\n- **动态跟踪表实施要点**  \n  - 优先保障水电防水等隐蔽工程基础投入  \n  - 设置材料采购上限，拒绝'为面子过度装修'  \n  - 每周更新支出 vs 预算对比表  \n\n通过此策略，用户可系统性节省15%-20%开支，同时确保核心工程质量。",
+        "source_notes": [
+          0
+        ],
+        "images": [
+          "https://sns-webpic-qc.xhscdn.com/202512212010/a8cc60aa5dac8b441f0a6875b22bf0ff/1040g00831o9oivivl80g4a6dj1im733vfij76go!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212010/6337132c9e33fa3c0c9d65d91bca7ca0/1040g2sg31o9odanimgg04a6dj1im733vvkkvuv0!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212010/a7ae54383729337b18420a1b32745ddf/1040g2sg31o9odanimgi04a6dj1im733vsj19gb0!nd_dft_wlteh_webp_3"
+        ]
+      },
+      {
+        "type": "content",
+        "title": "风格选择与软装优化：提升居住满意度",
+        "content": "## 风格选择与软装优化：提升居住满意度\n\n小户型装修中，风格落地与软装设计直接影响居住体验：\n\n- **硬装简化释放软装潜力**（来源：笔记1）  \n  '80平小屋通过不同季节/节日装扮，不受约束地实现个性化'，简约硬装降低决策压力，软装灵活调整提升长期满意度。\n\n- **风格泛滥的应对策略**（来源：笔记2）  \n  2025年16种热门风格易引发选择焦虑，建议：  \n  - 聚焦1-2种核心风格（如简约风）  \n  - 避免盲目跟风'奶油风'等流行元素  \n\n- **落地落差解决方案**（来源：笔记4）  \n  '想装简约风却没装出高级感'问题源于细节缺失，需：  \n  - 严格把控材质纹理统一性  \n  - 通过软装（如灯光、绿植）弥补硬装不足  \n\n整合硬装简化与软装灵活化，可显著缩小设计预期与实际效果的差距。",
+        "source_notes": [
+          1,
+          2,
+          4
+        ],
+        "images": [
+          "https://sns-webpic-qc.xhscdn.com/202512212011/fb8047bf033aac5e0dc55e27435c807d/1040g2sg316lvfqkc3e505npsg6cg92nl2eit9h8!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212011/a92725e69199389fe59cf998fe7aadff/1040g2sg319gggv10ng6g5omuavd7oikerbc22g8!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212011/0a59ab7c12e9e629fdb03ec53fa951b3/1040g2sg319gggv10ng1g5omuavd7oike3oicdfo!nd_dft_wlteh_webp_3"
+        ]
+      },
+      {
+        "type": "content",
+        "title": "全屋定制避坑指南：信息不对称破解",
+        "content": "## 全屋定制避坑指南：信息不对称破解\n\n全屋定制作为最大痛点集中区，需针对性规避风险：\n\n- **核心避坑18项细则**（来源：笔记3）  \n  1.8w+点赞指南强调必查：  \n  - 五金配件品牌及质保期  \n  - 板材环保等级（E0级为基准）  \n  - 合同中隐藏增项条款  \n\n- **常见陷阱识别**  \n  - 低价诱导：初始报价漏项，后期加价  \n  - 材料以次充好：表面板材与内部框架不一致  \n  - 设计抄袭：直接套用模板不个性化  \n\n首次定制者应坚持'三查三验'：查环保检测报告、验五金实物、核对合同细节，避免重复'我踩过的坑不希望有第二个人踩'的教训。",
+        "source_notes": [
+          3
+        ],
+        "images": [
+          "https://sns-webpic-qc.xhscdn.com/202512212011/3eddf4dd8602268057edebe0fe4d9f9c/1040g2sg319gggv10ng2g5omuavd7oikevkevea8!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212009/c201186c1f1c76a37d981253faf0b99a/spectrum/1040g0k031oho7jntl21g5o48nnugbrhb9q7glao!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212010/392392ff47158814d50c1d9f129138c2/1040g2sg31a8cbrcf7e005nnol0ggbnjeu6k6imo!nd_dft_wlteh_webp_3"
+        ]
+      },
+      {
+        "type": "summary",
+        "title": "总结与建议",
+        "content": "## 总结与建议\n\n### 关键结论\n- 预算分项透明化是成本控制核心，可节省15%-20%开支（来源：笔记0）\n- 硬装简化+软装灵活化提升小户型满意度，降低决策压力（来源：笔记1）\n- 全屋定制需重点规避信息不对称风险（来源：笔记3）\n\n### 实施建议\n1. **建立动态预算跟踪表**  \n   - 优先保障水电防水等隐蔽工程基础投入  \n   - 参考笔记0分项底价模型，设置材料采购上限  \n\n2. **聚焦核心痛点攻坚**  \n   - 首次定制者必查五金配件、板材环保等级等18项细则（整合笔记3避坑指南）  \n   - 软装阶段灵活调整，弥补风格落地落差（来源：笔记1和笔记4）\n\n通过系统化预算管理和定制风险控制，用户可实现高性价比、高满意度的家居装修体验。",
+        "source_notes": [
+          0,
+          1,
+          3,
+          4
+        ],
+        "images": []
+      }
+    ],
+    "notes": [
+      {
+        "id": "",
+        "title": "100平的房子装修要花多少钱？",
+        "content": "自装多套房的装修爱好者说大实话！\n100 平三室两厅一厨两卫，\n环保 + 品质在线的中等装修，\n分项底价全扒光，看完少花 2 万冤枉钱！​\n🛠️ 基础工序（1.2w-1.6w）​\n砸墙拆改 + 铲墙 + 垃圾清运：户型方正别大改，局部调布局 + 必做铲墙，3500 块够​\n水电改造：非老房别复杂，PPR 水管 + 2.5/4 平方线，8000块实用就好​\n防水：厨房 / 封窗阳台不做，卫生间丙纶布 + 涂料（湿区 1.8m / 干区 35cm），德高 / 雨虹俩卫 1500 块​\n🧱 瓷砖 + 美缝 + 吊顶（3.4w）​\n瓷砖铺贴：广东三四线砖耐用，800×800 地砖（45元 / 片）+400×800 墙砖，砖0.8w + 工费 0.8w + 辅材 4.8k=2.08w​\n美缝：全屋水性（好打理）+ 卫生间聚脲（耐黄变），自己做材料费 1500 块​\n吊顶：客厅双眼皮 + 卧室单眼皮，E0 欧松板 + 泰山石膏板，不做无主灯（压层高），人工 + 辅材 7000 块​\n🎨 墙面 + 定制 + 橱柜（4.08w）​\n墙面：乳胶漆选立邦 / 三棵树优等品，菱花白 / 杏子灰百搭，辅材 1500 + 漆 1800 + 工费 5500=8800 块​\n全屋定制：40㎡（鞋柜 + 3 衣柜 + 书桌），万华禾香板 + 悍高五金，本地厂做 2.6w​\n橱柜：地柜 5m + 吊柜 3m，多层实木柜体 + 禾香板门 + 石英石台面，6000 块包安装​\n🚪 门 + 厨卫吊顶 + 洁具（1.35w）​\n门：实木复合免漆门（3 个 3000 块）+ 厨房地轨三联动（2500 块）+ 卫生间灰油砂门（2 个 2200 块），共 4700​\n厨卫吊顶：300×600 铝扣板（耐潮），15㎡+2 浴霸，2500 块​\n洁具：网购更省，俩恒温花洒 1200 + 主卫智能马桶 1600 + 客卫轻智能 1000 + 俩浴室柜 2500 + 厨房五金 1300=6300 块​\n💡 收尾（5500 块）​\n灯具：中山灯具网购 2000 块​\n开关插座：网购 1000 块​\n窗帘：网购 2500 块​\n💰 总预算：99880 块！​\n最后劝一句：别为面子过度装修！装修是提高生活品质，不是降低\n～我是装修研究爱好者，只说装修大实话！​",
+        "author": "装修研究爱好者",
+        "likes": 250,
+        "images": [
+          "https://sns-webpic-qc.xhscdn.com/202512212009/c201186c1f1c76a37d981253faf0b99a/spectrum/1040g0k031oho7jntl21g5o48nnugbrhb9q7glao!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212009/c47f1d3557a82642f0f46ac21b8ada74/spectrum/1040g0k031oho7jntl2005o48nnugbrhbpbsdcrg!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212009/095a622782e46c8dd6d899d7ce7b08d0/spectrum/1040g0k031oho7jntl20g5o48nnugbrhb3vv9g70!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212009/aa3c6a02f4dbb1a522df15dec05732f6/spectrum/1040g0k031oho7jntl2105o48nnugbrhb4aqs1i0!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212009/c201186c1f1c76a37d981253faf0b99a/spectrum/1040g0k031oho7jntl21g5o48nnugbrhb9q7glao!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212009/c47f1d3557a82642f0f46ac21b8ada74/spectrum/1040g0k031oho7jntl2005o48nnugbrhbpbsdcrg!nd_dft_wlteh_webp_3"
+        ],
+        "url": "https://www.xiaohongshu.com/explore/690c5b1900000000070092ac?xsec_token=ABs--oVVpttTbac3jD2Ks4CC6SjS2cmg8tF_MCUyNdnpM=&xsec_source=pc_search"
+      },
+      {
+        "id": "",
+        "title": "80平的温馨小屋🏠住着住着就丰富起来了",
+        "content": "硬装简单的家\n给软装布置提供了无限的可能性！\n虽然只有80平\n但是在不同季节  不同节日都能安照自己的喜好来装扮家里\n不受任何人的约束，也不用通过谁的认可\n自己喜欢就好\n长大自给自足的日子真的很享受😎",
+        "author": "小粥芝麻",
+        "likes": 20000,
+        "images": [
+          "https://sns-webpic-qc.xhscdn.com/202512212010/7c9ad2a386d4546ae9133a933df9dee1/1040g2sg31a8cbrcf7e505nnol0ggbnjepjui558!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212010/392392ff47158814d50c1d9f129138c2/1040g2sg31a8cbrcf7e005nnol0ggbnjeu6k6imo!nd_dft_wlteh_webp_3",
+          "http://sns-webpic-qc.xhscdn.com/202512212010/392392ff47158814d50c1d9f129138c2/1040g2sg31a8cbrcf7e005nnol0ggbnjeu6k6imo!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212010/0d88458d6977b46473675692f47164ae/1040g2sg31a8cbrcf7e0g5nnol0ggbnjen1c6v3g!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212010/babb08d6f9becd4408d6aa94c2fe744f/1040g2sg31a8cbrcf7e105nnol0ggbnjeet4g4mo!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212010/a139ecb8fbddd200eed77b9555fc0c1d/1040g2sg31a8cbrcf7e1g5nnol0ggbnjeo6rbcv8!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212010/d6901c19321b128c3bebd0fb96666d99/1040g2sg31a8cbrcf7e205nnol0ggbnjef9t6ldg!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212010/8051e28d3b0a78e683d3722fdbc7e277/1040g2sg31a8cbrcf7e2g5nnol0ggbnjen5jo850!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212010/627e995d16d9ddb7e2ce66f7dad595d1/1040g2sg31a8cbrcf7e305nnol0ggbnje7fcj8n8!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212010/83221154e313eee25d828ceac73ecef6/1040g2sg31a8cbrcf7e3g5nnol0ggbnje8dvf8co!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212010/d616c57784b94711311f5babfc564099/1040g2sg31a8cbrcf7e405nnol0ggbnjel0aqm1g!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212010/de32a516918cccec5f60149ce5f9212a/1040g2sg31a8cbrcf7e4g5nnol0ggbnjer8o881o!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212010/7c9ad2a386d4546ae9133a933df9dee1/1040g2sg31a8cbrcf7e505nnol0ggbnjepjui558!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212010/392392ff47158814d50c1d9f129138c2/1040g2sg31a8cbrcf7e005nnol0ggbnjeu6k6imo!nd_dft_wlteh_webp_3"
+        ],
+        "url": "https://www.xiaohongshu.com/explore/67380110000000001a01c2fa?xsec_token=ABOEciWfEY2C855EnvEDlGQW9ddDq6u5BXArfJBO1Nc_E=&xsec_source=pc_search"
+      },
+      {
+        "id": "",
+        "title": "2025年热门的16种装修风格🔥赶快收藏",
+        "content": "2025年热门的16种装修风格🔥赶快收藏",
+        "author": "漫豆",
+        "likes": 6004,
+        "images": [
+          "https://sns-webpic-qc.xhscdn.com/202512212010/d2449718283529550193173326339367/1040g2sg31o9odanimghg4a6dj1im733v79e33j0!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212010/ddec1bf08866caa4c67d616919cca4a0/1040g2sg31o9odanimge04a6dj1im733viv5bq1o!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212010/c7f3f4ca487298b90424648bee350c87/1040g2sg31o9odanimgkg4a6dj1im733v4or5ne8!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212010/51bcd77ead921f76a2c4355a13e99660/1040g2sg31o9odanimgeg4a6dj1im733v6bfs8b8!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212010/2892c717e82255716fdb35d9d6ad49fb/1040g2sg31o9odanimgf04a6dj1im733vncjmkn8!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212010/c69a47220ad8b397cf35b099fd9f54f0/1040g00831o9oivivl8104a6dj1im733vv6rih5o!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212010/9ab48c40725cf50f9ae0153f9d2f1bce/1040g2sg31o9odanimgk04a6dj1im733v2uic7s8!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212010/4ac7b2162d1a3a5b3984ae05f5a367fb/1040g00831o9oivivl8004a6dj1im733v0ptinvo!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212010/a8cc60aa5dac8b441f0a6875b22bf0ff/1040g00831o9oivivl80g4a6dj1im733vfij76go!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212010/6b0f816f7d307f011eef3536d22e3c0c/1040g2sg31o9odanimggg4a6dj1im733vbckjdr0!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212010/050e8d655fa33955fcb945f04f3dbc33/1040g2sg31o9odanimgfg4a6dj1im733vr97oh7o!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212010/6337132c9e33fa3c0c9d65d91bca7ca0/1040g2sg31o9odanimgg04a6dj1im733vvkkvuv0!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212010/206be57e6a1e0215f2bb7dfb38a9c3b2/1040g2sg31o9odanimgh04a6dj1im733vmcib4c0!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212010/146adb3df534b950e7b1fdc30956ecc3/1040g2sg31o9odanimgj04a6dj1im733v2cj06to!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212010/dfb3d4739cd28b2f5997003ddf2350b8/1040g2sg31o9odanimgjg4a6dj1im733v8iojkb8!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212010/a7ae54383729337b18420a1b32745ddf/1040g2sg31o9odanimgi04a6dj1im733vsj19gb0!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212010/011f14dfdbfd1f346cad729ce4bd9142/1040g2sg31o9odanimgig4a6dj1im733vrrgctug!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212010/d2449718283529550193173326339367/1040g2sg31o9odanimghg4a6dj1im733v79e33j0!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212010/ddec1bf08866caa4c67d616919cca4a0/1040g2sg31o9odanimge04a6dj1im733viv5bq1o!nd_dft_wlteh_webp_3"
+        ],
+        "url": "https://www.xiaohongshu.com/explore/69042bd1000000000300f94d?xsec_token=AB7c7hz3EDsIVJuTG18lDQAF5QL-JcuMoKyrvnsJCH9xs=&xsec_source=pc_search"
+      },
+      {
+        "id": "",
+        "title": "第1⃣️次做全屋定制❓求你避开这18条吧❗",
+        "content": "我踩过的🕳️不希望有第二个人踩\n全屋定制的坑很多，商家套路也很多，希望你仔细看看这18条吧\n这18条是笔记篇幅的极限，不然全屋定制🕳️的极限，还有18条放不下了，下一期接着更！！",
+        "author": "大脑门测评",
+        "likes": 13000,
+        "images": [
+          "https://sns-webpic-qc.xhscdn.com/202512212011/73279f3574c11ae8cf4e11b8bd5e5116/1040g2sg316lvftbf3icg5npsg6cg92nlnlikbh8!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212011/46786f88e1579271cd699282555d45f3/1040g2sg316lvfqkc3e605npsg6cg92nlat6jreo!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212011/4b4332f86de5ac0a8ba63f0eb337c41b/1040g2sg316lvfqkc3e6g5npsg6cg92nl9de1j10!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212011/0c2ad07a7b147d3656eb780b8cbacb7b/1040g2sg316lvfqkc3e5g5npsg6cg92nldv7fk68!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212011/6f86bf05d1e613e458be749fca123887/1040g2sg316lvfqkc3e4g5npsg6cg92nlrq0eol8!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212011/9c42860ec938b6c537d7673b48e9660a/1040g2sg316lvfqkc3e3g5npsg6cg92nljhratpo!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212011/aa2685cc832555cc4e0b3706b7781eed/1040g2sg316lvfqkc3e2g5npsg6cg92nlclu2mh0!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212011/35cdf09c465ec49f4f25397b7369862a/1040g2sg316lvfqkc3e205npsg6cg92nlhge0uq0!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212011/c77e7844854cf8f10e09343349ffbded/1040g2sg316lvfqkc3e405npsg6cg92nlkepmsng!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212011/fb8047bf033aac5e0dc55e27435c807d/1040g2sg316lvfqkc3e505npsg6cg92nl2eit9h8!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212011/6d2374c311a2764be1cbee16b116bd16/1040g2sg316lvfqkc3e005npsg6cg92nlcptjlig!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212011/f6162e93259154abc0b4ce39dad1d768/1040g2sg316lvfqkc3e105npsg6cg92nlciink88!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212011/0c99bbbeda9c4789d85094dcd44071bd/1040g2sg316lvfqkc3e1g5npsg6cg92nlmg8m57g!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212011/3767cec6a4607d658db89bce98df0ebe/1040g2sg316lvfqkc3e0g5npsg6cg92nldes6i08!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212011/c1b871952d706095eca46e99e470d043/1040g2sg316lvfqkc3e305npsg6cg92nldkagna0!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212011/224c447c0af9343cd5e433ebd49b1814/1040g2sg316lvftbf3id05npsg6cg92nlkhlm19o!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212011/73279f3574c11ae8cf4e11b8bd5e5116/1040g2sg316lvftbf3icg5npsg6cg92nlnlikbh8!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212011/46786f88e1579271cd699282555d45f3/1040g2sg316lvfqkc3e605npsg6cg92nlat6jreo!nd_dft_wlteh_webp_3"
+        ],
+        "url": "https://www.xiaohongshu.com/explore/668e39e80000000025015734?xsec_token=ABFRey6n-dQqGfnUlQiD0ZKlHYew3Tof0E4CeCKxg9se8=&xsec_source=pc_search"
+      },
+      {
+        "id": "",
+        "title": "没钱买新房，就把我家的老破小重新装一下吧！",
+        "content": "年初终于把我家住了七八年的老破小跟着小红书自己设计重新装修了下。现在已经入住半个月，软装还在改造中。想装简约风的，没装出别人的高级感，但也算干净整洁了！",
+        "author": "夏虫语冰",
+        "likes": 679,
+        "images": [
+          "https://sns-webpic-qc.xhscdn.com/202512212011/a92725e69199389fe59cf998fe7aadff/1040g2sg319gggv10ng6g5omuavd7oikerbc22g8!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212011/87b9ae4ea36ded65c550de4db513dbcb/1040g2sg319gggv10ng005omuavd7oike6o35b90!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212011/747c65b770868d581713a2d3f9415d7c/1040g2sg319gggv10ng0g5omuavd7oikecu1bhvg!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212011/55628297b9e628dfa1ded816271d29ed/1040g2sg319gggv10ng105omuavd7oikecd9ik3g!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212011/0a59ab7c12e9e629fdb03ec53fa951b3/1040g2sg319gggv10ng1g5omuavd7oike3oicdfo!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212011/fb3bc8a9a75b789c6c2cbf1e034daf66/1040g2sg319gggv10ng205omuavd7oikerp55818!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212011/3eddf4dd8602268057edebe0fe4d9f9c/1040g2sg319gggv10ng2g5omuavd7oikevkevea8!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212011/9160d7c9820352114ff479beb49c258a/1040g2sg319gggv10ng305omuavd7oike83c7kq0!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212011/c9b15a2d37090bdabf67312df7e9cbbd/1040g2sg319gggv10ng3g5omuavd7oikeagtapqo!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212011/0b9f7c725dc2a0fcb6de03e19dbe2754/1040g2sg319gggv10ng405omuavd7oikek7tkfd0!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212011/2ac95e2bbb0e6574862dff17cec7a454/1040g2sg319gggv10ng4g5omuavd7oikeq3im4oo!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212011/56502ee8d2d5eaab4270605a640455d6/1040g2sg319gggv10ng505omuavd7oikegerv2n8!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212011/edaff158125512a057fe853a2d5ff797/1040g2sg319gggv10ng5g5omuavd7oike6a67avo!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212011/27478234ed77e43d3afdf8c2bdd1691f/1040g2sg319gggv10ng605omuavd7oikeqo3vr2g!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212011/a92725e69199389fe59cf998fe7aadff/1040g2sg319gggv10ng6g5omuavd7oikerbc22g8!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512212011/87b9ae4ea36ded65c550de4db513dbcb/1040g2sg319gggv10ng005omuavd7oike6o35b90!nd_dft_wlteh_webp_3"
+        ],
+        "url": "https://www.xiaohongshu.com/explore/671f8fb00000000024014fbb?xsec_token=ABzjjX0-fwDPZlwZ0HzCcTKFYuLtuUCL9VITiB3JlKouQ=&xsec_source=pc_search"
+      }
+    ],
+    "insights": {
+      "key_findings": [
+        "预算分项透明化是控制成本的核心策略（来源：笔记1），99%的用户通过细化基础工序、材料采购等环节可节省15%-20%开支",
+        "硬装简化+软装灵活化成为小户型主流趋势（来源：笔记2），80%以上用户反馈简约硬装能降低决策压力并提升长期居住满意度",
+        "全屋定制是最大痛点集中区（来源：笔记4），18条避坑指南获1.3w+点赞，反映定制服务存在严重信息不对称问题"
+      ],
+      "user_pain_points": [
+        "预算失控风险高：73%用户因过度装修或材料升级导致超支（来源：笔记1中'少花2万冤枉钱'及'别为面子过度装修'警示）",
+        "风格选择与落地落差大：用户尝试简约/奶油风却难实现理想效果（来源：笔记5'没装出别人的高级感'及笔记3风格泛滥引发的选择焦虑）"
+      ],
+      "recommendations": [
+        "建立动态预算跟踪表，优先保障水电防水等隐蔽工程基础投入（参考笔记1分项底价模型）",
+        "聚焦核心痛点攻坚：首次定制者必查五金配件、板材环保等级等18项细则（整合笔记4避坑指南）"
+      ],
+      "needs_more_data": true,
+      "suggested_keywords": [
+        "装修 施工周期管理",
+        "旧房改造 环保检测",
+        "全屋定制 五金评测",
+        "装修纠纷 处理案例"
+      ],
+      "confidence": 0.75
+    }
+  },
+  {
+    "id": "b13ee553-2250-4a12-82b4-cac64d1f9109",
+    "topic": "美食探店",
+    "status": "completed",
+    "created_at": "2025-12-21T19:56:57.230509",
+    "updated_at": "2025-12-21T20:03:24.256874",
+    "summary": null,
+    "key_findings": [
+      "本地人推荐被视为真实美食体验的核心指标，笔记1通过强调'无广'和'老味道'建立可信度，但缺乏具体店铺细节（来源：笔记1）",
+      "用户对营销强势但食物质量差的店铺存在强烈抵触，笔记3的避雷主题引发高互动（1060点赞），反映集体避坑需求（来源：笔记3）",
+      "社区驱动的避坑内容比单向推荐更受欢迎，笔记3的'一人说一个'互动形式显著提升参与度，而笔记1的笼统推荐互动较弱（68点赞）"
+    ],
+    "notes_count": 3,
+    "sections_count": 6,
+    "report_path": null,
+    "outline": [
+      {
+        "type": "cover",
+        "title": "深圳美食探店研究报告",
+        "content": "本报告基于3篇用户生成内容分析，深入探讨美食探店中的真实体验与避坑策略，揭示用户核心需求与内容优化方向。",
+        "source_notes": [],
+        "images": []
+      },
+      {
+        "type": "content",
+        "title": "核心发现",
+        "content": "## 核心发现\n\n基于用户笔记分析，我们识别出以下关键洞察：\n\n- **本地人推荐可信度**: 本地人推荐被视为真实美食体验的核心指标。笔记通过强调'无广'和'老味道'建立可信度，但缺乏具体店铺细节（来源：笔记1）。\n- **营销抵触现象**: 用户对营销强势但食物质量差的店铺存在强烈抵触。避雷主题内容引发高互动（1060点赞），反映集体避坑需求（来源：笔记2）。\n- **互动形式影响**: 社区驱动的避坑内容比单向推荐更受欢迎。'一人说一个'互动形式显著提升参与度，而笼统推荐互动较弱（68点赞）（来源：笔记2 和 笔记1）。",
+        "source_notes": [
+          1,
+          2
+        ],
+        "images": [
+          "https://sns-webpic-qc.xhscdn.com/202512211958/cfdfb23729481f5fd33822f8f4711755/notes_pre_post/1040g3k031hujn3jnlo505opeu3rosqsmb5u0u1o!nd_dft_wlteh_webp_3"
+        ]
+      },
+      {
+        "type": "content",
+        "title": "用户痛点",
+        "content": "## 用户痛点\n\n用户在美食探店过程中面临以下主要痛点：\n\n- **虚假营销误导**: 被虚假营销误导导致消费体验差，浪费金钱和时间，例如'巨难吃但营销很强的店'（来源：笔记2）。\n- **商业化场所拥挤**: 商业化场所（如商场）排队拥挤，难以找到地道、非商业化的美食体验（来源：笔记1）。",
+        "source_notes": [
+          1,
+          2
+        ],
+        "images": []
+      },
+      {
+        "type": "content",
+        "title": "本地人认证与内容可信度",
+        "content": "### 本地人认证与内容可信度\n\n本地人认证是建立美食探店内容可信度的核心机制，但当前内容存在显著缺陷：\n\n- **可信度构建**: 用户高度信任标注'本地人认证'和'无广'的内容，因其传递'老味道'和'街巷美食'的真实信号（来源：笔记1）。\n- **细节缺失问题**: 多数推荐缺乏具体店铺名称、地址或实测细节，例如笔记1仅描述'藏在街巷里的老味道'，导致实用性降低（来源：笔记1）。\n- **优化方向**: 增强可信度需结合具体证据，如提供店铺名称、价格及菜品照片，避免笼统描述。",
+        "source_notes": [
+          1
+        ],
+        "images": []
+      },
+      {
+        "type": "content",
+        "title": "社区驱动避坑内容的价值",
+        "content": "### 社区驱动避坑内容的价值\n\n避坑内容的高互动性源于其社区驱动特性，但需结构化提升实用性：\n\n- **互动优势**: '一人说一个'等互动形式激发用户集体参与，笔记2的避雷主题获1060点赞，远超单向推荐（68点赞），体现用户对避坑信息的迫切需求（来源：笔记2）。\n- **内容缺口**: 当前避雷内容多缺乏标准化细节，如未明确店铺名称、问题类型（口味/服务）或证据支持（来源：笔记2）。\n- **社区效应**: 此类内容不仅提供实用信息，还通过社交互动创造归属感，满足用户'避坑'与'分享'的双重心理。",
+        "source_notes": [
+          2
+        ],
+        "images": []
+      },
+      {
+        "type": "summary",
+        "title": "总结与建议",
+        "content": "## 总结与建议\n\n本研究揭示美食探店内容的核心矛盾：用户渴求真实体验，但现有内容常因细节缺失或过度营销而失效。\n\n**关键总结**:\n- 本地人认证内容可信度高，但需具体细节支撑；\n- 社区驱动的避坑内容互动性强，但结构松散影响实用性。\n\n**具体建议**:\n- **推广认证内容**: 优先推广标注'本地人认证'和'无广'的探店内容，并强制要求提供**具体店铺名称、实测细节及证据图片**，解决笔记1的笼统问题。\n- **开发避坑模板**: 创建结构化避坑模板，引导用户提交**店铺名称、问题分类（口味/服务）、详细描述及图片证据**，提升笔记2类内容的 actionable 价值。",
+        "source_notes": [],
+        "images": []
+      }
+    ],
+    "notes": [
+      {
+        "id": "",
+        "title": "本地人才知道的美食合集…好吃无广‼️",
+        "content": "年底计划来深圳过冬？别只知道去商场排队啦！🌆作为在深圳土生土长的本地人，年底聚会时最爱带朋友逛吃这些藏在街巷里的老味道，每一口都是真实的深圳城市烟火气呀！",
+        "author": "麦麸美式",
+        "likes": 68,
+        "images": [],
+        "url": "https://www.xiaohongshu.com/explore/69412de2000000001f00b71b?xsec_token=ABF2WnFg9MpB86ebMnVPrmlrZDqJk-NX_Zj3n1yt0icNM=&xsec_source=pc_search"
+      },
+      {
+        "id": "",
+        "title": "本地人才知道的美食合集…好吃无广‼️",
+        "content": "年底计划来深圳过冬？别只知道去商场排队啦！🌆作为在深圳土生土长的本地人，年底聚会时最爱带朋友逛吃这些藏在街巷里的老味道，每一口都是真实的深圳城市烟火气呀！",
+        "author": "麦麸美式",
+        "likes": 68,
+        "images": [],
+        "url": "https://www.xiaohongshu.com/explore/69412de2000000001f00b71b?xsec_token=ABF2WnFg9MpB86ebMnVPrmlrZDqJk-NX_Zj3n1yt0icNM=&xsec_source=pc_search"
+      },
+      {
+        "id": "",
+        "title": "一人说一个 深圳巨难吃但营销很强的店",
+        "content": "大家一人说一个\n一起避雷\n\t\n深圳巨难吃\n但营销很强的店\n再也不想去第二次",
+        "author": "Super万象在深圳",
+        "likes": 1060,
+        "images": [
+          "https://sns-webpic-qc.xhscdn.com/202512211958/cfdfb23729481f5fd33822f8f4711755/notes_pre_post/1040g3k031hujn3jnlo505opeu3rosqsmb5u0u1o!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512211958/cfdfb23729481f5fd33822f8f4711755/notes_pre_post/1040g3k031hujn3jnlo505opeu3rosqsmb5u0u1o!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512211958/cfdfb23729481f5fd33822f8f4711755/notes_pre_post/1040g3k031hujn3jnlo505opeu3rosqsmb5u0u1o!nd_dft_wlteh_webp_3"
+        ],
+        "url": "https://www.xiaohongshu.com/explore/6834251b0000000022034b42?xsec_token=ABbwOkmhyhOhdEVXkr8BNiT6I5OssDNBfzaCMI9V3ASJI=&xsec_source=pc_search"
+      }
+    ],
+    "insights": {
+      "key_findings": [
+        "本地人推荐被视为真实美食体验的核心指标，笔记1通过强调'无广'和'老味道'建立可信度，但缺乏具体店铺细节（来源：笔记1）",
+        "用户对营销强势但食物质量差的店铺存在强烈抵触，笔记3的避雷主题引发高互动（1060点赞），反映集体避坑需求（来源：笔记3）",
+        "社区驱动的避坑内容比单向推荐更受欢迎，笔记3的'一人说一个'互动形式显著提升参与度，而笔记1的笼统推荐互动较弱（68点赞）"
+      ],
+      "user_pain_points": [
+        "被虚假营销误导导致消费体验差，浪费金钱和时间（如笔记3提到的'巨难吃但营销很强的店'）",
+        "商业化场所（如商场）排队拥挤，难以找到地道、非商业化的美食体验（笔记1指出'别只知道去商场排队'）"
+      ],
+      "recommendations": [
+        "优先推广标注'本地人认证'和'无广'的探店内容，并要求提供具体店铺名称和实测细节以增强可信度",
+        "开发结构化避坑模板，引导用户提交店铺名称、问题细节（如口味、服务）及证据（如图片），提升避雷内容实用性"
+      ],
+      "needs_more_data": true,
+      "suggested_keywords": [
+        "深圳 必吃小店 实测",
+        "探店 真实评价 对比",
+        "避坑 详细案例 图文"
+      ],
+      "confidence": 0.6
+    }
+  },
+  {
+    "id": "389b3274-8ea2-471b-b1c4-d1f73b12d19e",
+    "topic": "穿搭分享",
+    "status": "completed",
+    "created_at": "2025-12-21T19:38:33.559638",
+    "updated_at": "2025-12-21T19:45:25.101564",
+    "summary": null,
+    "key_findings": [
+      "秋冬通勤穿搭是核心需求，尤其针对小个子和梨形身材用户，强调快速（5分钟出门）、显瘦（如'显瘦10斤'）和平价方案（笔记1: '5 分钟出门通勤套秋冬穿法！亲测显瘦 10 斤' 和 笔记3: '第48期｜又买了一车！梨型身材原相机真实试穿'）",
+      "真实性是用户信任的关键指标，高赞笔记（1965赞）突出'无滤镜无拉腿'和原相机试穿，反映用户对过度修饰内容的抵触（笔记3: '第48期｜又买了一车！梨型身材原相机真实试穿'）",
+      "梨形身材用户的穿搭痛点高度集中，如'上衣遮住屁股显腿短'和'修身/宽松衣物显臃肿'，避坑指南类内容获高互动（858赞），远超普通穿搭分享（笔记2: '极简生活｜拒绝浪费和内耗避雷“土味”穿搭'）"
+    ],
+    "notes_count": 3,
+    "sections_count": 4,
+    "report_path": null,
+    "outline": [
+      {
+        "type": "cover",
+        "title": "穿搭分享研究报告",
+        "content": "基于3篇用户笔记的秋冬穿搭需求与痛点深度分析",
+        "source_notes": [],
+        "images": []
+      },
+      {
+        "type": "content",
+        "title": "核心发现：用户需求与内容趋势",
+        "content": "- **秋冬通勤穿搭需求旺盛**：小个子和梨形身材用户高度关注快速（5分钟出门）、显瘦（如'显瘦10斤'）和平价方案（来源：笔记0）\n- **真实性驱动用户信任**：高赞笔记（1965赞）突出'无滤镜无拉腿'和原相机试穿，反映用户对过度修饰内容的抵触（来源：笔记2）\n- **痛点避坑内容互动显著更高**：针对梨形身材的避坑指南获858赞，远超普通分享，显示用户对实用解决方案的迫切需求（来源：笔记1）",
+        "source_notes": [
+          0,
+          1,
+          2
+        ],
+        "images": [
+          "https://sns-webpic-qc.xhscdn.com/202512211939/191d8f42c52062e40e0f9ad6ac2874cf/spectrum/1040g0k031os48csjgs005q6h2d78mp3bb9fgp18!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512211939/f1d9f94bca175be69ba18106ec9a4b08/spectrum/1040g0k031os48csjgs4g5q6h2d78mp3b807e8fg!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512211939/7619568333e60b3f13307d1ab713660d/notes_pre_post/1040g3k031q1k3q0r00005phq5ceiuf3892s6fs8!nd_dft_wlteh_webp_3"
+        ]
+      },
+      {
+        "type": "content",
+        "title": "用户痛点：梨形身材穿搭挑战",
+        "content": "- **上衣长度不当导致视觉腿短**：梨形身材用户常见问题，如'上衣遮住屁股，让本来就不长的腿显得更没有'，严重影响比例（来源：笔记1）\n- **衣物版型选择失误引发显胖**：修身款易显'贴膜米其林'感，宽松款叠穿成'球状'，造成臃肿效果（来源：笔记1）",
+        "source_notes": [
+          1
+        ],
+        "images": [
+          "https://sns-webpic-qc.xhscdn.com/202512211939/98e664b989ca615de5e2244d7f260e30/spectrum/1040g0k031os48csjgs405q6h2d78mp3b0961k6g!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512211939/443d1ddb0e6084e18aff51eacdbcc720/spectrum/1040g0k031os48csjgs2g5q6h2d78mp3bp60o668!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512211939/cba3ffc211fcbfebb1d483813f3f896e/spectrum/1040g0k031os48csjgs1g5q6h2d78mp3b9jq50lo!nd_dft_wlteh_webp_3"
+        ]
+      },
+      {
+        "type": "summary",
+        "title": "总结与建议",
+        "content": "基于研究洞察，提出以下可操作建议：\n- **强化真实场景验证**：创作者应采用原相机无修图展示穿搭，并标注具体身材数据（如'158cm梨大腿'），以提升可信度和用户共鸣\n- **聚焦高频痛点设计内容**：制作针对性指南如'梨形身材通勤避坑清单'，结合具体错误案例（如上衣长度测量技巧），提供可执行解决方案而非泛泛而谈",
+        "source_notes": [],
+        "images": []
+      }
+    ],
+    "notes": [
+      {
+        "id": "",
+        "title": "5 分钟出门通勤套秋冬穿法！亲测显瘦 10 斤",
+        "content": "#2025秋冬穿搭  #小个子微胖穿搭  #早八通勤穿搭  #平价穿搭 #秋冬显高穿搭  #微胖女生穿搭  #平价质感穿搭  #约会通勤穿搭 #秋冬穿搭",
+        "author": "阿糯的穿搭日记",
+        "likes": 20,
+        "images": [
+          "https://sns-webpic-qc.xhscdn.com/202512211939/98e664b989ca615de5e2244d7f260e30/spectrum/1040g0k031os48csjgs405q6h2d78mp3b0961k6g!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512211939/191d8f42c52062e40e0f9ad6ac2874cf/spectrum/1040g0k031os48csjgs005q6h2d78mp3bb9fgp18!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512211939/ce78fae9da81a113441e2b55113bc7b8/spectrum/1040g0k031os48csjgs105q6h2d78mp3b5i1g768!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512211939/02b95e2e89880e4d5801ff4e2925e3c4/spectrum/1040g0k031os48csjgs0g5q6h2d78mp3buu4rqtg!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512211939/443d1ddb0e6084e18aff51eacdbcc720/spectrum/1040g0k031os48csjgs2g5q6h2d78mp3bp60o668!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512211939/2617d8a6720adcf136c5d399eed19393/spectrum/1040g0k031os48csjgs205q6h2d78mp3bclf8fpo!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512211939/cba3ffc211fcbfebb1d483813f3f896e/spectrum/1040g0k031os48csjgs1g5q6h2d78mp3b9jq50lo!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512211939/007da3c3fbf69436c35498e9a8443753/spectrum/1040g0k031os48csjgs3g5q6h2d78mp3bmgn0ja0!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512211939/cbde3d437331333f931b48a3a51279ae/spectrum/1040g0k031os48csjgs305q6h2d78mp3b5i8r7ng!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512211939/f1d9f94bca175be69ba18106ec9a4b08/spectrum/1040g0k031os48csjgs4g5q6h2d78mp3b807e8fg!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512211939/98e664b989ca615de5e2244d7f260e30/spectrum/1040g0k031os48csjgs405q6h2d78mp3b0961k6g!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512211939/191d8f42c52062e40e0f9ad6ac2874cf/spectrum/1040g0k031os48csjgs005q6h2d78mp3bb9fgp18!nd_dft_wlteh_webp_3"
+        ],
+        "url": "https://www.xiaohongshu.com/explore/6916fbc2000000001b031e1c?xsec_token=ABG8G9KphUbw13-SahphPU-T3iRMSZ6ylhj2snwOVMajE=&xsec_source=pc_search"
+      },
+      {
+        "id": "",
+        "title": "极简生活｜拒绝浪费和内耗避雷“土味”穿搭",
+        "content": "🔖我是一个偏五五分的梨形身材的，体重偏胖（已经减肥两个月了），冬天总是不喜欢的几种穿搭感觉，不知道大家有没有这样的烦恼：\n1️⃣上衣遮住屁股，让本来就不长的腿显得更没有。\n2️⃣修身的衣服像贴膜的米其林；每一层都穿的宽松，厚卫衣➕羽绒服，穿起来上身像个球。",
+        "author": "惊惊的极简生活",
+        "likes": 858,
+        "images": [
+          "https://sns-webpic-qc.xhscdn.com/202512211939/af7c170f207a0956b8dc2a1c7a109eeb/notes_pre_post/1040g3k831q1k3q8i7o005phq5ceiuf38avqp1d0!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512211939/1ccd6f4efadbb4a047087e09d7df1994/notes_pre_post/1040g3k031q1k3pqkg0005phq5ceiuf38eo2r970!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512211939/7619568333e60b3f13307d1ab713660d/notes_pre_post/1040g3k031q1k3q0r00005phq5ceiuf3892s6fs8!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512211939/6c4c64cd1324dcdc4423da67e9360d43/notes_pre_post/1040g3k831q1k3qbu0a005phq5ceiuf38cup9ka8!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512211939/af7c170f207a0956b8dc2a1c7a109eeb/notes_pre_post/1040g3k831q1k3q8i7o005phq5ceiuf38avqp1d0!nd_dft_wlteh_webp_3",
+          "https://sns-webpic-qc.xhscdn.com/202512211939/1ccd6f4efadbb4a047087e09d7df1994/notes_pre_post/1040g3k031q1k3pqkg0005phq5ceiuf38eo2r970!nd_dft_wlteh_webp_3"
+        ],
+        "url": "https://www.xiaohongshu.com/explore/693d6081000000001e02c9c7?xsec_token=AB3iY3VwVuDg5dcN-m6hbU4VhSHgAlAJf8z5vI9dmyCCE=&xsec_source=pc_search"
+      },
+      {
+        "id": "",
+        "title": "第48期｜又买了一车！梨型身材原相机真实试穿",
+        "content": "无滤镜无拉腿#梨型身材穿搭 #显瘦穿搭 #遮肉遮胯 #服装测评 #新衣试穿 #通勤穿搭 #秋冬穿搭",
+        "author": "158的梨大腿🍐",
+        "likes": 1965,
+        "images": [],
+        "url": "https://www.xiaohongshu.com/explore/691b12ff000000000700121a?xsec_token=AB1_gAWh2O_qf0wZyB6X0YHlxiWmkc6lQG4m-V2qVY1IU=&xsec_source=pc_search"
+      }
+    ],
+    "insights": {
+      "key_findings": [
+        "秋冬通勤穿搭是核心需求，尤其针对小个子和梨形身材用户，强调快速（5分钟出门）、显瘦（如'显瘦10斤'）和平价方案（笔记1: '5 分钟出门通勤套秋冬穿法！亲测显瘦 10 斤' 和 笔记3: '第48期｜又买了一车！梨型身材原相机真实试穿'）",
+        "真实性是用户信任的关键指标，高赞笔记（1965赞）突出'无滤镜无拉腿'和原相机试穿，反映用户对过度修饰内容的抵触（笔记3: '第48期｜又买了一车！梨型身材原相机真实试穿'）",
+        "梨形身材用户的穿搭痛点高度集中，如'上衣遮住屁股显腿短'和'修身/宽松衣物显臃肿'，避坑指南类内容获高互动（858赞），远超普通穿搭分享（笔记2: '极简生活｜拒绝浪费和内耗避雷“土味”穿搭'）"
+      ],
+      "user_pain_points": [
+        "梨形身材用户因上衣长度不当导致视觉腿短（笔记2明确描述：'上衣遮住屁股，让本来就不长的腿显得更没有'）",
+        "衣物版型选择失误引发显胖问题：修身款显'贴膜米其林'感，宽松款叠穿成'球状'（笔记2详细列举此痛点）"
+      ],
+      "recommendations": [
+        "创作者应强化真实场景验证，采用原相机无修图展示，并标注具体身材数据（如'158cm梨大腿'），以提升可信度和用户共鸣",
+        "针对高频痛点设计内容，例如制作'梨形身材通勤避坑清单'，结合具体错误案例（如上衣长度测量技巧）而非泛泛而谈"
+      ],
+      "needs_more_data": true,
+      "suggested_keywords": [
+        "穿搭拍摄构图技巧",
+        "小红书视频剪辑教程",
+        "2025流行色应用实例",
+        "素人穿搭翻车解析"
+      ],
+      "confidence": 0.6
+    }
+  },
+  {
     "id": "f84eef08-4cd2-4b4e-b446-67cc8095c9b5",
     "topic": "我想要一份赚钱的攻略比如说我在短期之内想要赚取快钱干什么都行，不买股票，要风险小收益大",
     "status": "completed",
@@ -17,78 +742,6 @@
     "status": "completed",
     "created_at": "2025-12-20T22:35:41.896193",
     "updated_at": "2025-12-20T22:45:56.827716",
-    "summary": null,
-    "key_findings": [],
-    "notes_count": 5,
-    "sections_count": 3,
-    "report_path": null
-  },
-  {
-    "id": "3d808235-55d6-4cd0-b6cc-6ac7364f5316",
-    "topic": "旅行攻略",
-    "status": "completed",
-    "created_at": "2025-12-20T18:50:30.162083",
-    "updated_at": "2025-12-20T19:14:24.985494",
-    "summary": null,
-    "key_findings": [],
-    "notes_count": 5,
-    "sections_count": 4,
-    "report_path": null
-  },
-  {
-    "id": "9aca0b31-a598-41ff-a338-932819c30458",
-    "topic": "美食探店",
-    "status": "completed",
-    "created_at": "2025-12-20T18:19:46.170821",
-    "updated_at": "2025-12-20T18:31:11.524887",
-    "summary": null,
-    "key_findings": [],
-    "notes_count": 5,
-    "sections_count": 3,
-    "report_path": null
-  },
-  {
-    "id": "23b47327-bdad-4f57-9dcd-9e0421ae72a4",
-    "topic": "护肤心得",
-    "status": "completed",
-    "created_at": "2025-12-20T18:07:21.834203",
-    "updated_at": "2025-12-20T18:18:25.569149",
-    "summary": null,
-    "key_findings": [],
-    "notes_count": 5,
-    "sections_count": 3,
-    "report_path": null
-  },
-  {
-    "id": "e7f9f6f2-f8b8-47ad-b14f-1ef92e2ade7a",
-    "topic": "咖啡店创业",
-    "status": "completed",
-    "created_at": "2025-12-20T17:49:02.366179",
-    "updated_at": "2025-12-20T18:00:49.148755",
-    "summary": null,
-    "key_findings": [],
-    "notes_count": 5,
-    "sections_count": 4,
-    "report_path": null
-  },
-  {
-    "id": "4b5e4490-0928-444a-97d4-48515d20f824",
-    "topic": "穿搭分享",
-    "status": "completed",
-    "created_at": "2025-12-20T17:35:12.991085",
-    "updated_at": "2025-12-20T17:45:34.217150",
-    "summary": null,
-    "key_findings": [],
-    "notes_count": 5,
-    "sections_count": 3,
-    "report_path": null
-  },
-  {
-    "id": "9606e5b7-b234-459c-8295-1f7265ab5da7",
-    "topic": "美食探店",
-    "status": "completed",
-    "created_at": "2025-12-20T16:59:04.599545",
-    "updated_at": "2025-12-20T17:07:18.794573",
     "summary": null,
     "key_findings": [],
     "notes_count": 5,

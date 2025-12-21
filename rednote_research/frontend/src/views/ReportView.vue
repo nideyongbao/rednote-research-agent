@@ -422,6 +422,12 @@ const generateReportHTML = (report: any) => {
       border-radius: 12px;
       object-fit: cover;
       aspect-ratio: 4/3;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .images-grid img:hover {
+      transform: scale(1.02);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
     }
     .section-content { font-size: 15px; }
     .section-content h2 { font-size: 20px; }
@@ -435,6 +441,59 @@ const generateReportHTML = (report: any) => {
       font-size: 14px;
     }
     .meta { color: #888; font-size: 14px; margin-bottom: 24px; }
+    
+    /* Lightbox 样式 */
+    .lightbox {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.9);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    .lightbox.active { display: flex; }
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 85vh;
+      border-radius: 8px;
+      object-fit: contain;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 40px;
+      color: white;
+      background: none;
+      border: none;
+      cursor: pointer;
+      opacity: 0.7;
+    }
+    .lightbox-close:hover { opacity: 1; }
+    .lightbox-nav {
+      margin-top: 16px;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+    .lightbox-nav button {
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: white;
+      font-size: 24px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    .lightbox-nav button:hover { background: rgba(255,255,255,0.3); }
+    .lightbox-nav button:disabled { opacity: 0.3; cursor: not-allowed; }
+    .lightbox-nav span { color: white; font-size: 14px; }
   </style>
 </head>
 <body>
@@ -463,7 +522,7 @@ const generateReportHTML = (report: any) => {
       </div>
       ${section.images && section.images.length > 0 ? `
         <div class="images-grid">
-          ${section.images.map((img: string) => `<img src="${img}" referrerpolicy="no-referrer" loading="lazy" alt="研究配图" />`).join('')}
+          ${section.images.map((img: string) => `<img src="${img}" referrerpolicy="no-referrer" loading="lazy" alt="研究配图" onclick="openLightbox('${img}')" />`).join('')}
         </div>
       ` : ''}
     </div>
@@ -491,6 +550,65 @@ const generateReportHTML = (report: any) => {
   <footer>
     由 RedNote Research Agent 生成 | 基于 ${report.notes?.length || 0} 篇笔记的深度分析
   </footer>
+  
+  <!-- Lightbox 图片查看器 -->
+  <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close" onclick="closeLightbox()">×</button>
+    <img id="lightbox-img" src="" referrerpolicy="no-referrer" onclick="event.stopPropagation()" />
+    <div class="lightbox-nav" onclick="event.stopPropagation()">
+      <button onclick="prevImage()">‹</button>
+      <span id="lightbox-counter"></span>
+      <button onclick="nextImage()">›</button>
+    </div>
+  </div>
+  
+  <script>
+    // 收集所有图片
+    var images = Array.from(document.querySelectorAll('.images-grid img')).map(function(img) {
+      return img.src;
+    });
+    var currentIndex = 0;
+    
+    function openLightbox(src) {
+      currentIndex = images.indexOf(src);
+      if (currentIndex === -1) currentIndex = 0;
+      showImage();
+      document.getElementById('lightbox').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    
+    function showImage() {
+      document.getElementById('lightbox-img').src = images[currentIndex];
+      document.getElementById('lightbox-counter').textContent = (currentIndex + 1) + ' / ' + images.length;
+    }
+    
+    function prevImage() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        showImage();
+      }
+    }
+    
+    function nextImage() {
+      if (currentIndex < images.length - 1) {
+        currentIndex++;
+        showImage();
+      }
+    }
+    
+    // 键盘导航
+    document.addEventListener('keydown', function(e) {
+      if (!document.getElementById('lightbox').classList.contains('active')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') prevImage();
+      if (e.key === 'ArrowRight') nextImage();
+    });
+  <\/script>
 </body>
 </html>`
 }

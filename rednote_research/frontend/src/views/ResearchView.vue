@@ -3,7 +3,7 @@
     <div class="page-header">
       <div>
         <h1 class="page-title">研究进度</h1>
-        <p class="page-subtitle">正在分析主题：{{ currentTopic }}</p>
+        <p class="page-subtitle">正在分析主题：{{ activeTaskStore.topic }}</p>
       </div>
     </div>
     
@@ -17,18 +17,18 @@
         <div 
           class="step-icon"
           :class="{ 
-            active: currentStage === step.key,
-            completed: completedStages.includes(step.key)
+            active: activeTaskStore.stage === step.key,
+            completed: activeTaskStore.completedStages.includes(step.key)
           }"
         >
-          <span v-if="completedStages.includes(step.key)">✓</span>
+          <span v-if="activeTaskStore.completedStages.includes(step.key)">✓</span>
           <span v-else>{{ index + 1 }}</span>
         </div>
         <span 
           class="step-label"
           :class="{ 
-            active: currentStage === step.key,
-            completed: completedStages.includes(step.key)
+            active: activeTaskStore.stage === step.key,
+            completed: activeTaskStore.completedStages.includes(step.key)
           }"
         >
           {{ step.label }}
@@ -40,26 +40,26 @@
     <div class="research-summary">
       <div class="summary-card">
         <span class="summary-label">搜索笔记</span>
-        <span class="summary-value primary">{{ stats.notesFound }}</span>
+        <span class="summary-value primary">{{ activeTaskStore.stats.notesFound }}</span>
       </div>
       <div class="summary-card">
         <span class="summary-label">分析内容</span>
-        <span class="summary-value">{{ stats.contentsAnalyzed }}</span>
+        <span class="summary-value">{{ activeTaskStore.stats.contentsAnalyzed }}</span>
       </div>
       <div class="summary-card">
         <span class="summary-label">提取观点</span>
-        <span class="summary-value">{{ stats.insightsExtracted }}</span>
+        <span class="summary-value">{{ activeTaskStore.stats.insightsExtracted }}</span>
       </div>
       <div class="summary-card">
         <span class="summary-label">耗时</span>
-        <span class="summary-value">{{ formatTime(elapsedTime) }}</span>
+        <span class="summary-value">{{ formatTime(activeTaskStore.elapsedTime) }}</span>
       </div>
     </div>
     
     <!-- 日志容器 -->
     <div class="log-container" ref="logContainer">
       <div 
-        v-for="(log, index) in logs" 
+        v-for="(log, index) in activeTaskStore.logs" 
         :key="index"
         class="log-entry log-entry-enter"
       >
@@ -71,11 +71,11 @@
     
     <!-- 控制按钮 -->
     <div class="research-controls">
-      <button class="btn btn-secondary" @click="goBack" :disabled="isResearching">
+      <button class="btn btn-secondary" @click="goBack">
         返回首页
       </button>
       <button 
-        v-if="isCompleted" 
+        v-if="isCompleted || activeTaskStore.hasCompletedTask" 
         class="btn btn-primary" 
         @click="goToOutline"
       >
@@ -86,21 +86,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, onMounted, onUnmounted, nextTick, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useResearchStore } from '../stores/research'
+import { useActiveTaskStore } from '../stores/activeTask'
 
 const route = useRoute()
 const router = useRouter()
 const store = useResearchStore()
+const activeTaskStore = useActiveTaskStore()
 
 const logContainer = ref<HTMLElement | null>(null)
-const currentTopic = ref('')
-const currentStage = ref('planning')
-const completedStages = ref<string[]>([])
-const isResearching = ref(false)
 const isCompleted = ref(false)
-const elapsedTime = ref(0)
 let timer: number | null = null
 
 const stages = [
@@ -110,34 +107,14 @@ const stages = [
   { key: 'generating', label: '生成' }
 ]
 
-const stats = ref({
-  notesFound: 0,
-  contentsAnalyzed: 0,
-  insightsExtracted: 0
-})
-
-interface LogEntry {
-  time: string
-  level: 'info' | 'success' | 'warning' | 'error'
-  message: string
-}
-
-const logs = ref<LogEntry[]>([])
-
 const formatTime = (seconds: number): string => {
   const mins = Math.floor(seconds / 60)
   const secs = seconds % 60
   return `${mins}:${secs.toString().padStart(2, '0')}`
 }
 
-const addLog = (level: LogEntry['level'], message: string) => {
-  const now = new Date()
-  logs.value.push({
-    time: now.toLocaleTimeString('zh-CN', { hour12: false }),
-    level,
-    message
-  })
-  
+// 滚动到日志底部
+const scrollToBottom = () => {
   nextTick(() => {
     if (logContainer.value) {
       logContainer.value.scrollTop = logContainer.value.scrollHeight
@@ -145,58 +122,70 @@ const addLog = (level: LogEntry['level'], message: string) => {
   })
 }
 
+// 监听日志变化
+watch(() => activeTaskStore.logs.length, scrollToBottom)
+
 const startResearch = async () => {
-  currentTopic.value = route.query.topic as string || ''
-  if (!currentTopic.value) {
+  const topicParam = route.query.topic as string || ''
+  
+  // 如果已有进行中任务且没有新的topic参数，恢复显示现有任务
+  if (activeTaskStore.isRunning && !topicParam) {
+    // elapsedTime 是基于 startTime 的 computed 属性
+    // 启动定时器触发UI刷新
+    timer = window.setInterval(() => {
+      activeTaskStore.updateTick()
+    }, 1000)
+    scrollToBottom()
+    return
+  }
+  
+  // 如果没有topic且没有进行中任务，返回首页
+  if (!topicParam) {
     router.push('/')
     return
   }
   
-  isResearching.value = true
-  addLog('info', `开始研究主题: ${currentTopic.value}`)
+  // 开始新任务（startTask会记录开始时间戳）
+  activeTaskStore.startTask(topicParam)
+  activeTaskStore.addLog('info', `开始研究主题: ${topicParam}`)
   
-  // 启动计时器
+  // 启动定时器触发UI刷新
   timer = window.setInterval(() => {
-    elapsedTime.value++
+    activeTaskStore.updateTick()
   }, 1000)
   
   // 使用 SSE 连接后端
   try {
-    const eventSource = new EventSource(`/api/research?topic=${encodeURIComponent(currentTopic.value)}`)
+    const eventSource = new EventSource(`/api/research?topic=${encodeURIComponent(topicParam)}`)
     
     eventSource.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data)
         handleSSEMessage(data)
       } catch (e) {
-        addLog('info', event.data)
+        activeTaskStore.addLog('info', event.data)
       }
     }
     
     eventSource.onerror = () => {
       eventSource.close()
       if (!isCompleted.value) {
-        addLog('error', '连接中断')
-        isResearching.value = false
+        activeTaskStore.addLog('error', '连接中断')
       }
     }
   } catch (error) {
-    addLog('error', `研究失败: ${error}`)
-    isResearching.value = false
+    activeTaskStore.addLog('error', `研究失败: ${error}`)
   }
 }
 
 const handleSSEMessage = (data: any) => {
   if (data.type === 'log') {
-    addLog(data.level || 'info', data.message)
+    activeTaskStore.addLog(data.level || 'info', data.message)
   } else if (data.type === 'stage') {
-    if (currentStage.value && !completedStages.value.includes(currentStage.value)) {
-      completedStages.value.push(currentStage.value)
-    }
-    currentStage.value = data.stage
-    addLog('success', `进入阶段: ${stages.find(s => s.key === data.stage)?.label}`)
+    activeTaskStore.setStage(data.stage)
+    activeTaskStore.addLog('success', `进入阶段: ${stages.find(s => s.key === data.stage)?.label}`)
   } else if (data.type === 'stats') {
-    stats.value = { ...stats.value, ...data.stats }
+    activeTaskStore.updateStats(data.stats)
   } else if (data.type === 'report') {
     // 填充 store 数据
     store.setTopic(data.topic)
@@ -219,19 +208,27 @@ const handleSSEMessage = (data: any) => {
     // 优先使用后端返回的结构化大纲
     if (data.outline && data.outline.length > 0) {
       loadOutlineFromBackend(data.outline)
-      addLog('success', `加载了 ${data.outline.length} 个结构化章节`)
+      activeTaskStore.addLog('success', `加载了 ${data.outline.length} 个结构化章节`)
     } else {
       // 回退：从 insights 构建大纲
       buildOutlineFromInsights(data.insights, data.notes || [])
-      addLog('success', '报告数据已加载')
+      activeTaskStore.addLog('success', '报告数据已加载')
     }
   } else if (data.type === 'complete') {
-    completedStages.value.push(currentStage.value)
+    // 标记最后阶段完成
+    if (activeTaskStore.stage && !activeTaskStore.completedStages.includes(activeTaskStore.stage)) {
+      activeTaskStore.completedStages.push(activeTaskStore.stage)
+    }
+    
     isCompleted.value = true
-    isResearching.value = false
-    addLog('success', '研究完成！')
+    activeTaskStore.addLog('success', '研究完成！点击"编辑大纲"继续')
+    
+    // 标记任务完成，但保留日志供用户查看
+    activeTaskStore.markCompleted()
+    
     if (timer) {
       clearInterval(timer)
+      timer = null
     }
   }
 }
@@ -298,6 +295,8 @@ const goBack = () => {
 }
 
 const goToOutline = () => {
+  // 进入编辑页面时清空任务状态
+  activeTaskStore.clearTask()
   router.push('/outline')
 }
 

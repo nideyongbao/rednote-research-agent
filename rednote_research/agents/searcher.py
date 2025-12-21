@@ -6,6 +6,7 @@ from openai import AsyncOpenAI
 from .base import BaseAgent
 from ..state import ResearchState, NoteData
 from ..mcp.rednote import RedNoteMCPClient
+from ..services.settings import get_settings_service
 
 
 SEARCHER_PROMPT = """你是一个数据筛选专家。给定一组小红书笔记的标题和摘要，判断它们与研究主题的相关性。
@@ -70,12 +71,16 @@ class SearcherAgent(BaseAgent):
         
         self._log(state, f"开始搜索 {len(keywords_to_search)} 个关键词", on_log)
         
+        # 从配置读取每个关键词搜索的笔记数量
+        settings = get_settings_service().load()
+        notes_per_keyword = settings.search.notes_per_keyword
+        
         for i, keyword in enumerate(keywords_to_search):
             self._log(state, f"搜索关键词 [{i+1}/{len(keywords_to_search)}]: {keyword}", on_log)
             
             try:
                 # 1. 广度搜索
-                previews = await self.mcp.search_notes(keyword, limit=10)
+                previews = await self.mcp.search_notes(keyword, limit=notes_per_keyword)
                 self._log(state, f"  找到 {len(previews)} 篇笔记", on_log)
                 
                 if not previews:

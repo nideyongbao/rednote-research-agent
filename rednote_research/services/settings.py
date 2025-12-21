@@ -51,9 +51,15 @@ class ImageGenSettings(BaseModel):
     rate_limit_mode: bool = True  # True=串行延迟(稳定), False=快速并行
 
 
+class SearchSettings(BaseModel):
+    """搜索配置"""
+    notes_per_keyword: int = 1  # 每个关键词搜索的笔记数量（默认1，可调高）
+
+
 class Settings(BaseModel):
     """用户配置"""
     llm: LLMSettings = LLMSettings()
+    search: SearchSettings = SearchSettings()
     vlm: VLMSettings = VLMSettings()
     imageGen: ImageGenSettings = ImageGenSettings()
 
@@ -108,6 +114,9 @@ class SettingsService:
                 "apiKey": mask_key(settings.imageGen.api_key),
                 "baseUrl": settings.imageGen.base_url,
                 "model": settings.imageGen.model
+            },
+            "search": {
+                "notesPerKeyword": settings.search.notes_per_keyword
             }
         }
 

@@ -89,8 +89,10 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
+import { useResearchStore } from '../stores/research'
 
 const router = useRouter()
+const store = useResearchStore()
 
 interface HistoryItem {
   id: string
@@ -179,12 +181,71 @@ const changePage = (page: number) => {
   }
 }
 
-const viewDetail = (item: HistoryItem) => {
-  // 如果已完成，跳转到报告页面
+const viewDetail = async (item: HistoryItem) => {
+  // 已完成的任务 - 从后端加载完整数据并跳转到大纲编辑
   if (item.status === 'completed') {
-    router.push({ path: '/report', query: { id: item.id } })
-  } else {
-    router.push({ path: '/research', query: { id: item.id } })
+    try {
+      isLoading.value = true
+      // 获取完整历史记录数据
+      const response = await axios.get(`/api/history/${item.id}/full`)
+      const fullRecord = response.data
+      
+      // 加载数据到 research store（独立于当前进行中任务）
+      store.reset()
+      store.setTopic(fullRecord.topic || '')
+      
+      // 加载大纲
+      if (fullRecord.outline && fullRecord.outline.length > 0) {
+        for (const section of fullRecord.outline) {
+          store.addSection(section.type || 'content', section.content || '')
+          const lastSection = store.outline[store.outline.length - 1]
+          if (lastSection) {
+            lastSection.title = section.title || ''
+            lastSection.images = section.images || []
+          }
+        }
+      }
+      
+      // 加载笔记
+      if (fullRecord.notes) {
+        store.setNotes(fullRecord.notes)
+      }
+      
+      // 加载关键发现
+      if (fullRecord.insights?.key_findings) {
+        store.setKeyFindings(fullRecord.insights.key_findings)
+      }
+      
+      // 加载摘要
+      if (fullRecord.insights?.recommendations) {
+        store.setSummary(fullRecord.insights.recommendations.join('\n'))
+      }
+      
+      store.markCompleted()
+      
+      // 跳转到大纲编辑页面
+      router.push('/outline')
+    } catch (error) {
+      console.error('加载历史记录失败:', error)
+      alert('加载历史记录失败，请重试')
+    } finally {
+      isLoading.value = false
+    }
+    return
+  }
+  
+  // 进行中的任务 - 跳转到研究进度页面
+  if (item.status === 'running') {
+    router.push('/research')
+    return
+  }
+  
+  // 失败的任务 - 提示重新开始
+  if (item.status === 'failed') {
+    if (confirm('该任务执行失败，是否重新开始研究？')) {
+      router.push({ path: '/research', query: { topic: item.topic } })
+    }
+    return
   }
 }
 

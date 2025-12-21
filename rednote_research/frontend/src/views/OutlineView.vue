@@ -104,10 +104,12 @@
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useResearchStore, type OutlineSection } from '../stores/research'
+import { useActiveTaskStore } from '../stores/activeTask'
 
 const route = useRoute()
 const router = useRouter()
 const store = useResearchStore()
+const activeTaskStore = useActiveTaskStore()
 
 const dragOverIndex = ref<number | null>(null)
 const draggedIndex = ref<number | null>(null)
@@ -167,7 +169,13 @@ const addSection = () => {
 }
 
 const goBack = () => {
-  router.push('/research')
+  // 如果有正在进行的任务，返回研究进度页
+  // 否则（从历史恢复的情况），返回历史页面
+  if (activeTaskStore.isRunning) {
+    router.push('/research')
+  } else {
+    router.push('/history')
+  }
 }
 
 const generateReport = () => {
