@@ -48,6 +48,8 @@ class ImageAnalysisResult(BaseModel):
     description: str = ""
     tags: list[str] = []
     category: str = ""  # 实景/攻略/装饰/广告
+    content_keywords: list[str] = []  # 新增：图片内容关键词，如["预算表", "费用明细"]
+    scene_type: str = ""  # 新增：场景类型 (风格展示/数据展示/教程步骤/产品展示/真实场景)
     quality_score: int = 5
     should_use: bool = True
     matched_sections: list[str] = []  # 适合的章节标题列表

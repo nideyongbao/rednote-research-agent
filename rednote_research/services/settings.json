@@ -10,6 +10,9 @@
     "presence_penalty": 1.5,
     "enable_thinking": true
   },
+  "search": {
+    "notes_per_keyword": 1
+  },
   "vlm": {
     "enabled": true,
     "api_key": "ms-04d662ab-d9b4-46db-a13e-9082887778d3",

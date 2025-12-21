@@ -220,8 +220,17 @@ async def research_stream(topic: str = Query(None), task: str = Query(None, min_
             from ..output.image_analyzer import ImageAnalyzer
             image_analyzer = ImageAnalyzer()
             
+            image_logs = []
+            def capture_image_log(msg):
+                image_logs.append(msg)
+            
             try:
-                state, img_stats = await image_analyzer.analyze(state)
+                state, img_stats = await image_analyzer.analyze(state, on_log=capture_image_log)
+                
+                # 输出详细日志
+                for log in image_logs:
+                    yield make_msg("log", level="info", message=f"  {log}")
+                
                 analyzed_count = len(state.image_analyses)
                 usable_count = sum(1 for r in state.image_analyses.values() if r.should_use)
                 vlm_calls = img_stats.get("vlm_calls", 0)
@@ -260,8 +269,17 @@ async def research_stream(topic: str = Query(None), task: str = Query(None, min_
             from ..output.image_assigner import ImageAssigner
             image_assigner = ImageAssigner()
             
+            assign_logs = []
+            def capture_assign_log(msg):
+                assign_logs.append(msg)
+            
             try:
-                structured_outline = await image_assigner.assign(state, structured_outline)
+                structured_outline = await image_assigner.assign(state, structured_outline, on_log=capture_assign_log)
+                
+                # 输出分配与生成日志
+                for log in assign_logs:
+                    yield make_msg("log", level="info", message=f"  {log}")
+                
                 assigned_count = sum(len(section.get('images', [])) for section in structured_outline)
                 yield make_msg("log", level="success", message=f"🎯 [ImageAssigner] 分配了 {assigned_count} 张图片")
                 yield make_msg("log", level="info", message=f"📐 [阶段6统计] 分配图片: {assigned_count}张")
@@ -741,13 +759,15 @@ async def save_settings(data: SettingsUpdateRequest):
         "enabled": data.vlm.get("enabled", False),
         "api_key": data.vlm.get("apiKey", ""),
         "base_url": data.vlm.get("baseUrl", ""),
-        "model": data.vlm.get("model", "")
+        "model": data.vlm.get("model", ""),
+        "rate_limit_mode": data.vlm.get("rateLimitMode", True)
     }
     image_gen_data = {
         "enabled": data.imageGen.get("enabled", False),
         "api_key": data.imageGen.get("apiKey", ""),
         "base_url": data.imageGen.get("baseUrl", ""),
-        "model": data.imageGen.get("model", "")
+        "model": data.imageGen.get("model", ""),
+        "rate_limit_mode": data.imageGen.get("rateLimitMode", True)
     }
     
     settings = Settings(

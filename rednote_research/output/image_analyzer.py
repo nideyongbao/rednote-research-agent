@@ -11,7 +11,9 @@
 
 import asyncio
 import logging
+import logging
 import json
+from typing import Optional, Callable
 import re
 import base64
 import aiohttp
@@ -36,12 +38,13 @@ class ImageAnalyzer:
             base_url=self.settings.vlm.base_url
         )
     
-    async def analyze(self, state: ResearchState) -> tuple[ResearchState, dict]:
+    async def analyze(self, state: ResearchState, on_log: Optional[Callable[[str], None]] = None) -> tuple[ResearchState, dict]:
         """
         分析所有图片并更新state.image_analyses
         
         Args:
             state: 包含documents的研究状态
+            on_log: 日志回调
             
         Returns:
             (更新了image_analyses的状态, 统计信息)
@@ -49,13 +52,19 @@ class ImageAnalyzer:
         stats = {"vlm_calls": 0, "total_images": 0, "usable_images": 0}
         
         if not self.settings.vlm.enabled:
-            logger.info("[ImageAnalyzer] VLM未启用，跳过图片分析")
+            msg = "[ImageAnalyzer] VLM未启用，跳过图片分析"
+            logger.info(msg)
+            if on_log:
+                on_log(msg)
             return state, stats
         
         # 1. 收集所有图片
-        images = self._collect_images(state)
+        images = self._collect_images(state, on_log)
         if not images:
-            logger.info("[ImageAnalyzer] 没有找到图片")
+            msg = "[ImageAnalyzer] 没有找到图片"
+            logger.info(msg)
+            if on_log:
+                on_log(msg)
             return state, stats
         
         logger.info(f"[ImageAnalyzer] 收集了 {len(images)} 张图片，开始VLM分析")
@@ -81,15 +90,24 @@ class ImageAnalyzer:
         
         return state, stats
     
-    def _collect_images(self, state: ResearchState) -> list[str]:
+    def _collect_images(self, state: ResearchState, on_log: Optional[Callable[[str], None]] = None) -> list[str]:
         """收集所有笔记图片"""
         images = []
         for note in state.documents:
             if note.detail.images:
                 images.extend(note.detail.images)
         
+        total_before = len(images)
         # 去重
         unique_images = list(dict.fromkeys(images))
+        total_after = len(unique_images)
+        
+        if total_before != total_after:
+            msg = f"[ImageAnalyzer] 图片去重: {total_before}张 → {total_after}张 (去除{total_before - total_after}张重复)"
+            logger.info(msg)
+            if on_log:
+                on_log(msg)
+        
         return unique_images
     
     async def _download_image_to_base64(self, url: str, max_retries: int = 2) -> str | None:
@@ -154,7 +172,7 @@ class ImageAnalyzer:
         total_batches = (len(images) + BATCH_SIZE - 1) // BATCH_SIZE
         vlm_call_count = 0  # VLM调用计数器
         
-        # 优化后的prompt - 明确要求JSON输出
+        # 优化后的prompt - 明确要求JSON输出，增加语义关键词提取
         prompt = f"""你是图片分析专家。请分析以下图片并以JSON数组格式输出分析结果。
 
 ## 研究主题
@@ -166,6 +184,8 @@ class ImageAnalyzer:
 - description: 图片内容描述（20字以内）
 - tags: 标签数组（2-3个关键词）
 - category: 分类（只能是：实景、攻略、装饰、广告 之一）
+- content_keywords: 图片核心内容关键词（3-5个），用于语义匹配章节内容
+- scene_type: 场景类型（只能是以下之一）
 - quality_score: 质量分数（1-10整数）
 - should_use: 是否建议使用（true/false）
 
@@ -174,6 +194,18 @@ class ImageAnalyzer:
 - 攻略: 包含文字说明的教程图
 - 装饰: 通用装饰插图
 - 广告: 明显的营销推广图
+
+## 场景类型说明
+- 风格展示: 装修风格、效果图、设计渲染
+- 数据展示: 表格、清单、对比图、价格单
+- 教程步骤: 操作流程、步骤说明、攻略图
+- 产品展示: 具体产品、材料、工具
+- 真实场景: 实拍照片、工地图、现场图
+
+## content_keywords 示例
+- 装修效果图 → ["北欧风", "客厅设计", "简约"]
+- 预算表格 → ["装修预算", "费用明细", "价格对比"]
+- 施工现场 → ["水电改造", "工地现场", "施工进度"]
 
 请直接输出JSON数组，不要添加任何解释文字："""
         
@@ -246,6 +278,8 @@ class ImageAnalyzer:
                                 description=item.get("description", ""),
                                 tags=item.get("tags", []),
                                 category=item.get("category", "未分类"),
+                                content_keywords=item.get("content_keywords", []),
+                                scene_type=item.get("scene_type", ""),
                                 quality_score=item.get("quality_score", 5),
                                 should_use=item.get("should_use", True),
                                 matched_sections=[]
@@ -284,6 +318,8 @@ class ImageAnalyzer:
                                         description=item.get("description", ""),
                                         tags=item.get("tags", []),
                                         category=item.get("category", "未分类"),
+                                        content_keywords=item.get("content_keywords", []),
+                                        scene_type=item.get("scene_type", ""),
                                         quality_score=item.get("quality_score", 5),
                                         should_use=item.get("should_use", True),
                                         matched_sections=[]

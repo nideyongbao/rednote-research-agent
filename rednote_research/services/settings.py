@@ -107,13 +107,15 @@ class SettingsService:
                 "enabled": settings.vlm.enabled,
                 "apiKey": mask_key(settings.vlm.api_key),
                 "baseUrl": settings.vlm.base_url,
-                "model": settings.vlm.model
+                "model": settings.vlm.model,
+                "rateLimitMode": settings.vlm.rate_limit_mode
             },
             "imageGen": {
                 "enabled": settings.imageGen.enabled,
                 "apiKey": mask_key(settings.imageGen.api_key),
                 "baseUrl": settings.imageGen.base_url,
-                "model": settings.imageGen.model
+                "model": settings.imageGen.model,
+                "rateLimitMode": settings.imageGen.rate_limit_mode
             },
             "search": {
                 "notesPerKeyword": settings.search.notes_per_keyword
