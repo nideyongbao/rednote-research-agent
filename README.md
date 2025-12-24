@@ -18,37 +18,42 @@
 ### 1. 克隆项目
 
 ```bash
-git clone --recursive https://github.com/user/rednote-research-agent.git
+git clone https://github.com/user/rednote-research-agent.git
 cd rednote-research-agent
-
-# 如果忘记使用 --recursive：
-git submodule update --init
 ```
 
 ### 2. 安装 Python 依赖
 
 ```bash
-pip install -e ./rednote_research
+# 推荐使用 conda 环境
+conda create -n rednote-research python=3.11
+conda activate rednote-research
+
+# 安装依赖
+cd rednote_research
+pip install -e .
+pip install httpx  # HTTP 客户端（必需）
 ```
 
-### 3. 安装 MCP 服务依赖
+### 3. 下载 xiaohongshu-mcp 服务
 
-```bash
-cd rednote-mcp
-npm install
-npx playwright install chromium
-npm run build
-cd ..
-```
+从 [xiaohongshu-mcp Releases](https://github.com/xpzouying/xiaohongshu-mcp/releases) 下载对应系统的预编译文件：
+
+- Windows: `xiaohongshu-mcp-windows-amd64.exe` + `xiaohongshu-login-windows-amd64.exe`
+- macOS: `xiaohongshu-mcp-darwin-amd64`
+- Linux: `xiaohongshu-mcp-linux-amd64`
 
 ### 4. 小红书登录（必需）
 
 ```bash
-cd rednote-mcp
-node dist/cli.js init
+# Windows
+.\xiaohongshu-login-windows-amd64.exe
+
+# macOS/Linux
+./xiaohongshu-login-darwin-amd64
 ```
 
-> 💡 浏览器会打开小红书登录页，用 APP 扫码登录。Cookie 自动保存到 `~/.mcp/rednote/cookies.json`。
+> 💡 浏览器会打开小红书登录页，用 APP 扫码登录。Cookie 自动保存到 `./cookies/` 目录。
 
 ### 5. 配置环境变量
 
@@ -58,7 +63,9 @@ node dist/cli.js init
 OPENAI_API_KEY=your-api-key-here
 OPENAI_BASE_URL=https://api-inference.modelscope.cn/v1
 OPENAI_MODEL=gpt-4o
-REDNOTE_MCP_PATH=rednote-mcp/dist/index.js
+
+# xiaohongshu-mcp 服务地址
+XIAOHONGSHU_MCP_URL=http://localhost:18060
 ```
 
 ---
@@ -67,15 +74,27 @@ REDNOTE_MCP_PATH=rednote-mcp/dist/index.js
 
 ### 开发模式（推荐）
 
-需要**两个终端**：
+需要**三个终端**：
 
-**终端 1 - 后端：**
+**终端 1 - xiaohongshu-mcp 服务：**
 ```bash
+# Windows
+.\xiaohongshu-mcp-windows-amd64.exe
+
+# macOS/Linux
+./xiaohongshu-mcp-darwin-amd64
+```
+
+> 服务启动后在 http://localhost:18060 运行
+
+**终端 2 - 后端：**
+```bash
+conda activate rednote-research
 cd rednote-research-agent
 python -m uvicorn rednote_research.web.app:app --host 0.0.0.0 --port 8000
 ```
 
-**终端 2 - 前端：**
+**终端 3 - 前端：**
 ```bash
 cd rednote-research-agent/rednote_research/frontend
 npm install

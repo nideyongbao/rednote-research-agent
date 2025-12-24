@@ -14,6 +14,8 @@ class NotePreview(BaseModel):
     likes: int = 0
     comments: int = 0
     url: str = ""
+    xsec_token: str = ""  # xiaohongshu-mcp 需要用于获取详情
+    cover_image: str = ""  # 封面图片 URL
 
 
 class NoteDetail(BaseModel):

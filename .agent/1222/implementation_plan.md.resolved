@@ -1,0 +1,158 @@
+# xiaohongshu-mcp 替换实施计划
+
+## 目标
+
+**直接替换** `rednote-mcp` 为 `xiaohongshu-mcp`，保持现有 agent 流程（Planner → Searcher → Analyzer）不变。
+
+---
+
+## Proposed Changes
+
+### MCP 客户端层
+
+重写底层通信协议从 stdio 改为 HTTP。
+
+---
+
+#### [MODIFY] [client.py](file:///D:/work/apps/rednote-research-agent-dev/rednote-research-agent/rednote_research/mcp/client.py)
+
+将 [MCPClientBase](file:///D:/work/apps/rednote-research-agent-dev/rednote-research-agent/rednote_research/mcp/client.py#10-160) 从 stdio 子进程通信改为 HTTP 客户端。
+
+**主要变更：**
+```diff
+- self.process = await asyncio.create_subprocess_exec(...)
++ self._client = httpx.AsyncClient(base_url=self.base_url, timeout=120.0)
+
+- response_line = await self.process.stdout.readline()
++ response = await self._client.post("/mcp", json=request)
+```
+
+---
+
+#### [MODIFY] [rednote.py](file:///D:/work/apps/rednote-research-agent-dev/rednote-research-agent/rednote_research/mcp/rednote.py)
+
+适配 [RedNoteMCPClient](file:///D:/work/apps/rednote-research-agent-dev/rednote-research-agent/rednote_research/mcp/rednote.py#9-246) 调用新的 MCP 工具。
+
+**接口映射：**
+
+| 方法 | 原工具 | 新工具 | 参数变化 |
+|------|--------|--------|----------|
+| [search_notes()](file:///D:/work/apps/rednote-research-agent-dev/rednote-research-agent/rednote_research/mcp/rednote.py#34-83) | [search_notes](file:///D:/work/apps/rednote-research-agent-dev/rednote-research-agent/rednote_research/mcp/rednote.py#34-83) | `search_feeds` | `keywords` → `keyword`; 返回 JSON 含 `xsec_token` |
+| [get_note_detail()](file:///D:/work/apps/rednote-research-agent-dev/rednote-research-agent/rednote_research/mcp/rednote.py#150-176) | `get_note_content` | `get_feed_detail` | `url` → `feed_id` + `xsec_token` |
+
+**关键变更：**
+```diff
+- super().__init__(command=["node", server_path, "--stdio"])
++ super().__init__(base_url=base_url)
+
+- result = await self.call_tool("search_notes", {"keywords": keyword})
++ result = await self.call_tool("search_feeds", {"keyword": keyword})
+
+- result = await self.call_tool("get_note_content", {"url": url})
++ result = await self.call_tool("get_feed_detail", {"feed_id": feed_id, "xsec_token": xsec_token})
+```
+
+**数据结构变更：**
+- `NotePreview` 新增 `xsec_token` 字段（从搜索结果提取）
+- [get_note_detail()](file:///D:/work/apps/rednote-research-agent-dev/rednote-research-agent/rednote_research/mcp/rednote.py#150-176) 签名变更：[(url)](file:///D:/work/apps/rednote-research-agent-dev/rednote-research-agent/rednote_research/agents/searcher.py#49-123) → [(feed_id, xsec_token)](file:///D:/work/apps/rednote-research-agent-dev/rednote-research-agent/rednote_research/agents/searcher.py#49-123)
+
+---
+
+### 配置层
+
+---
+
+#### [MODIFY] [config.py](file:///D:/work/apps/rednote-research-agent-dev/rednote-research-agent/rednote_research/config.py)
+
+```diff
+class MCPConfig(BaseModel):
+-   command: str = "node"
+-   args: list[str] = []
++   base_url: str = "http://localhost:18060"
+
+@classmethod
+def from_env(cls):
+    return cls(
+        mcp={
+-           "rednote": MCPConfig(command="node", args=[os.getenv("REDNOTE_MCP_PATH", "")])
++           "rednote": MCPConfig(base_url=os.getenv("XIAOHONGSHU_MCP_URL", "http://localhost:18060"))
+        }
+    )
+```
+
+---
+
+#### [MODIFY] [.env.example](file:///D:/work/apps/rednote-research-agent-dev/rednote-research-agent/rednote_research/.env.example)
+
+```diff
+- REDNOTE_MCP_PATH=rednote-mcp/dist/index.js
++ XIAOHONGSHU_MCP_URL=http://localhost:18060
+```
+
+---
+
+### 状态层
+
+---
+
+#### [MODIFY] [state.py](file:///D:/work/apps/rednote-research-agent-dev/rednote-research-agent/rednote_research/state.py)
+
+`NotePreview` 新增字段以存储 xsec_token：
+
+```diff
+@dataclass
+class NotePreview:
+    id: str = ""
+    title: str = ""
+    author: str = ""
+    content_preview: str = ""
+    likes: int = 0
+    comments: int = 0
+    url: str = ""
++   xsec_token: str = ""  # xiaohongshu-mcp 需要用于获取详情
+```
+
+---
+
+### 应用层
+
+---
+
+#### [MODIFY] [app.py](file:///D:/work/apps/rednote-research-agent-dev/rednote-research-agent/rednote_research/web/app.py)
+
+更新 MCP 客户端初始化：
+
+```diff
+- _mcp_client = RedNoteMCPClient(server_path=config.mcp["rednote"].args[0])
++ _mcp_client = RedNoteMCPClient(base_url=config.mcp["rednote"].base_url)
+```
+
+---
+
+## Verification Plan
+
+### 手动测试
+
+1. **启动 xiaohongshu-mcp**
+   ```bash
+   cd D:\work\apps\rednote-research-agent-dev\xiaohongshu-mcp
+   .\xiaohongshu-mcp-windows-amd64.exe
+   ```
+
+2. **验证搜索功能**
+   - 启动后端：`python -m uvicorn rednote_research.web.app:app`
+   - 访问前端，输入研究主题
+   - 验证搜索结果返回
+
+3. **验证详情获取**
+   - 确认 `get_feed_detail` 正确获取笔记内容和图片
+
+---
+
+## 注意事项
+
+> [!IMPORTANT]
+> **关键变更点**
+> - `get_feed_detail` 需要 `xsec_token`，必须从 `search_feeds` 结果中提取并传递
+> - HTTP 超时建议 120s（xiaohongshu-mcp 操作较慢）
+> - 响应格式从文本变为 JSON，需更新解析逻辑

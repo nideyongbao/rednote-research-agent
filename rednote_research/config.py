@@ -18,10 +18,8 @@ from openai import AsyncOpenAI
 
 
 class MCPConfig(BaseModel):
-    """MCP服务器配置"""
-    command: str = "node"
-    args: list[str] = []
-    env: dict[str, str] = {}
+    """MCP服务器配置（HTTP协议）"""
+    base_url: str = "http://localhost:18060"
 
 
 class LLMConfig(BaseModel):
@@ -61,8 +59,7 @@ class Config(BaseModel):
             ),
             mcp={
                 "rednote": MCPConfig(
-                    command="node",
-                    args=[os.getenv("REDNOTE_MCP_PATH", "")],
+                    base_url=os.getenv("XIAOHONGSHU_MCP_URL", "http://localhost:18060"),
                 )
             }
         )

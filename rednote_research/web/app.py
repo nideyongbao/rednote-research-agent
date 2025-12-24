@@ -35,15 +35,10 @@ async def lifespan(app: FastAPI):
     # 启动时初始化
     _config = Config.from_env()
     
-    # MCP客户端路径（从环境变量获取）
-    mcp_path = os.getenv("REDNOTE_MCP_PATH", "")
-    if mcp_path:
-        # 支持相对路径：自动转换为绝对路径
-        if not os.path.isabs(mcp_path):
-            # 获取项目根目录（rednote_research 的父目录）
-            project_root = Path(__file__).parent.parent.parent
-            mcp_path = str((project_root / mcp_path).resolve())
-        _mcp_client = RedNoteMCPClient(mcp_path)
+    # MCP客户端地址（从环境变量获取）
+    mcp_url = os.getenv("XIAOHONGSHU_MCP_URL", "http://localhost:18060")
+    if mcp_url:
+        _mcp_client = RedNoteMCPClient(base_url=mcp_url)
         _orchestrator = ResearchOrchestrator(_config, _mcp_client)
     
     yield
@@ -509,28 +504,29 @@ async def test_mcp_connection():
     if not _mcp_client:
         raise HTTPException(
             status_code=400, 
-            detail="MCP 客户端未配置。请确保 REDNOTE_MCP_PATH 环境变量已设置。"
+            detail="MCP 客户端未配置。请确保 xiaohongshu-mcp 服务已启动（默认端口 18060）。"
         )
     
     try:
         # 连接 MCP
         await _mcp_client.connect()
         
-        # 尝试搜索一个测试关键词
-        results = await _mcp_client.search_notes("测试", limit=1)
+        # 检查登录状态
+        login_status = await _mcp_client.check_login_status()
         
         # 断开连接
         await _mcp_client.disconnect()
         
-        if results:
+        if login_status.get("is_logged_in"):
+            username = login_status.get("username", "")
             return {
                 "status": "ok", 
-                "message": f"MCP 连接成功！小红书登录状态正常，找到 {len(results)} 条测试结果。"
+                "message": f"MCP 连接成功！小红书已登录，用户: {username}"
             }
         else:
             return {
-                "status": "ok", 
-                "message": "MCP 连接成功！但未找到测试结果，可能需要重新登录小红书。"
+                "status": "warning", 
+                "message": "MCP 连接成功！但小红书未登录，请先运行 xiaohongshu-login 登录。"
             }
             
     except Exception as e:
@@ -541,6 +537,8 @@ async def test_mcp_connection():
                 detail=f"MCP 连接失败：需要重新登录小红书。错误: {error_msg[:100]}"
             )
         raise HTTPException(status_code=400, detail=f"MCP 连接失败: {error_msg[:200]}")
+
+
 
 
 

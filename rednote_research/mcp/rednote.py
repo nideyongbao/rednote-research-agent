@@ -1,4 +1,4 @@
-"""小红书MCP客户端 - 封装小红书相关的MCP工具调用"""
+"""小红书MCP客户端 - 使用 xiaohongshu-mcp REST API"""
 
 import asyncio
 from typing import Optional
@@ -8,28 +8,41 @@ from ..state import NotePreview, NoteDetail, NoteData
 
 class RedNoteMCPClient(MCPClientBase):
     """
-    小红书MCP客户端
+    小红书 MCP 客户端
     
-    封装了小红书相关的业务逻辑：
-    - 搜索笔记
-    - 获取笔记详情
-    - 获取评论（可选）
+    使用 xiaohongshu-mcp 的 REST API：
+    - GET /api/v1/login/status - 检查登录状态
+    - POST /api/v1/feeds/search - 搜索笔记
+    - POST /api/v1/feeds/detail - 获取笔记详情
     """
     
-    def __init__(self, server_path: str, headless: bool = True):
+    def __init__(self, base_url: str = "http://localhost:18060"):
         """
-        初始化小红书MCP客户端
+        初始化小红书 MCP 客户端
         
         Args:
-            server_path: rednote-mcp服务器的路径
-            headless: 是否无头模式运行浏览器
+            base_url: xiaohongshu-mcp 服务地址
         """
-        super().__init__(
-            command=["node", server_path, "--stdio"],
-            env={
-                "HEADLESS": "true" if headless else "false",
+        super().__init__(base_url=base_url)
+    
+    async def check_login_status(self) -> dict:
+        """
+        检查登录状态
+        
+        Returns:
+            {"is_logged_in": bool, "username": str}
+        """
+        result = await self._get("/api/v1/login/status")
+        
+        # 解析响应
+        if result.get("success"):
+            data = result.get("data", {})
+            return {
+                "is_logged_in": data.get("is_logged_in", False),
+                "username": data.get("username", "")
             }
-        )
+        
+        return {"is_logged_in": False, "username": ""}
     
     async def search_notes(
         self, 
@@ -43,136 +56,107 @@ class RedNoteMCPClient(MCPClientBase):
         Args:
             keyword: 搜索关键词
             limit: 返回数量限制
-            sort: 排序方式 (general/time_descending/popularity_descending)
+            sort: 排序方式
             
         Returns:
             笔记预览列表
         """
-        result = await self.call_tool("search_notes", {
-            "keywords": keyword,
-            "limit": limit
-        })
+        # 构建筛选参数
+        filters = {}
+        if sort == "time_descending":
+            filters["sort_by"] = "最新"
+        elif sort == "popularity_descending":
+            filters["sort_by"] = "最多点赞"
+        
+        request_data = {"keyword": keyword}
+        if filters:
+            request_data["filters"] = filters
+        
+        result = await self._post("/api/v1/feeds/search", request_data)
         
         notes = []
         
-        # 处理多种返回格式
-        if isinstance(result, list):
-            # 新格式：每篇笔记是一个字符串（MCP返回多个content）
-            for item in result:
-                if isinstance(item, str):
-                    # 解析单条文本格式的笔记
-                    parsed = self._parse_single_note(item)
-                    if parsed:
-                        notes.append(parsed)
-                elif isinstance(item, dict):
-                    # JSON格式笔记
-                    notes.append(NotePreview(
-                        id=item.get("id", ""),
-                        title=item.get("title", ""),
-                        author=item.get("author", ""),
-                        content_preview=item.get("content", ""),
-                        likes=item.get("likes", 0),
-                        comments=item.get("comments", 0),
-                        url=item.get("url", "")
-                    ))
-        elif isinstance(result, str):
-            # 旧格式：所有笔记在一个字符串中
-            notes = self._parse_search_result(result)
+        if result.get("success"):
+            data = result.get("data", {})
+            feeds = data.get("feeds", [])
+            
+            for feed in feeds:
+                notes.append(self._parse_feed_to_preview(feed))
         
-        return notes
+        return notes[:limit] if limit else notes
     
-    def _parse_single_note(self, text: str) -> NotePreview | None:
-        """解析单条文本格式的笔记"""
-        note_data = {}
+    def _parse_feed_to_preview(self, feed: dict) -> NotePreview:
+        """将 xiaohongshu-mcp 的 Feed 解析为 NotePreview"""
+        # 搜索结果的实际数据在 noteCard 子对象中
+        note_card = feed.get("noteCard", {})
+        user = note_card.get("user", {})
+        interact_info = note_card.get("interactInfo", {})
+        cover = note_card.get("cover", {})
         
-        for line in text.split("\n"):
-            line = line.strip()
-            if line.startswith("标题:"):
-                note_data["title"] = line[3:].strip()
-            elif line.startswith("作者:"):
-                note_data["author"] = line[3:].strip()
-            elif line.startswith("内容:"):
-                note_data["content_preview"] = line[3:].strip()
-            elif line.startswith("点赞:"):
-                try:
-                    note_data["likes"] = int(line[3:].strip())
-                except ValueError:
-                    note_data["likes"] = 0
-            elif line.startswith("评论:"):
-                try:
-                    note_data["comments"] = int(line[3:].strip())
-                except ValueError:
-                    note_data["comments"] = 0
-            elif line.startswith("链接:"):
-                note_data["url"] = line[3:].strip()
+        # 提取封面图片 URL
+        cover_url = cover.get("urlDefault", cover.get("url", ""))
         
-        if note_data.get("title") or note_data.get("url"):
-            return NotePreview(**note_data)
-        return None
+        return NotePreview(
+            id=feed.get("id", ""),
+            title=note_card.get("displayTitle", ""),
+            author=user.get("nickname", user.get("name", "")),
+            content_preview=note_card.get("desc", "")[:200] if note_card.get("desc") else "",
+            likes=self._parse_count(interact_info.get("likedCount", 0)),
+            comments=self._parse_count(interact_info.get("commentCount", 0)),
+            url=f"https://www.xiaohongshu.com/explore/{feed.get('id', '')}",
+            xsec_token=feed.get("xsecToken", ""),
+            cover_image=cover_url
+        )
     
-    def _parse_search_result(self, text: str) -> list[NotePreview]:
-        """解析文本格式的搜索结果"""
-        notes = []
-        current_note = {}
-        
-        for line in text.split("\n"):
-            line = line.strip()
-            if line.startswith("标题:"):
-                if current_note:
-                    notes.append(NotePreview(**current_note))
-                current_note = {"title": line[3:].strip()}
-            elif line.startswith("作者:"):
-                current_note["author"] = line[3:].strip()
-            elif line.startswith("内容:"):
-                current_note["content_preview"] = line[3:].strip()
-            elif line.startswith("点赞:"):
-                try:
-                    current_note["likes"] = int(line[3:].strip())
-                except ValueError:
-                    current_note["likes"] = 0
-            elif line.startswith("评论:"):
-                try:
-                    current_note["comments"] = int(line[3:].strip())
-                except ValueError:
-                    current_note["comments"] = 0
-            elif line.startswith("链接:"):
-                current_note["url"] = line[3:].strip()
-            elif line == "---":
-                if current_note:
-                    notes.append(NotePreview(**current_note))
-                    current_note = {}
-        
-        if current_note:
-            notes.append(NotePreview(**current_note))
-        
-        return notes
+    def _parse_count(self, value) -> int:
+        """解析数量值（可能是字符串如 "1.2万"）"""
+        if isinstance(value, int):
+            return value
+        if isinstance(value, str):
+            value = value.strip()
+            if not value:
+                return 0
+            try:
+                if "万" in value:
+                    return int(float(value.replace("万", "")) * 10000)
+                if "亿" in value:
+                    return int(float(value.replace("亿", "")) * 100000000)
+                return int(value)
+            except:
+                return 0
+        return 0
     
-    async def get_note_detail(self, url: str) -> NoteDetail:
+    async def get_note_detail(self, feed_id: str, xsec_token: str) -> NoteDetail:
         """
         获取笔记详情
         
         Args:
-            url: 笔记URL
+            feed_id: 笔记ID
+            xsec_token: 访问令牌
             
         Returns:
             笔记详情
         """
-        result = await self.call_tool("get_note_content", {"url": url})
+        result = await self._post("/api/v1/feeds/detail", {
+            "feed_id": feed_id,
+            "xsec_token": xsec_token
+        })
         
-        if isinstance(result, dict):
+        if result.get("success"):
+            data = result.get("data", {})
             return NoteDetail(
-                title=result.get("title", ""),
-                content=result.get("content", ""),
-                author=result.get("author", ""),
-                images=result.get("imgs", []),
-                videos=result.get("videos", []),
-                tags=result.get("tags", []),
-                likes=result.get("likes", 0),
-                comments=result.get("comments", 0),
-                url=result.get("url", url)
+                title=data.get("title", ""),
+                content=data.get("content", data.get("desc", "")),
+                author=data.get("author", data.get("nickname", "")),
+                images=data.get("images", data.get("imageList", [])),
+                videos=data.get("videos", data.get("videoList", [])),
+                tags=data.get("tags", data.get("hashTags", [])),
+                likes=self._parse_count(data.get("likedCount", data.get("likes", 0))),
+                comments=self._parse_count(data.get("commentCount", data.get("comments", 0))),
+                url=data.get("noteUrl", data.get("url", ""))
             )
         
-        return NoteDetail(url=url)
+        return NoteDetail()
     
     async def get_note_with_detail(
         self, 
@@ -184,24 +168,39 @@ class RedNoteMCPClient(MCPClientBase):
         
         Args:
             preview: 笔记预览
-            delay: 请求延迟（秒），用于速率控制
+            delay: 请求延迟（秒）
             
         Returns:
             笔记完整数据
         """
-        # 速率控制
         if delay > 0:
             await asyncio.sleep(delay)
         
+        detail = None
+        
         try:
-            detail = await self.get_note_detail(preview.url)
-        except Exception as e:
-            # 获取详情失败时，使用预览信息填充
+            feed_id = preview.id
+            xsec_token = preview.xsec_token
+            
+            if feed_id and xsec_token:
+                detail = await self.get_note_detail(feed_id, xsec_token)
+                # 检查是否获取到有效内容
+                if not detail.content and not detail.images:
+                    detail = None
+        except Exception:
+            detail = None
+        
+        # 降级处理：使用预览数据
+        if detail is None:
+            images = [preview.cover_image] if preview.cover_image else []
             detail = NoteDetail(
                 title=preview.title,
                 content=preview.content_preview,
                 author=preview.author,
-                url=preview.url
+                images=images,
+                url=preview.url,
+                likes=preview.likes,
+                comments=preview.comments
             )
         
         return NoteData(preview=preview, detail=detail)
@@ -214,32 +213,14 @@ class RedNoteMCPClient(MCPClientBase):
     ) -> list[NoteData]:
         """
         批量获取笔记详情
-        
-        Args:
-            previews: 笔记预览列表
-            max_concurrent: 最大并发数
-            delay: 每次请求间隔
-            
-        Returns:
-            笔记完整数据列表
         """
-        results = []
-        
-        # 使用信号量控制并发
         semaphore = asyncio.Semaphore(max_concurrent)
         
         async def get_with_limit(preview: NotePreview) -> NoteData:
             async with semaphore:
                 return await self.get_note_with_detail(preview, delay)
         
-        # 并发获取
         tasks = [get_with_limit(p) for p in previews]
         results = await asyncio.gather(*tasks, return_exceptions=True)
         
-        # 过滤错误结果
-        valid_results = []
-        for r in results:
-            if isinstance(r, NoteData):
-                valid_results.append(r)
-        
-        return valid_results
+        return [r for r in results if isinstance(r, NoteData)]
