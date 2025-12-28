@@ -223,23 +223,49 @@
         </div>
       </div>
       
-      <!-- MCP 连通性测试 -->
+      <!-- MCP 连通性测试 & 二维码登录 -->
       <div class="settings-section card">
         <h2 class="section-title">
           🔗 小红书 MCP 连通性
         </h2>
         
-        <p class="form-hint" style="margin-bottom: 16px;">
-          测试 MCP 服务是否正常运行，检查小红书登录状态
-        </p>
+        <!-- 登录状态 -->
+        <div class="login-status" :class="mcpLoginStatus?.is_logged_in ? 'logged-in' : 'logged-out'">
+          <span v-if="mcpLoginStatus?.is_logged_in">
+            ✅ 已登录：{{ mcpLoginStatus.username || '未知用户' }}
+          </span>
+          <span v-else>
+            ⚠️ 未登录小红书
+          </span>
+        </div>
         
-        <button class="btn btn-secondary" @click="testMCP" :disabled="isTestingMCP">
-          <span v-if="isTestingMCP" class="spinner-sm"></span>
-          <span v-else>测试 MCP 连接</span>
-        </button>
+        <div class="mcp-actions">
+          <button class="btn btn-secondary" @click="testMCP" :disabled="isTestingMCP">
+            <span v-if="isTestingMCP" class="spinner-sm"></span>
+            <span v-else>测试连接</span>
+          </button>
+          
+          <button 
+            class="btn btn-primary" 
+            @click="getQRCode" 
+            :disabled="isGettingQRCode || mcpLoginStatus?.is_logged_in"
+          >
+            <span v-if="isGettingQRCode" class="spinner-sm"></span>
+            <span v-else>获取登录二维码</span>
+          </button>
+        </div>
+        
         <span v-if="mcpTestResult" class="test-result" :class="mcpTestResult.success ? 'success' : 'error'">
           {{ mcpTestResult.message }}
         </span>
+        
+        <!-- 二维码显示区域 -->
+        <div v-if="qrCodeData" class="qrcode-container">
+          <img :src="qrCodeData.img" alt="登录二维码" class="qrcode-img" />
+          <p class="qrcode-hint">请使用小红书 App 扫码登录</p>
+          <p class="qrcode-timeout">有效期: {{ qrCodeData.timeout }}</p>
+          <button class="btn btn-link" @click="qrCodeData = null">关闭</button>
+        </div>
       </div>
       
       <!-- 搜索配置 -->
@@ -424,6 +450,10 @@ const testImageGen = async () => {
 // MCP 连通性测试
 const isTestingMCP = ref(false)
 const mcpTestResult = ref<{ success: boolean; message: string } | null>(null)
+const mcpLoginStatus = ref<{ is_logged_in: boolean; username: string } | null>(null)
+const qrCodeData = ref<{ img: string; timeout: string } | null>(null)
+const isGettingQRCode = ref(false)
+let loginPollTimer: number | null = null
 
 const testMCP = async () => {
   isTestingMCP.value = true
@@ -432,6 +462,8 @@ const testMCP = async () => {
   try {
     const response = await axios.post('/api/settings/test-mcp')
     mcpTestResult.value = { success: true, message: response.data.message || 'MCP 连接成功！' }
+    // 刷新登录状态
+    await checkLoginStatus()
   } catch (error: any) {
     const detail = error.response?.data?.detail || 'MCP 连接失败，请检查配置'
     mcpTestResult.value = { success: false, message: detail }
@@ -440,8 +472,71 @@ const testMCP = async () => {
   }
 }
 
+const checkLoginStatus = async () => {
+  try {
+    const response = await axios.get('/api/mcp/login/status')
+    if (response.data.success) {
+      mcpLoginStatus.value = response.data.data
+    }
+  } catch (error) {
+    console.error('获取登录状态失败:', error)
+  }
+}
+
+const getQRCode = async () => {
+  isGettingQRCode.value = true
+  qrCodeData.value = null
+  
+  try {
+    const response = await axios.get('/api/mcp/login/qrcode')
+    if (response.data.success) {
+      const data = response.data.data
+      if (data.is_logged_in) {
+        mcpLoginStatus.value = { is_logged_in: true, username: '' }
+        mcpTestResult.value = { success: true, message: '已登录！' }
+      } else {
+        qrCodeData.value = data
+        // 开始轮询登录状态
+        startLoginPoll()
+      }
+    }
+  } catch (error: any) {
+    const detail = error.response?.data?.detail || '获取二维码失败'
+    mcpTestResult.value = { success: false, message: detail }
+  } finally {
+    isGettingQRCode.value = false
+  }
+}
+
+const startLoginPoll = () => {
+  if (loginPollTimer) {
+    clearInterval(loginPollTimer)
+  }
+  
+  loginPollTimer = window.setInterval(async () => {
+    await checkLoginStatus()
+    if (mcpLoginStatus.value?.is_logged_in) {
+      qrCodeData.value = null
+      mcpTestResult.value = { success: true, message: '登录成功！' }
+      if (loginPollTimer) {
+        clearInterval(loginPollTimer)
+        loginPollTimer = null
+      }
+    }
+  }, 3000)
+  
+  // 4分钟后停止轮询
+  setTimeout(() => {
+    if (loginPollTimer) {
+      clearInterval(loginPollTimer)
+      loginPollTimer = null
+    }
+  }, 240000)
+}
+
 onMounted(() => {
   loadSettings()
+  checkLoginStatus()
 })
 </script>
 
@@ -493,5 +588,69 @@ onMounted(() => {
   border-radius: 50%;
   border-top-color: var(--text-main);
   animation: spin 1s ease-in-out infinite;
+}
+
+/* MCP 登录状态 */
+.login-status {
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+.login-status.logged-in {
+  background: rgba(34, 197, 94, 0.1);
+  color: #22c55e;
+}
+
+.login-status.logged-out {
+  background: rgba(234, 179, 8, 0.1);
+  color: #eab308;
+}
+
+.mcp-actions {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+/* 二维码容器 */
+.qrcode-container {
+  margin-top: 20px;
+  padding: 24px;
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  text-align: center;
+}
+
+.qrcode-img {
+  max-width: 240px;
+  border-radius: 12px;
+  border: 4px solid white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.qrcode-hint {
+  margin-top: 16px;
+  font-size: 15px;
+  color: var(--text-main);
+}
+
+.qrcode-timeout {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.btn-link {
+  background: none;
+  border: none;
+  color: var(--primary);
+  cursor: pointer;
+  margin-top: 12px;
+}
+
+.btn-link:hover {
+  text-decoration: underline;
 }
 </style>

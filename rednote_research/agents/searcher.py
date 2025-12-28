@@ -5,7 +5,7 @@ from typing import Callable, Optional
 from openai import AsyncOpenAI
 from .base import BaseAgent
 from ..state import ResearchState, NoteData
-from ..mcp.rednote import RedNoteMCPClient
+from ..mcp import XiaohongshuHTTPClient
 from ..services.settings import get_settings_service
 
 
@@ -35,7 +35,7 @@ class SearcherAgent(BaseAgent):
     def __init__(
         self, 
         llm_client: AsyncOpenAI, 
-        mcp_client: RedNoteMCPClient,
+        mcp_client: XiaohongshuHTTPClient,
         model: str
     ):
         super().__init__(

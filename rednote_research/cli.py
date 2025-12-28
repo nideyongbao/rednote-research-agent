@@ -11,7 +11,7 @@ from rich.markdown import Markdown
 
 from .config import Config
 from .state import ResearchState
-from .mcp.rednote import RedNoteMCPClient
+from .mcp.xiaohongshu import XiaohongshuMCPClient
 from .agents.orchestrator import ResearchOrchestrator
 from .output.html_generator import HTMLReportGenerator
 
@@ -19,7 +19,7 @@ from .output.html_generator import HTMLReportGenerator
 console = Console()
 
 
-async def run_research(task: str, mcp_path: str, output_dir: str = "./reports"):
+async def run_research(task: str, container_name: str = "xiaohongshu-mcp", output_dir: str = "./reports"):
     """执行研究任务"""
     
     console.print(Panel(f"🔍 研究主题: {task}", style="bold red"))
@@ -27,8 +27,8 @@ async def run_research(task: str, mcp_path: str, output_dir: str = "./reports"):
     # 初始化配置
     config = Config.from_env()
     
-    # 创建MCP客户端
-    mcp_client = RedNoteMCPClient(mcp_path)
+    # 创建MCP客户端（使用 Docker 容器）
+    mcp_client = XiaohongshuMCPClient(container_name=container_name)
     
     # 创建编排器
     orchestrator = ResearchOrchestrator(config, mcp_client)
@@ -92,9 +92,9 @@ def main():
     research_parser = subparsers.add_parser("research", help="执行研究任务")
     research_parser.add_argument("task", help="研究主题")
     research_parser.add_argument(
-        "--mcp", 
-        default=os.getenv("REDNOTE_MCP_PATH", ""),
-        help="rednote-mcp服务器路径"
+        "--container", "-c",
+        default=os.getenv("XIAOHONGSHU_MCP_CONTAINER", "xiaohongshu-mcp"),
+        help="xiaohongshu-mcp 容器名称"
     )
     research_parser.add_argument(
         "--output", "-o",
@@ -110,11 +110,7 @@ def main():
     args = parser.parse_args()
     
     if args.command == "research":
-        if not args.mcp:
-            console.print("[red]错误: 请设置 REDNOTE_MCP_PATH 环境变量或使用 --mcp 参数指定MCP服务器路径[/red]")
-            return 1
-        
-        asyncio.run(run_research(args.task, args.mcp, args.output))
+        asyncio.run(run_research(args.task, args.container, args.output))
         
     elif args.command == "server":
         import uvicorn

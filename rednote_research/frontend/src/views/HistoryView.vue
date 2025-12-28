@@ -82,6 +82,25 @@
       <p>开始一个新的研究任务吧</p>
       <button class="btn btn-primary" @click="goHome">开始研究</button>
     </div>
+    
+    <!-- 删除确认弹窗 -->
+    <div v-if="showDeleteDialog" class="dialog-overlay" @click.self="showDeleteDialog = false">
+      <div class="dialog-box">
+        <div class="dialog-icon">🗑️</div>
+        <h3 class="dialog-title">确认删除？</h3>
+        <p class="dialog-message">
+          删除后将无法恢复，确定要删除这条记录吗？
+        </p>
+        <div class="dialog-actions">
+          <button class="dialog-btn secondary" @click="showDeleteDialog = false">
+            取消
+          </button>
+          <button class="dialog-btn danger" @click="confirmDelete">
+            确认删除
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -111,6 +130,8 @@ const currentPage = ref(1)
 const totalPages = ref(1)
 const pageSize = 10
 const searchKeyword = ref('')
+const showDeleteDialog = ref(false)
+const deleteTargetId = ref('')
 
 const statusText = (status: string) => {
   const statusMap: Record<string, string> = {
@@ -249,8 +270,14 @@ const viewDetail = async (item: HistoryItem) => {
   }
 }
 
-const deleteItem = async (id: string) => {
-  if (!confirm('确定要删除这条记录吗？')) return
+const deleteItem = (id: string) => {
+  deleteTargetId.value = id
+  showDeleteDialog.value = true
+}
+
+const confirmDelete = async () => {
+  showDeleteDialog.value = false
+  const id = deleteTargetId.value
   
   try {
     await axios.delete(`/api/history/${id}`)
@@ -481,5 +508,72 @@ onMounted(() => {
 .empty-state p {
   color: var(--text-secondary);
   margin-bottom: 24px;
+}
+
+/* 确认弹窗 */
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.dialog-box {
+  background: white;
+  border-radius: 20px;
+  padding: 32px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+}
+
+.dialog-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.dialog-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 12px;
+}
+
+.dialog-message {
+  font-size: 15px;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+}
+
+.dialog-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.dialog-btn {
+  padding: 12px 28px;
+  border-radius: 100px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+}
+
+.dialog-btn.secondary {
+  background: #f0f0f0;
+  color: var(--text-main);
+}
+
+.dialog-btn.danger {
+  background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
+  color: white;
 }
 </style>

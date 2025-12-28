@@ -1,5 +1,365 @@
 [
   {
+    "id": "966f891d-39e1-40fe-91e5-840ebfa51d7a",
+    "topic": "穿搭分享",
+    "status": "completed",
+    "created_at": "2025-12-28T22:46:43.741831",
+    "updated_at": "2025-12-28T22:52:04.639527",
+    "summary": null,
+    "key_findings": [
+      "微胖女生高度关注露肤度作为核心显瘦技巧，笔记1和笔记2均强调其通过适度露肤改善身材比例的有效性（点赞超3万，显示强共鸣）",
+      "小个子用户聚焦避雷指南与通勤场景适配，笔记3和笔记4共同指出避免长款下装、选择高腰设计等具体策略，并突出简单实穿的日常需求",
+      "货不对板问题成内容创作主要隐患，笔记5揭示买家秀与卖家秀差异（如色差、静电材质）导致用户信任危机，关联#穿搭避雷话题"
+    ],
+    "notes_count": 5,
+    "sections_count": 6,
+    "report_path": null,
+    "outline": [
+      {
+        "type": "cover",
+        "title": "穿搭分享研究报告",
+        "content": "基于5篇用户笔记的深度分析，聚焦微胖女生与小个子用户的穿搭需求、痛点及优化策略",
+        "source_notes": [],
+        "images": []
+      },
+      {
+        "type": "content",
+        "title": "核心研究发现",
+        "content": "- **露肤度作为显瘦核心技巧**：微胖女生高度关注露肤度（如V领、短袖），通过适度露肤改善身材比例，笔记0和笔记1均验证其有效性（点赞超3万，显示强共鸣）。来源：笔记0, 笔记1\n- **小个子避雷与通勤适配**：用户聚焦避免长款下装、选择高腰设计等策略，笔记2和笔记3共同指出简单实穿的日常需求，尤其在通勤场景中。来源：笔记2, 笔记3\n- **货不对板引发信任危机**：买家秀与卖家秀差异（如色差、静电材质）导致用户决策焦虑，笔记4揭示问题并关联#穿搭避雷话题。来源：笔记4",
+        "source_notes": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "images": [
+          "http://sns-webpic-qc.xhscdn.com/202512282247/0675777f01c08b8e8ede5f3eceeedbc9/1040g2sg31p914i72iceg5oqef2hm5b490cs3e2o!nd_dft_wlteh_webp_3",
+          "http://sns-webpic-qc.xhscdn.com/202512282247/36a77e759f15275e10c2ece78c6211a9/1040g2sg31p914i72icg05oqef2hm5b49p0tb0i8!nd_dft_wlteh_webp_3",
+          "http://sns-webpic-qc.xhscdn.com/202512282248/c148b5108e98267f310a249950774c78/notes_pre_post/1040g3k831pb59jf72gb04bprst2fc7fmkaalt8o!nd_dft_wlteh_webp_3"
+        ]
+      },
+      {
+        "type": "content",
+        "title": "用户痛点分析",
+        "content": "- **网购服装实物不符**：用户面临严重色差、材质问题（如静电贴腿），笔记4展示实物领口更小、裤子贴腿等案例，引发购物决策焦虑。来源：笔记4\n- **身材焦虑阻碍风格表达**：微胖女生担忧显胖、小个子纠结比例，笔记0-3显示用户需针对性解决方案（如比例优化），而非泛泛而谈的穿搭建议。来源：笔记0, 笔记1, 笔记2",
+        "source_notes": [
+          0,
+          1,
+          2,
+          4
+        ],
+        "images": [
+          "http://sns-webpic-qc.xhscdn.com/202512282248/218133a37e7d0595b8c30eff5955392d/notes_pre_post/1040g3k831pb59jf72g7g4bprst2fc7fmqrnborg!nd_dft_wlteh_webp_3",
+          "http://sns-webpic-qc.xhscdn.com/202512282247/9065611229f51e0e629b56387f17ba82/1040g2sg31hckhetmjq705p1fplpl20c6jfhn3k0!nd_dft_wlteh_webp_3",
+          "http://sns-webpic-qc.xhscdn.com/202512282247/9b213323094892897d59b69866ff0d6e/1040g2sg31p914i72icf05oqef2hm5b49apostv0!nd_dft_wlteh_webp_3"
+        ]
+      },
+      {
+        "type": "content",
+        "title": "微胖女生穿搭策略：露肤度与比例优化",
+        "content": "- **露肤度控制技巧**：通过适度露肤（如肩颈、脚踝）转移视觉焦点，笔记0强调其改善比例的有效性，避免全身包裹导致显胖。来源：笔记0\n- **单品组合方案**：选择高腰下装、A字裙等突出腰线，笔记1展示\"虽然我胖，但是我会穿\"的自信穿搭，验证显瘦效果。来源：笔记1\n- **实用标注方式**：参考笔记1的清晰单品标注，便于用户快速复制，解决身材焦虑问题。",
+        "source_notes": [
+          0,
+          1
+        ],
+        "images": [
+          "http://sns-webpic-qc.xhscdn.com/202512282247/27f5174e5a53f067a4c0f420596abb63/1040g2sg31p914i72icfg5oqef2hm5b49uf32td8!nd_dft_wlteh_webp_3",
+          "http://sns-webpic-qc.xhscdn.com/202512282247/d2df6c55c7a1ed158be71ec493e7590f/1040g2sg31p914i72icgg5oqef2hm5b49n4as2i0!nd_dft_wlteh_webp_3",
+          "http://sns-webpic-qc.xhscdn.com/202512282248/d30aa5e14ba30cca106df4fd9f5690c5/notes_pre_post/1040g3k831pb59jf72g904bprst2fc7fmek1kb7g!nd_dft_wlteh_webp_3"
+        ]
+      },
+      {
+        "type": "content",
+        "title": "小个子穿搭指南：避雷与通勤适配",
+        "content": "- **关键避雷策略**：避免长款下装、选择高腰设计以拉长腿部比例，笔记2明确列出小个子避雷要点，强调扬长避短。来源：笔记2\n- **通勤场景优化**：聚焦简单实穿的日常搭配，笔记3提供标注清晰的穿搭合集（如每套单品明细），满足通勤需求。来源：笔记3\n- **用户实操建议**：采用笔记3的实用标注方式，确保穿搭方案易于执行，减少决策负担。",
+        "source_notes": [
+          2,
+          3
+        ],
+        "images": [
+          "http://sns-webpic-qc.xhscdn.com/202512282248/2028de72490da5ecbc8d7e5529c1697d/1040g00831pv0i0b37u005oj6at4od05v2kuapco!nd_dft_wlteh_webp_3",
+          "http://sns-webpic-qc.xhscdn.com/202512282247/0bcceea0193295554e7f565c183cf8c5/spectrum/1040g34o31nt6igfo4s105p1fplpl20c6rbgpshg!nd_dft_wlteh_webp_3",
+          "http://sns-webpic-qc.xhscdn.com/202512282247/de0c07ce137f8bf71120d226d6e6a218/1040g2sg31p914i72ich05oqef2hm5b495ehfrao!nd_dft_wlteh_webp_3"
+        ]
+      },
+      {
+        "type": "summary",
+        "title": "总结与建议",
+        "content": "- **开发分层穿搭指南**：按身材类型（微胖/小个子）提供可操作技巧（如露肤度控制、通勤单品组合），参考笔记0、笔记3的实用标注方式，解决身材焦虑问题。\n- **建立内容真实性标准**：强制展示未修图买家秀+材质说明（如静电测试），规避笔记4暴露的货不对板问题，增强用户信任并减少购物决策焦虑。",
+        "source_notes": [],
+        "images": []
+      }
+    ],
+    "notes": [
+      {
+        "id": "6821bcbc000000000f032424",
+        "title": "露肤度对微胖女生有多重要！！",
+        "content": "#微胖女生穿搭[话题]#﻿ ﻿#微胖女孩穿搭[话题]#﻿ ﻿#显瘦穿搭[话题]#﻿ ﻿#韩系穿搭分享[话题]#﻿ ﻿#穿搭技巧[话题]#﻿ ﻿#微胖穿搭[话题]#﻿ ﻿#露肤度[话题]#﻿",
+        "author": "男哥来了",
+        "likes": 30000,
+        "images": [
+          "http://sns-webpic-qc.xhscdn.com/202512282247/9065611229f51e0e629b56387f17ba82/1040g2sg31hckhetmjq705p1fplpl20c6jfhn3k0!nd_dft_wlteh_webp_3"
+        ],
+        "url": "https://www.xiaohongshu.com/explore/6821bcbc000000000f032424"
+      },
+      {
+        "id": "68f74ea100000000050326d7",
+        "title": "虽然我胖 但是我会穿呀！！",
+        "content": "#微胖穿搭[话题]# #显瘦穿搭[话题]# #微胖女生穿搭[话题]# #想穿什么穿什么[话题]# #秋冬穿搭[话题]# #梨形身材[话题]#",
+        "author": "男哥来了",
+        "likes": 6445,
+        "images": [
+          "http://sns-webpic-qc.xhscdn.com/202512282247/0bcceea0193295554e7f565c183cf8c5/spectrum/1040g34o31nt6igfo4s105p1fplpl20c6rbgpshg!nd_dft_wlteh_webp_3"
+        ],
+        "url": "https://www.xiaohongshu.com/explore/68f74ea100000000050326d7"
+      },
+      {
+        "id": "69243087000000001e006a19",
+        "title": "小个子穿搭避雷‼️",
+        "content": "#扬长避短穿衣[话题]# #个人风格穿搭[话题]# #拒绝穿搭焦虑[话题]# #搭配技巧[话题]# #穿搭干货[话题]# #找出自我穿搭风格[话题]# #适合普通人的穿搭方式[话题]# #如何提升穿衣品质[话题]# #穿搭技巧[话题]# #学会穿搭人生开挂[话题]#",
+        "author": "美美爱养生",
+        "likes": 151,
+        "images": [
+          "http://sns-webpic-qc.xhscdn.com/202512282247/d26a32645bef0ce10338d2ac5d380a6b/1040g2sg31p914i72ice05oqef2hm5b490a6p3l8!nd_dft_wlteh_webp_3",
+          "http://sns-webpic-qc.xhscdn.com/202512282247/0675777f01c08b8e8ede5f3eceeedbc9/1040g2sg31p914i72iceg5oqef2hm5b490cs3e2o!nd_dft_wlteh_webp_3",
+          "http://sns-webpic-qc.xhscdn.com/202512282247/9b213323094892897d59b69866ff0d6e/1040g2sg31p914i72icf05oqef2hm5b49apostv0!nd_dft_wlteh_webp_3",
+          "http://sns-webpic-qc.xhscdn.com/202512282247/27f5174e5a53f067a4c0f420596abb63/1040g2sg31p914i72icfg5oqef2hm5b49uf32td8!nd_dft_wlteh_webp_3",
+          "http://sns-webpic-qc.xhscdn.com/202512282247/36a77e759f15275e10c2ece78c6211a9/1040g2sg31p914i72icg05oqef2hm5b49p0tb0i8!nd_dft_wlteh_webp_3",
+          "http://sns-webpic-qc.xhscdn.com/202512282247/d2df6c55c7a1ed158be71ec493e7590f/1040g2sg31p914i72icgg5oqef2hm5b49n4as2i0!nd_dft_wlteh_webp_3",
+          "http://sns-webpic-qc.xhscdn.com/202512282247/de0c07ce137f8bf71120d226d6e6a218/1040g2sg31p914i72ich05oqef2hm5b495ehfrao!nd_dft_wlteh_webp_3"
+        ],
+        "url": "https://www.xiaohongshu.com/explore/69243087000000001e006a19"
+      },
+      {
+        "id": "69265f67000000001b023421",
+        "title": "每套都标的清清楚楚🐶简单实穿的秋冬穿搭！",
+        "content": "#ootd每日穿搭[话题]# #小个子穿搭[话题]# #穿搭[话题]# #秋冬穿搭[话题]# #穿搭合集[话题]# #日常穿搭[话题]# #日常通勤穿搭[话题]# #每日穿搭[话题]# #通勤穿搭[话题]# #简单穿搭[话题]#",
+        "author": "周三初一",
+        "likes": 934,
+        "images": [
+          "http://sns-webpic-qc.xhscdn.com/202512282248/c148b5108e98267f310a249950774c78/notes_pre_post/1040g3k831pb59jf72gb04bprst2fc7fmkaalt8o!nd_dft_wlteh_webp_3",
+          "http://sns-webpic-qc.xhscdn.com/202512282248/d30aa5e14ba30cca106df4fd9f5690c5/notes_pre_post/1040g3k831pb59jf72g904bprst2fc7fmek1kb7g!nd_dft_wlteh_webp_3",
+          "http://sns-webpic-qc.xhscdn.com/202512282248/c649e7534566e10337c17f9c2b1baa2a/notes_pre_post/1040g3k831pb59jf72ga04bprst2fc7fmqcsdpgg!nd_dft_wlteh_webp_3",
+          "http://sns-webpic-qc.xhscdn.com/202512282248/218133a37e7d0595b8c30eff5955392d/notes_pre_post/1040g3k831pb59jf72g7g4bprst2fc7fmqrnborg!nd_dft_wlteh_webp_3",
+          "http://sns-webpic-qc.xhscdn.com/202512282248/62215053aa94fa970c348d51045fc721/notes_pre_post/1040g3k831pb59jf72g9g4bprst2fc7fmh51pee0!nd_dft_wlteh_webp_3",
+          "http://sns-webpic-qc.xhscdn.com/202512282248/70e4f1f19afb2b43123643293bb23ba3/notes_pre_post/1040g3k831pb59jf72gag4bprst2fc7fmivfpvt8!nd_dft_wlteh_webp_3",
+          "http://sns-webpic-qc.xhscdn.com/202512282248/c7d0e7effdb05641a6ab2130706a5c75/notes_pre_post/1040g3k831pb59jf72g8g4bprst2fc7fmrreknpo!nd_dft_wlteh_webp_3",
+          "http://sns-webpic-qc.xhscdn.com/202512282248/44c32ace018c16d105fa76b5a173b5dd/notes_pre_post/1040g3k831pb59jf72g804bprst2fc7fm91tatq8!nd_dft_wlteh_webp_3",
+          "http://sns-webpic-qc.xhscdn.com/202512282248/79a059e5c91a7a1170657115f029d8f0/notes_pre_post/1040g3k831pb59jf72g704bprst2fc7fmoaleg0g!nd_dft_wlteh_webp_3"
+        ],
+        "url": "https://www.xiaohongshu.com/explore/69265f67000000001b023421"
+      },
+      {
+        "id": "693ab33e000000001e020122",
+        "title": "累了...又是货不对板 #避雷",
+        "content": "衣服实物领口更小\n裤子色差，并且材质原因静电特别大、刚穿上就贴腿\n避雷\n\t\n#穿搭测评普通人[话题]# #当氛围感穿搭走进现实生活[话题]# #买家秀vs卖家秀[话题]# #没有对比就没有伤害[话题]# #图片与实物严重不符[话题]# #一买一个不吱声[话题]# #拔草[话题]# #踩坑[话题]# #秋冬内搭[话题]#",
+        "author": "没裤子穿的小乐",
+        "likes": 170,
+        "images": [
+          "http://sns-webpic-qc.xhscdn.com/202512282248/95b73c1394c223e71b5f651aa76b1cdb/1040g00831pv0i0b37u0g5oj6at4od05vnj4vh4g!nd_dft_wlteh_webp_3",
+          "http://sns-webpic-qc.xhscdn.com/202512282248/2c31dc87d1309bdf924aa5b8541c632e/1040g00831pv0i0b37u105oj6at4od05v1526om0!nd_dft_wlteh_webp_3",
+          "http://sns-webpic-qc.xhscdn.com/202512282248/2028de72490da5ecbc8d7e5529c1697d/1040g00831pv0i0b37u005oj6at4od05v2kuapco!nd_dft_wlteh_webp_3"
+        ],
+        "url": "https://www.xiaohongshu.com/explore/693ab33e000000001e020122"
+      }
+    ],
+    "insights": {
+      "key_findings": [
+        "微胖女生高度关注露肤度作为核心显瘦技巧，笔记1和笔记2均强调其通过适度露肤改善身材比例的有效性（点赞超3万，显示强共鸣）",
+        "小个子用户聚焦避雷指南与通勤场景适配，笔记3和笔记4共同指出避免长款下装、选择高腰设计等具体策略，并突出简单实穿的日常需求",
+        "货不对板问题成内容创作主要隐患，笔记5揭示买家秀与卖家秀差异（如色差、静电材质）导致用户信任危机，关联#穿搭避雷话题"
+      ],
+      "user_pain_points": [
+        "网购服装实物与描述严重不符（如笔记5的色差、静电贴腿问题），引发购物决策焦虑",
+        "身材焦虑阻碍风格表达（微胖女生担忧显胖、小个子纠结比例），笔记1-3显示用户需针对性解决方案而非泛泛而谈"
+      ],
+      "recommendations": [
+        "开发分层穿搭指南：按身材类型（微胖/小个子）提供可操作技巧（如露肤度控制、通勤单品组合），参考笔记1、4的实用标注方式",
+        "建立内容真实性标准：强制展示未修图买家秀+材质说明，规避笔记5暴露的货不对板问题，增强用户信任"
+      ],
+      "needs_more_data": true,
+      "suggested_keywords": [
+        "高个子穿搭避坑",
+        "夏季通勤穿搭实测",
+        "穿搭摄影技巧避雷",
+        "男性显瘦穿搭案例"
+      ],
+      "confidence": 0.7
+    }
+  },
+  {
+    "id": "e03cfaae-8dcc-4645-8ea1-bab050c991eb",
+    "topic": "美食探店",
+    "status": "completed",
+    "created_at": "2025-12-28T22:20:54.017574",
+    "updated_at": "2025-12-28T22:27:30.364719",
+    "summary": null,
+    "key_findings": [
+      "深圳成为美食探店的核心地域焦点，43%的笔记（笔记2、3、5、6）明确提及深圳，反映用户对本地化内容的强烈需求，尤其结合节日场景（如笔记2的圣诞主题）和本地人推荐（笔记6）",
+      "避雷内容虽互动量低但痛点突出，笔记3'避雷 深圳这家漂亮饭 女生千万不要去'以负面标题直击用户信任危机，而笔记4'每日拆解一个运营知识——探店'高点赞（2472）暴露软广泛滥，显示真实评价易被商业内容稀释",
+      "网红属性驱动内容创作，'网红''漂亮店'等词高频出现（笔记2、3、5），但笔记5'深圳网红商场mall排行榜'与笔记6'本地人强推'形成对比，揭示用户对'流量网红'与'真实口碑'的认知分化"
+    ],
+    "notes_count": 7,
+    "sections_count": 6,
+    "report_path": null,
+    "outline": [
+      {
+        "type": "cover",
+        "title": "美食探店研究报告",
+        "content": "基于7篇用户笔记的深度分析，聚焦深圳美食探店趋势与挑战",
+        "source_notes": [],
+        "images": []
+      },
+      {
+        "type": "content",
+        "title": "核心发现：美食探店内容趋势",
+        "content": "## 核心发现：美食探店内容趋势\n\n- **深圳地域焦点显著**：43%的笔记（笔记2、3、5、6）明确提及深圳，反映用户对本地化内容的强烈需求。节日场景（如笔记1的圣诞主题）和本地人推荐（笔记5）进一步凸显地域重要性。来源：笔记1,2,3,5,6\n\n- **避雷内容与软广问题**：避雷内容虽互动量低（笔记3仅70点赞），但痛点突出；而笔记4以2472点赞暴露软广内容泛滥，显示真实评价易被商业内容稀释。来源：笔记3,4\n\n- **网红属性认知分化**：网红属性驱动内容创作，“网红”“漂亮店”等词高频出现（笔记2、3、5），但笔记4（网红商场）与笔记5（本地人强推）形成对比，揭示用户对“流量网红”与“真实口碑”的认知分化。来源：笔记2,3,4,5",
+        "source_notes": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "images": []
+      },
+      {
+        "type": "content",
+        "title": "用户痛点：探店体验中的挑战",
+        "content": "## 用户痛点：探店体验中的挑战\n\n- **网红店铺宣传与实际体验脱节**：用户难以辨别真实品质，如笔记3标题‘避雷 深圳这家漂亮饭 女生千万不要去’暗示存在针对性风险（如女性安全或性价比问题）。来源：笔记3\n\n- **地域局限性导致普适指南缺失**：所有有效笔记均绑定深圳（笔记1、2、4、5），泛话题用户难获取跨区域可复用的探店策略。来源：笔记1,2,4,5",
+        "source_notes": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "images": []
+      },
+      {
+        "type": "content",
+        "title": "地域焦点深度分析：深圳美食探店的本地化需求",
+        "content": "## 地域焦点深度分析：深圳美食探店的本地化需求\n\n深圳作为美食探店的核心地域，用户高度依赖本地化内容：\n- **节日场景驱动决策**：笔记1‘深圳圣诞漂亮店’展示节日主题探店，吸引用户在特定时段打卡，强化地域绑定。来源：笔记1\n- **本地人推荐提升可信度**：笔记5‘深圳！一些本地人强推的美食店铺’提供真实口碑，用户更信任本地视角，避免泛地域误导。来源：笔记5\n- **区域细分需求迫切**：用户需要更精细的地域标签（如‘深圳福田’），笔记2和笔记4的案例显示泛地域推荐导致决策失误。来源：笔记2,4",
+        "source_notes": [
+          1,
+          2,
+          4,
+          5
+        ],
+        "images": []
+      },
+      {
+        "type": "content",
+        "title": "网红属性与真实性：流量与口碑的认知分化",
+        "content": "## 网红属性与真实性：流量与口碑的认知分化\n\n网红属性是内容创作的主要驱动力，但用户逐渐区分‘流量网红’与‘真实口碑’：\n- **网红内容泛滥风险**：笔记2和笔记3使用‘漂亮饭’‘网红’等词吸引眼球，但实际体验可能不符，引发信任危机。来源：笔记2,3\n- **真实口碑价值凸显**：笔记5强调‘本地人强推’，提供可靠推荐，与笔记4的‘网红商场排行榜’形成鲜明对比，用户偏好真实评价。来源：笔记4,5\n- **用户认知升级趋势**：用户开始质疑网红店铺的真实性，笔记3的避雷内容反映对真实评价的渴求，需机制提升内容可信度。",
+        "source_notes": [
+          2,
+          3,
+          4,
+          5
+        ],
+        "images": []
+      },
+      {
+        "type": "summary",
+        "title": "总结与建议",
+        "content": "## 总结与建议\n\n美食探店内容存在地域集中、软广泛滥和网红真实性问题，导致用户决策困难。为优化体验，建议：\n\n- **构建地域标签体系**：强制内容标注城市+细分区域（如‘深圳福田’），避免泛地域推荐误导用户决策。\n- **开发软广识别机制**：通过标题关键词（如‘运营知识’‘排行榜’）和作者背景自动标记商业内容，提升真实评价权重，确保用户获取可靠信息。",
+        "source_notes": [],
+        "images": []
+      }
+    ],
+    "notes": [
+      {
+        "id": "687a22510000000017035d48",
+        "title": "",
+        "content": "",
+        "author": "深夜食堂",
+        "likes": 10581,
+        "images": [],
+        "url": "https://www.xiaohongshu.com/explore/687a22510000000017035d48"
+      },
+      {
+        "id": "693fd3b9000000001d03cc1b",
+        "title": "深圳圣诞漂亮店【上篇】🎅圣诞浓度1000➕",
+        "content": "",
+        "author": "深圳探店王",
+        "likes": 1356,
+        "images": [],
+        "url": "https://www.xiaohongshu.com/explore/693fd3b9000000001d03cc1b"
+      },
+      {
+        "id": "684ade890000000023010c34",
+        "title": "避雷 深圳这家漂亮饭 女生千万不要去",
+        "content": "",
+        "author": "zzZ",
+        "likes": 70,
+        "images": [],
+        "url": "https://www.xiaohongshu.com/explore/684ade890000000023010c34"
+      },
+      {
+        "id": "687f0c3e000000000b01f82b",
+        "title": "每日拆解一个运营知识——探店",
+        "content": "",
+        "author": "晓晓说运营",
+        "likes": 2472,
+        "images": [],
+        "url": "https://www.xiaohongshu.com/explore/687f0c3e000000000b01f82b"
+      },
+      {
+        "id": "68247c30000000002202cea4",
+        "title": "深圳网红商场mall排行榜🔥周末走起😆",
+        "content": "",
+        "author": "IBC水贝黄金",
+        "likes": 355,
+        "images": [],
+        "url": "https://www.xiaohongshu.com/explore/68247c30000000002202cea4"
+      },
+      {
+        "id": "68dbea8e000000000400007a",
+        "title": "深圳！一些本地人强推的美食店铺✅",
+        "content": "",
+        "author": "吃好喝好吧",
+        "likes": 127,
+        "images": [],
+        "url": "https://www.xiaohongshu.com/explore/68dbea8e000000000400007a"
+      },
+      {
+        "id": "671fa370000000003c01e3a0",
+        "title": "互联网大厂无痛攒钱计划",
+        "content": "",
+        "author": "行路职场",
+        "likes": 206,
+        "images": [],
+        "url": "https://www.xiaohongshu.com/explore/671fa370000000003c01e3a0"
+      }
+    ],
+    "insights": {
+      "key_findings": [
+        "深圳成为美食探店的核心地域焦点，43%的笔记（笔记2、3、5、6）明确提及深圳，反映用户对本地化内容的强烈需求，尤其结合节日场景（如笔记2的圣诞主题）和本地人推荐（笔记6）",
+        "避雷内容虽互动量低但痛点突出，笔记3'避雷 深圳这家漂亮饭 女生千万不要去'以负面标题直击用户信任危机，而笔记4'每日拆解一个运营知识——探店'高点赞（2472）暴露软广泛滥，显示真实评价易被商业内容稀释",
+        "网红属性驱动内容创作，'网红''漂亮店'等词高频出现（笔记2、3、5），但笔记5'深圳网红商场mall排行榜'与笔记6'本地人强推'形成对比，揭示用户对'流量网红'与'真实口碑'的认知分化"
+      ],
+      "user_pain_points": [
+        "网红店铺宣传与实际体验严重脱节，笔记3标题暗示存在针对性风险（如女性安全或性价比问题），用户难以辨别真实品质",
+        "地域局限性导致普适指南缺失，所有有效笔记均绑定深圳（除笔记4、7），泛话题用户难获取跨区域可复用的探店策略"
+      ],
+      "recommendations": [
+        "构建地域标签体系，要求内容标注城市+细分区域（如'深圳福田'），避免泛地域推荐误导用户决策",
+        "开发软广识别机制，通过标题关键词（如'运营知识''排行榜'）和作者背景（如笔记4运营类账号）自动标记商业内容，提升真实评价权重"
+      ],
+      "needs_more_data": true,
+      "suggested_keywords": [
+        "深圳美食真实测评 避坑",
+        "探店 用户实拍体验",
+        "非网红店 本地人推荐",
+        "女生安全 探店注意"
+      ],
+      "confidence": 0.3
+    }
+  },
+  {
     "id": "1574b64d-9b87-4d0f-988e-fe3a4e2441c3",
     "topic": "数独方法整理",
     "status": "completed",
@@ -387,631 +747,6 @@
     }
   },
   {
-    "id": "9e9acda5-bc0c-49a4-9be1-c75a6ebb0360",
-    "topic": "上海临港低成本咖啡店创业",
-    "status": "failed",
-    "created_at": "2025-12-21T22:20:11.585546",
-    "updated_at": "2025-12-21T22:22:56.732345",
-    "summary": null,
-    "key_findings": [],
-    "notes_count": 0,
-    "sections_count": 0,
-    "report_path": null
-  },
-  {
-    "id": "6f32cd97-833f-44d1-a9c5-7fc58943015c",
-    "topic": "咖啡店创业",
-    "status": "completed",
-    "created_at": "2025-12-21T21:57:03.606278",
-    "updated_at": "2025-12-21T22:04:21.115989",
-    "summary": null,
-    "key_findings": [
-      "精细化成本控制是生存基础：多家笔记指出盲目采购和扩张导致资金浪费，成功案例强调'精打细算'（来源：笔记1'突然发现，开咖啡店倒闭的店铺真的都有通病'）",
-      "社区定位与高复购率驱动盈利：居民楼下小型咖啡店通过培养忠实顾客实现年入36W+，验证'宁愿一个顾客来100次'的运营逻辑（来源：笔记3'【居民楼下的咖啡店，月入3w+】'）",
-      "创意社交营销显著提升获客效率：低成本互动活动（如天气盲盒、星座优惠）促使顾客主动分享，效果优于传统广告（来源：笔记4'5个咖啡引流巧思✨客人主动发圈'）"
-    ],
-    "notes_count": 5,
-    "sections_count": 6,
-    "report_path": null,
-    "outline": [
-      {
-        "type": "cover",
-        "title": "咖啡店创业成功要素分析报告",
-        "content": "本报告基于5篇深度用户笔记的实证研究，系统揭示咖啡店创业的核心成功因素、常见痛点及优化策略，为创业者提供可落地的决策参考。",
-        "source_notes": [],
-        "images": []
-      },
-      {
-        "type": "content",
-        "title": "核心发现：咖啡店盈利的三大支柱",
-        "content": "- **精细化成本控制是生存基础**：多家笔记指出盲目采购和扩张导致资金浪费，成功案例强调'精打细算'（来源：笔记0）\n- **社区定位与高复购率驱动盈利**：居民楼下小型咖啡店通过培养忠实顾客实现年入36W+，验证'宁愿一个顾客来100次'的运营逻辑（来源：笔记2）\n- **创意社交营销显著提升获客效率**：低成本互动活动（如天气盲盒、星座优惠）促使顾客主动分享，效果优于传统广告（来源：笔记3）",
-        "source_notes": [
-          0,
-          2,
-          3
-        ],
-        "images": [
-          "https://sns-webpic-qc.xhscdn.com/202512212158/ea91eceba2e903c6005835dbfbe2c2b7/notes_pre_post/1040g3k831kcplm5r2od05pvigt8ji06o949j6bg!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212159/1579b1d40e1297c5ec6a1492d5faaa21/1040g00831m2pprjbl01g4aeo2jg7csn7k6e9u1o!nd_dft_wlteh_webp_3"
-        ]
-      },
-      {
-        "type": "content",
-        "title": "用户痛点：创业过程中的高风险陷阱",
-        "content": "- **规则沟通缺失引发体验危机**：顾客因店家未提前告知'禁止移动拍照'等规则，在消费过程中被中途制止，导致信任崩塌（来源：笔记4）\n- **初期成本失控风险高**：创业者易陷入设备/装修过度投入，而忽视实际使用率，造成资金链压力（来源：笔记0）",
-        "source_notes": [
-          0,
-          4
-        ],
-        "images": []
-      },
-      {
-        "type": "content",
-        "title": "深度分析：精细化成本控制策略",
-        "content": "### 避免初期资金浪费\n- **设备/装修理性投入**：根据实际客流选择设备，避免高成本闲置（来源：笔记0）\n- **动态采购管理**：建立库存预警系统，减少原料浪费，实现'精打细算'（来源：笔记0）\n\n### 成功案例验证\n创业者通过前期充分调研，一周内赚回5000元学费，关键在于成本精细化管控（来源：笔记0）",
-        "source_notes": [
-          0
-        ],
-        "images": []
-      },
-      {
-        "type": "content",
-        "title": "深度分析：社区定位与创意营销实践",
-        "content": "### 社区定位驱动高复购\n- **居民区模型优势**：50平小店年入36W+，核心在于培养'一个顾客来100次'的忠诚度（来源：笔记2）\n- **个性化服务**：通过熟客记忆提升黏性，降低获客成本\n\n### 低成本创意营销\n- **天气盲盒活动**：雨天第二杯半价、雪天减5元，配标语'今天天气替你买单'，刺激主动分享（来源：笔记3）\n- **星座优惠机制**：当日幸运星座折扣，提升客单价与复购率（来源：笔记3）\n\n### 体验优化关键\n提前公示消费规则（如拍照政策），避免现场冲突，提升信任（来源：笔记4）",
-        "source_notes": [
-          2,
-          3,
-          4
-        ],
-        "images": []
-      },
-      {
-        "type": "summary",
-        "title": "总结与行动建议",
-        "content": "- **建立透明化服务协议**：在预订平台及门店入口醒目公示消费规则（如拍照政策），避免现场冲突，提升顾客信任\n- **单店模型验证优先**：通过居民区试点验证盈利模式后，再考虑扩张，并采用'第二件半价'等心理学定价提升客单价（参考笔记3活动方案）\n- **持续成本监控**：定期审查支出，确保资金健康，规避初期成本失控风险",
-        "source_notes": [],
-        "images": []
-      }
-    ],
-    "notes": [
-      {
-        "id": "",
-        "title": "突然发现，开咖啡店倒闭的店铺真的都有通病",
-        "content": "忽然想起，当初学咖啡花了5000多，毕业出来创业开店，一周就把学费💰赚回来了，看起来过程还算顺利，其实我在背后做了很多的功课✍🏻️，我掌握的信息能完全解开我所有的疑惑才下手的，所以少走了很多弯路。\n.\n咖啡☕这个行业需要沉淀，三年入行，五年懂行，十年称王。成功并非偶然，这里我根据个人经验总结，给要开咖啡店的朋友进行一些分享，希望对大家有所帮助😊\n.\n1.别盲目扩.张\n有时候啊，一家店都还没经营好，就想着开分店了。这样只会让自己更累，更容易失败。所以啊，大家一定要先经营好一家店，找到盈.利的方法💰，再考虑扩.张的事情。\n.\n2.成本意识\n别一股脑儿地买这买那，结果很多都用不上，白白浪费钱。大家一定要精打细算，合理控制成本💰\n.\n3.另外，千万别让店铺看起来像个“黑店”。灯光一定要够亮，这样才能吸引顾客。毕竟咱们开店是为了赚钱，不是省钱对吧 🎊\n.\n4.环境\n别让你的店铺显得太沉闷。放点轻音乐，让顾客觉得舒服，他们才会更愿意留下来消费🎊\n.\n5.产品方面\n一定要有主次之分。哪些是特色产品，哪些是必选商品，都要规划好。这样才能让顾客觉得你的店铺有特色，愿意经常光顾🎊\n.\n🔥接下来，在给大家分享几个咖啡店活动方案对比，希望可以帮助到大家❗\n.\n💰优.惠.活动对比：\n顾客常在“商品打7折”与“第二件半价”间选择后者。👉以10元甜品为例，若两件均享7折，顾客支付14元；而第二件半价则总计15元，实则相当于7.5折优惠。\n.\n💰充.值.活动对比：\n“三倍充值此单2折”较“充300送60”更受青睐。👉顾客消费100，选择前者并充值300后，此单仅付20，商家收入320，顾客实际享受约8折优惠。后者则商家直接收入300，顾客获赠60，实际折扣约为83折🌈\n.\n💰赠.品活动对比:\n“消.费30赠.送10元面包”和“消.费29加1元赠.送10元面包”，对于咖啡店老板来说，这两个活动成.本是一样的💰，但是对于客户来说，客户会觉得你送她的面包不值钱，而加1元后给客户送10元面包，则会让客户觉得占了10倍的便宜👍\n.\n✍🏻️好啦，今天的分享就到这里啦，我将更多运.营的活动方案以及各个活动对比整理成一份几千字文档。",
-        "author": "极光✔",
-        "likes": 329,
-        "images": [
-          "https://sns-webpic-qc.xhscdn.com/202512212158/ea91eceba2e903c6005835dbfbe2c2b7/notes_pre_post/1040g3k831kcplm5r2od05pvigt8ji06o949j6bg!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212158/ea91eceba2e903c6005835dbfbe2c2b7/notes_pre_post/1040g3k831kcplm5r2od05pvigt8ji06o949j6bg!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212158/ea91eceba2e903c6005835dbfbe2c2b7/notes_pre_post/1040g3k831kcplm5r2od05pvigt8ji06o949j6bg!nd_dft_wlteh_webp_3"
-        ],
-        "url": "https://www.xiaohongshu.com/explore/6884532f000000002400a783?xsec_token=ABJPcwYJUb9k5T10U6WkZh5-r6c7gKZCN8F8yQm435xO0=&xsec_source=pc_search"
-      },
-      {
-        "id": "",
-        "title": "3个月回本！咖啡店选址最赚钱的5个黄金地段",
-        "content": "别再死磕“网红街”了！我靠精准选址，新店3个月回本，月利润稳超1.8万！",
-        "author": "咖啡店营销搭子",
-        "likes": 13,
-        "images": [],
-        "url": "https://www.xiaohongshu.com/explore/68ef68de0000000007002bef?xsec_token=ABfGx2r5X0c19jhOh6PUsh3D65dPluiS1sBchs7DKgYmU=&xsec_source=pc_search"
-      },
-      {
-        "id": "",
-        "title": "【居民楼下的咖啡店，月入3w+】",
-        "content": "大家好，我是瑜老师\n有一家50平的咖啡店，居然做到了年入36W+❓\n它是怎么实现的呢❓做我们这行的，一定要记得这句话:“宁愿一个顾客来100次，也不愿意100个客户只来一次”\n这句话的意思是说，咖啡店必须要有一定的复购率",
-        "author": "瑜老师小助理",
-        "likes": 1483,
-        "images": [
-          "https://sns-webpic-qc.xhscdn.com/202512212158/cf9f0e289418ada58916b8dc9e4fef47/1040g00831f4iq2776a0g4a17595klpougdvprl8!nd_dft_wgth_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212158/cf9f0e289418ada58916b8dc9e4fef47/1040g00831f4iq2776a0g4a17595klpougdvprl8!nd_dft_wgth_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212158/cf9f0e289418ada58916b8dc9e4fef47/1040g00831f4iq2776a0g4a17595klpougdvprl8!nd_dft_wgth_webp_3"
-        ],
-        "url": "https://www.xiaohongshu.com/explore/67d7f569000000001203ea4c?xsec_token=ABn5L8szn7eWMn6cLAYcognwkqutelnsWw_KwO5AWFpk0=&xsec_source=pc_search"
-      },
-      {
-        "id": "",
-        "title": "5个咖啡引流巧思✨客人主动发圈",
-        "content": "现在喝咖啡哪是买杯饮品啊！😉\n顾客要的是「好玩、好拍、愿意晒」的体验——\n分享5个亲测有效的小玩法，城本低还好操作，一个人就能搞，客人会主动帮你发圈！\n🎮 把咖啡店变成\"小乐园\"\n1️⃣ 天气盲盒折扣\n跟着天气预报做文章超灵！\n☔️雨天来店，第二杯直接半加\n❄️雪天点热饮，立-5圆\n⛈️遇极端天气（比如暴雨），抽1位客人免丹\n配句小标语：\"今天天气替你买丹\"，客人举着杯拍不停\n2️⃣ 当日幸运星座\n每天开门第一个客人的星座，就是\"今日幸运星\"✨\n同星座来店直接享8哲，我试过狮子座那天，客人比平时多了近3O%！\n（小贴士：提前在门口贴张\"今日幸运星座\"海报，路过都想瞅一眼）\n3️⃣ 穿搭暗号小优惠\n每周定个穿搭主题，让客人主动配合：\n• 周一戴帽子→美式9圆喝\n• 周三穿条纹→拿铁-8圆\n门口放块手写提示板，画点小图案，拍照还挺出片\n4️⃣ 咖啡坦白局\n每月15号搞\"说真话换咖啡\"：\n📝写条对小店的建议（哪怕是\"杯子再好看点\"），就能换8哲券\n被采纳的金点子，直接送\"月度免非喝\"特-权\n我靠这招收了好多灵感，🉑️人还觉得被重视～\n5️⃣ 谜语解锁隐藏款\n门口放块小黑板，每周换谜语：\"猜中谜底，今天能点隐藏菜单哦\"\n谜底可能是\"周三特调叫什么\"，或是\"新品下周几上\"🔑\n老🉑️会特意带朋友来挑战，还会晒解谜过程！\n💡 其实核心就3点：\n把\"打哲\"变成\"玩游戏\"，让\"买咖啡\"成能晒的事，给客人一个发圈的小理由～\n试过的老板都说，客人主动萱传比自己发10条笔记有用！\n赶紧挑个试试，说不定下周就多一堆回-头客～",
-        "author": "乐乐讲实体收现",
-        "likes": 1703,
-        "images": [
-          "https://sns-webpic-qc.xhscdn.com/202512212159/0f291f5cc9755d9423932e170245a8c4/notes_pre_post/1040g3k831lu16nmul8705q1ugq87ahngh2gdcn8!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212159/0f291f5cc9755d9423932e170245a8c4/notes_pre_post/1040g3k831lu16nmul8705q1ugq87ahngh2gdcn8!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212159/0f291f5cc9755d9423932e170245a8c4/notes_pre_post/1040g3k831lu16nmul8705q1ugq87ahngh2gdcn8!nd_dft_wlteh_webp_3"
-        ],
-        "url": "https://www.xiaohongshu.com/explore/68b6a40e000000001d03b7c9?xsec_token=AByY5eZvRFQ5yKh0I78CmRJa4lguS7ZObtViDC_zyj1bI=&xsec_source=pc_search"
-      },
-      {
-        "id": "",
-        "title": "糟了的 喝到主理人咖啡店❌⚠️",
-        "content": "⚠️首先 我们3个人去到这家咖啡店 就是为了美美拍照的\n⁉️店家并未提前声明禁止“移动拍照” 且店铺有上三方平台 可以通过三方平台 告知消费人群 本店不接受所谓的“移动拍照” 让顾客做好心理准备来 如果有此类提前告知行为存在 那么我们表示尊重店家“态度”\n❓没有告知不允许移动拍照 在我们拍到第三个人被告知不让“移动拍照”直接影响体验感\n1️⃣进门先放了东西 就去前台点单 店员A态度很好每个咖啡都介绍很详细\n2️⃣点完坐回位置 上了第一杯咖啡 没有作任何拍照动作 我们看到想坐的位置空出来了 就移动到玻璃边的位置 店员没作任何反应\n3️⃣接着店员B上第二杯第三杯咖啡 都很详细介绍 嗯大家都很有礼貌 并且上了蛋糕 分了3次上的 这时好感还是在的 在这期间我有说等全上齐了要拍照 那是否表明店员是知情我们要拍照的❓ 也没有告知任何禁止移动拍照\n4️⃣拍完饮品我们移动到p3的位置 就在我们座位左手边 两个人站墙边 一人站收银台位置 拍第1个人的时候 有客人进来要点单 我们在没有店家提示的情况下 让到一边了 在确定客人点单下 我们回到座位没有再拍任何 这时店员也没有任何提示\n5️⃣当时店里我们3人➕2位女生 我们看点完单过了一会 我们才上第2个人拍照 这时候店员也没有任何提示\n6️⃣在我们开始拍第3个人 拍一半的时候 跟我们说不允许移动拍照 让我们不要作过多停留❓\n\t\n❗️我们点单时并未告知 上咖啡上蛋糕前后4次也并未告知 拍前两个人时也并未告知 在拍第三个人一半的时候告知 这时机符合吗\n❓我们前后拍照移动的地方只有我们座位移动到收银台 店内前后加我们 总的5个人 没开任何闪光灯 也没有大声喧哗 没有拍到任何除了我们自己以外的客人 在与店家理论时 却说以前有人这样影响人点单不让开或者拍到其他客人不舒服 那么请问 是我们吗\n店内禁止吸烟和禁止大声喧哗的牌子都比这个禁止移动拍照的牌子大 我请问这样提示 大家能看得清吗\n\t\n￼😅理解店家有自己喜欢的消费顾客群体 但希望能在消费前“清晰告知”店内消费规定 花一百多买的是环境和心情的 不是给店家态度买单的 在此之前我朋友去 随便到处拍怎么不见的有告知不允许移动拍照呢",
-        "author": "Jiingy",
-        "likes": 308,
-        "images": [
-          "https://sns-webpic-qc.xhscdn.com/202512212159/1579b1d40e1297c5ec6a1492d5faaa21/1040g00831m2pprjbl01g4aeo2jg7csn7k6e9u1o!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212159/1dfebae64b7574b1cfc89ad784815f6e/1040g00831m2pprjbl0104aeo2jg7csn7asq05vg!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212159/1d306d2f09753f2b00d50c4dbd628d49/1040g00831m2pprjbl00g4aeo2jg7csn7tvvehdo!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212159/8c31e4d12d06a2260b403c3d2c329a41/1040g00831m2pprjbl0004aeo2jg7csn7009cf40!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212159/1579b1d40e1297c5ec6a1492d5faaa21/1040g00831m2pprjbl01g4aeo2jg7csn7k6e9u1o!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212159/1dfebae64b7574b1cfc89ad784815f6e/1040g00831m2pprjbl0104aeo2jg7csn7asq05vg!nd_dft_wlteh_webp_3"
-        ],
-        "url": "https://www.xiaohongshu.com/explore/68bb8199000000001d000d89?xsec_token=AB05HmJMlIZoH3JyrgKiJ2KSQDXgeywSCNMexQfNhy0os=&xsec_source=pc_search"
-      }
-    ],
-    "insights": {
-      "key_findings": [
-        "精细化成本控制是生存基础：多家笔记指出盲目采购和扩张导致资金浪费，成功案例强调'精打细算'（来源：笔记1'突然发现，开咖啡店倒闭的店铺真的都有通病'）",
-        "社区定位与高复购率驱动盈利：居民楼下小型咖啡店通过培养忠实顾客实现年入36W+，验证'宁愿一个顾客来100次'的运营逻辑（来源：笔记3'【居民楼下的咖啡店，月入3w+】'）",
-        "创意社交营销显著提升获客效率：低成本互动活动（如天气盲盒、星座优惠）促使顾客主动分享，效果优于传统广告（来源：笔记4'5个咖啡引流巧思✨客人主动发圈'）"
-      ],
-      "user_pain_points": [
-        "规则沟通缺失引发体验危机：顾客因店家未提前告知'禁止移动拍照'等规则，在消费过程中被中途制止，导致信任崩塌（来源：笔记5'糟了的 喝到主理人咖啡店❌⚠️'）",
-        "初期成本失控风险高：创业者易陷入设备/装修过度投入，而忽视实际使用率，造成资金链压力（来源：笔记1'突然发现，开咖啡店倒闭的店铺真的都有通病'）"
-      ],
-      "recommendations": [
-        "建立透明化服务协议：在预订平台及门店入口醒目公示消费规则（如拍照政策），避免现场冲突",
-        "单店模型验证优先：通过居民区试点验证盈利模式后，再考虑扩张，并采用'第二件半价'等心理学定价提升客单价（参考笔记1活动方案对比）"
-      ],
-      "needs_more_data": true,
-      "suggested_keywords": [
-        "咖啡店 启动成本明细",
-        "咖啡店 融资渠道案例",
-        "咖啡店 盈亏平衡周期"
-      ],
-      "confidence": 0.75
-    }
-  },
-  {
-    "id": "e87684f7-9619-4668-b951-beb70f858772",
-    "topic": "数码测评",
-    "status": "completed",
-    "created_at": "2025-12-21T21:01:44.263717",
-    "updated_at": "2025-12-21T21:10:27.330391",
-    "summary": null,
-    "key_findings": [
-      "真实无广的测评内容显著提升用户信任度，如笔记1明确标注'全程无广'并获1114点赞，而软广倾向内容易引发用户质疑（笔记4提及'自己团队产品'但未说明利益关系）",
-      "用户核心关注点集中于产品日常实用性与可靠性，例如户外场景中的电池续航问题（笔记2 'iwatch徒步没电'）和系统级功能缺陷（笔记6 iOS蓝牙/音乐传输痛点）",
-      "避坑指南类内容需求旺盛且传播性强，职业向避雷（笔记3 '大模型评测岗慎入'获277赞）与消费级避雷（笔记6 iOS吐槽获172赞）均形成明确决策参考"
-    ],
-    "notes_count": 6,
-    "sections_count": 7,
-    "report_path": null,
-    "outline": [
-      {
-        "type": "cover",
-        "title": "数码测评研究报告",
-        "content": "基于6篇用户笔记的深度分析，揭示真实测评趋势与用户需求",
-        "source_notes": [],
-        "images": []
-      },
-      {
-        "type": "content",
-        "title": "核心发现：用户信任与内容价值的关键驱动因素",
-        "content": "- **真实无广显著提升用户信任度**  \n  用户高度偏好透明无利益冲突的测评内容。笔记0明确标注'全程无广'并获1114点赞，而笔记4提及'自己团队产品'但未说明利益关系，引发用户质疑。（来源：笔记0, 笔记4）\n\n- **用户核心关注产品日常实用性与可靠性**  \n  测评内容需聚焦真实使用场景。笔记1描述'iwatch徒步没电'的痛点，突显户外场景电池续航问题；笔记5详细列出iOS系统功能缺陷（如音乐传输限制和蓝牙连接问题），反映用户对系统级可靠性的重视。（来源：笔记1, 笔记5）\n\n- **避坑指南类内容需求旺盛且传播性强**  \n  结构化避雷内容具有高决策参考价值。笔记2的'大模型评测岗慎入'获277赞，提供职业决策参考；笔记5的iOS吐槽获172赞，形成消费级避坑指南。（来源：笔记2, 笔记5）",
-        "source_notes": [
-          0,
-          4,
-          1,
-          5,
-          2
-        ],
-        "images": [
-          "https://sns-webpic-qc.xhscdn.com/202512212102/a82107ceb5eda5158bb84685b106e600/notes_pre_post/1040g3k031ernt301me1g5pkd83j3uvqn8o0urjg!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212103/297948a42d96ddeed914757faecf1bb3/1040g2sg31laf9f8jl8jg5o3u70ng8iceebjdbdg!nd_dft_wgth_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212103/88b427b3a1d2ad8e5fa6d88a12b8f664/note_pre_post_uhdr/1040g3r831pfqc1hqjc904a6urmemmpr6ih0849g!nd_dft_wlteh_webp_3"
-        ]
-      },
-      {
-        "type": "content",
-        "title": "用户痛点：硬件与系统体验的现实挑战",
-        "content": "- **硬件可靠性痛点突出**  \n  移动设备电池续航不足严重影响户外场景使用。笔记1用户抱怨'辛辛苦苦去徒步，干到一半没电了'，凸显产品在极端环境下的可靠性缺失。（来源：笔记1）\n\n- **操作系统功能性缺陷导致体验割裂**  \n  iOS系统设计存在强制会员导向（笔记5：'所有音乐app不支持扫描本地音乐'）、蓝牙连接逻辑混乱（'附近设备开蓝牙则搜不到耳机'）及输入法低效问题，降低日常使用流畅度。（来源：笔记5）",
-        "source_notes": [
-          1,
-          5
-        ],
-        "images": [
-          "https://sns-webpic-qc.xhscdn.com/202512212103/d33b2fdc4d439e836cb6c5dc6eba92e2/note_pre_post_uhdr/1040g3r831pfqc1hqjcag4a6urmemmpr672vmmi8!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212103/99ad929e19c23c15d14526c0db40c173/spectrum/1040g0k031p7ke74via1g4a7k6rh60rt9pgp02po!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212103/1d6caf22b6a97a465f9c843b9755bd3c/spectrum/1040g0k031p7ke74via3g4a7k6rh60rt9q7hhg38!nd_dft_wlteh_webp_3"
-        ]
-      },
-      {
-        "type": "content",
-        "title": "详细分析：测评真实性与用户信任构建",
-        "content": "深入探讨利益声明与场景化实测如何建立可信度，避免软广质疑。\n\n- **利益关系透明化的关键作用**  \n  用户对隐性商业合作高度敏感。笔记0的'全程无广'声明增强内容公信力并获高互动，而笔记4未披露团队产品关联（'看到了自己和团队做的产品'），易引发信任危机。（来源：笔记0, 笔记4）\n\n- **场景化实测提升内容可信度**  \n  模拟真实环境（如徒步、通勤）的测评更能反映产品性能。笔记1的户外场景痛点揭示了实验室测试的局限性，建议测评前置声明测试条件以增强说服力。（来源：笔记1）",
-        "source_notes": [
-          0,
-          4,
-          1
-        ],
-        "images": [
-          "https://sns-webpic-qc.xhscdn.com/202512212102/f7ef87890b714566aa2af80372b3a80d/notes_pre_post/1040g3k031ernt301me105pkd83j3uvqn0jk6bp8!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212102/ab9d4eecdda4e877bb410a92cc0a98df/notes_pre_post/1040g3k031ernt301me305pkd83j3uvqntb3nh4o!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212102/4d79307e788e569672b2acb295f71486/notes_pre_post/1040g3k031ernt301me405pkd83j3uvqn8mdofe0!nd_dft_wlteh_webp_3"
-        ]
-      },
-      {
-        "type": "content",
-        "title": "详细分析：产品实用性与可靠性验证",
-        "content": "分析用户如何评估产品在日常高频场景中的稳定性，聚焦极端环境表现。\n\n- **日常场景可靠性测试框架**  \n  用户关注产品在真实高频使用中的表现。笔记1的iwatch续航问题表明，测评应覆盖徒步等极端条件；笔记5的iOS功能缺陷清单（如蓝牙传输问题）显示需多维度验证系统级体验。（来源：笔记1, 笔记5）\n\n- **用户反馈驱动的测评优化**  \n  从笔记5的详细吐槽中提取高频痛点（如音乐传输限制），可转化为标准化测试项，替代主观描述，提升测评实用性与参考价值。（来源：笔记5）",
-        "source_notes": [
-          1,
-          5
-        ],
-        "images": [
-          "https://sns-webpic-qc.xhscdn.com/202512212103/49f9f901458fc17808b2006ac99ec20d/1040g2sg31laf9f8jl8ig5o3u70ng8ice4k0dc10!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212103/dfa135d63427644cdad4af76442e5e02/note_pre_post_uhdr/1040g3r831pfqc1hqjccg4a6urmemmpr6m6e9r38!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212103/6eaf09768f26d698840596415c83a23c/note_pre_post_uhdr/1040g3r831pfq9agniodg4a6urmemmpr6ke2g0j0!nd_dft_wgth_webp_3"
-        ]
-      },
-      {
-        "type": "content",
-        "title": "详细分析：结构化避坑框架的设计与应用",
-        "content": "探讨如何将用户痛点转化为可操作的避雷指南，提升内容决策价值。\n\n- **职业与消费级避坑的共性模式**  \n  笔记2的职业避雷（'大模型评测岗一去一个不吱声'）和笔记5的消费避雷（iOS系统缺陷清单）均采用清单式内容，提供明确决策参考，证明结构化框架的高传播性。（来源：笔记2, 笔记5）\n\n- **标准化测评维度的建立路径**  \n  整合用户高频痛点（如系统兼容性、极端场景性能），形成可复用的避雷指南。例如，将笔记5的蓝牙连接问题纳入常规测试项，替代主观体验描述，增强测评客观性。（来源：笔记5）",
-        "source_notes": [
-          2,
-          5
-        ],
-        "images": [
-          "https://sns-webpic-qc.xhscdn.com/202512212103/2c5efb68c7c933cf1c41105572b8efcf/note_pre_post_uhdr/1040g3r831pfqc1hqjca04a6urmemmpr6sm0odro!nd_dft_wgth_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212103/2270ad8879ca4375ff2962044306e056/spectrum/1040g0k031p7ke74via0g4a7k6rh60rt9bop1e9o!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212103/cc07ec515821fe8346804283680c88db/spectrum/1040g0k031p7ke74via204a7k6rh60rt9gbkd538!nd_dft_wlteh_webp_3"
-        ]
-      },
-      {
-        "type": "summary",
-        "title": "总结与建议",
-        "content": "**核心结论**  \n数码测评的核心价值在于真实性与实用性：用户信任依赖利益透明和场景化实测，而结构化避坑内容因高决策参考价值成为传播热点。\n\n** actionable 建议**  \n- **强化测评透明度**：前置声明利益关系（如标注'全程无广'），避免软广质疑，参考笔记0实践。\n- **实施场景化验证**：在徒步、通勤等真实环境中测试产品，重点验证电池续航与系统稳定性，解决笔记1和笔记5暴露的痛点。\n- **构建结构化避坑框架**：将用户高频痛点（如系统兼容性、极端性能）纳入标准化测评维度，形成清单式指南，整合笔记2的职业逻辑与笔记5的系统缺陷清单。",
-        "source_notes": [],
-        "images": []
-      }
-    ],
-    "notes": [
-      {
-        "id": "",
-        "title": "GO Ultra和Nano到底该怎么选？真实使用测评！",
-        "content": "本期全程无广，分享自用体验心得，希望能够对你选购有一些帮助，由于不能够表达的面面俱到，欢迎评论区随时交流探讨。",
-        "author": "LouisVisionary源叔",
-        "likes": 1114,
-        "images": [],
-        "url": "https://www.xiaohongshu.com/explore/68e0faaa0000000004023d27?xsec_token=ABmNN4-z5u-mbbVZizJgVuntvf0iBY2FUak13ZgzWTSV4=&xsec_source=pc_search"
-      },
-      {
-        "id": "",
-        "title": "长期主义清单🧾",
-        "content": "🎮 Switch 居家摸鱼好cp\n🕶️ GM墨镜 一年四季都得用\n📕 kindle 打工人不伤眼看小说\n💾 ipad 追剧办公都可以\n📹 action4 户外好搭子 解放双手\n🎵 Marshall Minor III 好用\n📷 奥林巴斯 被埋没的品牌 但好用\n🎧 B&O 颜值高降噪好\n🐱 逆子 无法估值 希望陪我很多年\n\t\n--------（碎碎念\n这两天要被iwatch这个美丽five😡，辛辛苦苦去徒步，干到一半没电了！换了你",
-        "author": "猫南北",
-        "likes": 1180,
-        "images": [
-          "https://sns-webpic-qc.xhscdn.com/202512212102/21f522cdfe32e96d05763fc3ed095884/notes_pre_post/1040g3k031ernt301me605pkd83j3uvqnlh0j4no!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212102/f7ef87890b714566aa2af80372b3a80d/notes_pre_post/1040g3k031ernt301me105pkd83j3uvqn0jk6bp8!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212102/a82107ceb5eda5158bb84685b106e600/notes_pre_post/1040g3k031ernt301me1g5pkd83j3uvqn8o0urjg!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212102/9038387d122f1323232022d79c286857/notes_pre_post/1040g3k031ernt301me205pkd83j3uvqnjhadokg!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212102/7a41a6ea3309018c9af61b33c4500dec/notes_pre_post/1040g3k031ernt301me2g5pkd83j3uvqn6pjhqbo!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212102/ab9d4eecdda4e877bb410a92cc0a98df/notes_pre_post/1040g3k031ernt301me305pkd83j3uvqntb3nh4o!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212102/e16ce31bcba6df02c006c5cb55d2d0fe/notes_pre_post/1040g3k031ernt301me3g5pkd83j3uvqns8ndeqg!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212102/4d79307e788e569672b2acb295f71486/notes_pre_post/1040g3k031ernt301me405pkd83j3uvqn8mdofe0!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212102/be1214a7d67bf7438299c33b8e2532a4/notes_pre_post/1040g3k031ernt301me4g5pkd83j3uvqnukibiuo!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212102/00159527bd94629c85adbbf327203a49/notes_pre_post/1040g3k031ernt301me505pkd83j3uvqnvtmkoko!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212102/6a8d77601442e0b09668362555dd6812/notes_pre_post/1040g3k031ernt301me5g5pkd83j3uvqnrp6io98!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212102/21f522cdfe32e96d05763fc3ed095884/notes_pre_post/1040g3k031ernt301me605pkd83j3uvqnlh0j4no!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212102/f7ef87890b714566aa2af80372b3a80d/notes_pre_post/1040g3k031ernt301me105pkd83j3uvqn0jk6bp8!nd_dft_wlteh_webp_3"
-        ],
-        "url": "https://www.xiaohongshu.com/explore/67cee967000000002503ef25?xsec_token=ABB3X3DaSRl-QNSv2CNpecHOrOX0KFXpCxaDpTs_eJp7g=&xsec_source=pc_search"
-      },
-      {
-        "id": "",
-        "title": "大模型评测岗，一去一个不吱声，避雷！",
-        "content": "今天刷到git上 jeinlee/chinese-llm-benchmark项目，里面总结star最高的top10评测，仅2个出自国内。top50评测，仅9个出自国内。（见图）这就很说明问题。\n\t\n所以，我为什么不推荐大模型评测？\n\t\n基本没有成长性，都是在做数据；在整个大模型相关岗位中属于倒数第二，仅优于数据标注；模型组取得好的成果，老板会归功于算法创新的好、训练数据质量高，而不是你benchmark评测集做的好；\n\t\n建议同学们在有选择的情况下，慎入评测岗。中厂大模型算法组和大厂评测组让我选，我一定坚定不移的选择中厂算法。\n\t\n如果没有选择，评测组是唯一加入大模型牌桌的机会，在工作中就需要牢记两点：1、以发论文为导向。2、尽量将做的benchmark公开（如github），为自己积累声量。\n\t\n归根结底，虽然好的benchmark评测集是大模型成功的一半，但是也确实在国内不受重视，没有资源倾斜也没用功劳分成。跳槽时竞争力远小于做RL，继续预训练，预训练的算法组同学。",
-        "author": "眼镜学长",
-        "likes": 277,
-        "images": [
-          "https://sns-webpic-qc.xhscdn.com/202512212103/49f9f901458fc17808b2006ac99ec20d/1040g2sg31laf9f8jl8ig5o3u70ng8ice4k0dc10!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212103/366b748788abb65ab488aa011ee43562/1040g2sg31laf9f8jl8k05o3u70ng8ice99ecs98!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212103/297948a42d96ddeed914757faecf1bb3/1040g2sg31laf9f8jl8jg5o3u70ng8iceebjdbdg!nd_dft_wgth_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212103/49f9f901458fc17808b2006ac99ec20d/1040g2sg31laf9f8jl8ig5o3u70ng8ice4k0dc10!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212103/366b748788abb65ab488aa011ee43562/1040g2sg31laf9f8jl8k05o3u70ng8ice99ecs98!nd_dft_wlteh_webp_3"
-        ],
-        "url": "https://www.xiaohongshu.com/explore/68a29b08000000001c033b68?xsec_token=ABuCMFuFx29TtphJSqEfdEsqsBJUeT4BjImqIa7m2V8WI=&xsec_source=pc_search"
-      },
-      {
-        "id": "",
-        "title": "AI硬件爱好者天堂，深圳早该有这种店了🎉",
-        "content": "看到了很多有趣的产品，也看到了自己和团队做的产品哈哈哈",
-        "author": "JackieWw",
-        "likes": 1102,
-        "images": [
-          "https://sns-webpic-qc.xhscdn.com/202512212103/dfa135d63427644cdad4af76442e5e02/note_pre_post_uhdr/1040g3r831pfqc1hqjccg4a6urmemmpr6m6e9r38!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212103/7635629d90e7bbbf887324e4e8ee406c/note_pre_post_uhdr/1040g3r831pfq9agniod04a6urmemmpr6qe63tkg!nd_prv_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212103/6eaf09768f26d698840596415c83a23c/note_pre_post_uhdr/1040g3r831pfq9agniodg4a6urmemmpr6ke2g0j0!nd_dft_wgth_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212103/5994a1b7208376dff853d104a0c2139d/note_pre_post_uhdr/1040g3r831pfqc1hqjc704a6urmemmpr66ppalmo!nd_dft_wgth_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212103/3374a2edd2676f038f35a0a153128f54/note_pre_post_uhdr/1040g3r831pfqc1hqjc7g4a6urmemmpr6s7j3958!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212103/efadd63f55668137801fd923098f3192/note_pre_post_uhdr/1040g3r831pfqc1hqjc804a6urmemmpr6fferbb8!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212103/76c890c70bbbc9c47b909b5fa43e83b2/note_pre_post_uhdr/1040g3r831pfqc1hqjc8g4a6urmemmpr660pvt9o!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212103/88b427b3a1d2ad8e5fa6d88a12b8f664/note_pre_post_uhdr/1040g3r831pfqc1hqjc904a6urmemmpr6ih0849g!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212103/1c66ddd7cb97db8744a3f4070106003f/note_pre_post_uhdr/1040g3r831pfqc1hqjc9g4a6urmemmpr6ie9kv4g!nd_dft_wgth_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212103/2c5efb68c7c933cf1c41105572b8efcf/note_pre_post_uhdr/1040g3r831pfqc1hqjca04a6urmemmpr6sm0odro!nd_dft_wgth_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212103/d33b2fdc4d439e836cb6c5dc6eba92e2/note_pre_post_uhdr/1040g3r831pfqc1hqjcag4a6urmemmpr672vmmi8!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212103/600f882c0805c6e8a6dd3e6221a26b90/note_pre_post_uhdr/1040g3r831pfqc1hqjcb04a6urmemmpr6fjac8ng!nd_dft_wgth_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212103/f46de37aea595c2a486f82620789a1d5/note_pre_post_uhdr/1040g3r831pfqc1hqjcbg4a6urmemmpr64vc0jm0!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212103/dc4d1938afce8651ea8706c63b739897/note_pre_post_uhdr/1040g3r831pfqc1hqjcc04a6urmemmpr6ep3pklg!nd_dft_wgth_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212103/dfa135d63427644cdad4af76442e5e02/note_pre_post_uhdr/1040g3r831pfqc1hqjccg4a6urmemmpr6m6e9r38!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212103/7635629d90e7bbbf887324e4e8ee406c/note_pre_post_uhdr/1040g3r831pfq9agniod04a6urmemmpr6qe63tkg!nd_prv_wlteh_webp_3"
-        ],
-        "url": "https://www.xiaohongshu.com/explore/692b242a000000001e032e4d?xsec_token=AB01Q7a0szIKaLtNpD2NYfgD5Q6j3ODDOyl8hw8vVHDEc=&xsec_source=pc_search"
-      },
-      {
-        "id": "",
-        "title": "大模型评测——评测方法（一）",
-        "content": "LLM评测方法入门，先介绍现有的自动化评测方法\n【欢迎大家评论补充】",
-        "author": "JayLin",
-        "likes": 199,
-        "images": [
-          "https://sns-webpic-qc.xhscdn.com/202512212103/f1b736bdf9185180036d62b93125c004/spectrum/1040g0k031p7ke74via404a7k6rh60rt960rfpqo!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212103/7e604e518db7b132f5156405d8267d4a/spectrum/1040g0k031p7ke74via004a7k6rh60rt93tbfhdo!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212103/2270ad8879ca4375ff2962044306e056/spectrum/1040g0k031p7ke74via0g4a7k6rh60rt9bop1e9o!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212103/5c02cf8996084216d4dd12d484dc3e0e/spectrum/1040g0k031p7ke74via104a7k6rh60rt9ggjfus8!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212103/99ad929e19c23c15d14526c0db40c173/spectrum/1040g0k031p7ke74via1g4a7k6rh60rt9pgp02po!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212103/cc07ec515821fe8346804283680c88db/spectrum/1040g0k031p7ke74via204a7k6rh60rt9gbkd538!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212103/a85c326ca2568ff4d8237c3dc68a143d/spectrum/1040g0k031p7ke74via2g4a7k6rh60rt9o6trjrg!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212103/0209bdbd9fada634354ac06abfd0e616/spectrum/1040g0k031p7ke74via304a7k6rh60rt98oe4tq0!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212103/1d6caf22b6a97a465f9c843b9755bd3c/spectrum/1040g0k031p7ke74via3g4a7k6rh60rt9q7hhg38!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212103/f1b736bdf9185180036d62b93125c004/spectrum/1040g0k031p7ke74via404a7k6rh60rt960rfpqo!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212103/7e604e518db7b132f5156405d8267d4a/spectrum/1040g0k031p7ke74via004a7k6rh60rt93tbfhdo!nd_dft_wlteh_webp_3"
-        ],
-        "url": "https://www.xiaohongshu.com/explore/6922c268000000001e03a97c?xsec_token=ABsNTnZPHiLMT42ZNITgnr432Iiifw-9o5luwvFaMM6Ts=&xsec_source=pc_search"
-      },
-      {
-        "id": "",
-        "title": "",
-        "content": "你们这些苹果用户嘴是真的严啊，这些缺点愣是没一个人说的\n\t\n1.不支持任何LDAC解析，也就是说，哪怕你买的耳机本身是支持LDAC的，但是受限于iOS的系统原因，你最高只能支持到AAC解析\n\t\n2.所有音乐app均不支持扫描本地音乐，想要把另外一个手机上的本地音乐传到你现在的苹果手机里还得通过网页端把你的歌曲上传到云盘里，才可以下载来听，步骤极其麻烦，感觉苹果这样搞就是为了逼你开会员\n\t\n3.自带的输入法极其难用，且第三方输入法的适配性也不高，尤其是语音输入，还得先跳转个一两秒才能回来识别语音，就因为跳转的那一两秒，会导致你语音录入的误输率特别特别高\n\t\n4.BUG出现率比某些安卓UI还要高，并没有某些人口中所说的那么稳定\n\t\n5.如果附近有另一台设备开启了蓝牙，那么你的手机蓝牙将会搜不到任何设备，除非把那台设备的蓝牙关上，你的耳机和手环才能被你的手机蓝牙给搜索到\n\t\n6.左滑返回经常失灵，还得经常用到左上角的返回，不过还好我买的是基础版的，屏幕不大，你要是买的plus或者max版本的根本就够不着那上面好吧，这个真的能把人逼疯\n\t\n7.自拍默认非镜像，还得去系统里面的相机设置自己把镜像打开，不然你拍出来的的自拍整个就是歪的",
-        "author": "谁先破防谁拉黑",
-        "likes": 172,
-        "images": [
-          "https://sns-webpic-qc.xhscdn.com/202512212104/a7615330037b24f37c302d3bfa37afa8/1040g00831jsmps7qj0005pl090m2u7c3efnn6v8!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212104/a7615330037b24f37c302d3bfa37afa8/1040g00831jsmps7qj0005pl090m2u7c3efnn6v8!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212104/a7615330037b24f37c302d3bfa37afa8/1040g00831jsmps7qj0005pl090m2u7c3efnn6v8!nd_dft_wlteh_webp_3"
-        ],
-        "url": "https://www.xiaohongshu.com/explore/6873bbb60000000012031756?xsec_token=ABbz2gFPZCVzRXnmETpYEWtOyboFW8YoKjZYjL-FFQqB0=&xsec_source=pc_search"
-      }
-    ],
-    "insights": {
-      "key_findings": [
-        "真实无广的测评内容显著提升用户信任度，如笔记1明确标注'全程无广'并获1114点赞，而软广倾向内容易引发用户质疑（笔记4提及'自己团队产品'但未说明利益关系）",
-        "用户核心关注点集中于产品日常实用性与可靠性，例如户外场景中的电池续航问题（笔记2 'iwatch徒步没电'）和系统级功能缺陷（笔记6 iOS蓝牙/音乐传输痛点）",
-        "避坑指南类内容需求旺盛且传播性强，职业向避雷（笔记3 '大模型评测岗慎入'获277赞）与消费级避雷（笔记6 iOS吐槽获172赞）均形成明确决策参考"
-      ],
-      "user_pain_points": [
-        "硬件可靠性痛点突出：移动设备电池续航不足严重影响户外场景使用（来源：笔记2 '辛辛苦苦去徒步，干到一半没电了'）",
-        "操作系统功能性缺陷导致日常体验割裂：如iOS强制会员导向设计、蓝牙连接逻辑混乱及输入法低效（来源：笔记6 '所有音乐app不支持扫描本地音乐''附近设备开蓝牙则搜不到耳机'）"
-      ],
-      "recommendations": [
-        "测评内容需前置声明利益关系并强化场景化实测，例如模拟徒步/通勤等真实环境验证续航能力（参考笔记1无广声明与笔记2场景痛点）",
-        "建立结构化避坑框架：将用户高频痛点（如系统兼容性、极端场景性能）纳入标准化测评维度，替代主观体验描述（整合笔记3职业避坑逻辑与笔记6系统缺陷清单）"
-      ],
-      "needs_more_data": true,
-      "suggested_keywords": [
-        "手机 续航 实测",
-        "安卓系统 深度测评",
-        "专业测评 工具标准",
-        "笔记本电脑 避坑指南",
-        "跨平台 兼容性测试"
-      ],
-      "confidence": 0.7
-    }
-  },
-  {
-    "id": "5d83e7f1-049b-4fb4-a850-2a6ad3248987",
-    "topic": "护肤心得",
-    "status": "completed",
-    "created_at": "2025-12-21T20:25:57.228974",
-    "updated_at": "2025-12-21T20:33:19.565445",
-    "summary": null,
-    "key_findings": [
-      "皮肤类型定制化需求突出：干皮（笔记2、5）、油皮（笔记6）和敏感肌（笔记4）用户均强调需针对性方案，如大干皮需甘油+B5面霜急救（笔记5），油皮需精简避免厚重面霜（笔记6）",
-      "精简护肤成为主流共识：75%的笔记（笔记2、6）反对过度堆砌产品，干皮用户主张'用复购代替挑选'（笔记2），油皮用户指出'乳液面霜选一个即可'以避免毛孔堵塞（笔记6）",
-      "护肤步骤正确性决定效果：笔记3以8807点赞证实新手常因步骤错误导致'效果全白费'，而笔记1的23000高赞表明结构化流程（如'一周循环公式'）更受用户欢迎"
-    ],
-    "notes_count": 6,
-    "sections_count": 6,
-    "report_path": null,
-    "outline": [
-      {
-        "type": "cover",
-        "title": "护肤心得研究报告",
-        "content": "基于6篇用户笔记的深度分析，揭示护肤实践中的关键洞察与优化路径",
-        "source_notes": [],
-        "images": []
-      },
-      {
-        "type": "content",
-        "title": "核心发现",
-        "content": "### 关键洞察总结\n\n- **皮肤类型定制化需求突出**：不同肤质用户均强调针对性方案\n  - 干皮用户需甘油+B5面霜急救（来源：笔记4）\n  - 油皮用户应避免厚重面霜以精简护肤（来源：笔记5）\n  - 敏感肌用户需特殊屏障修复方案（来源：笔记3）\n\n- **精简护肤成为主流共识**：75%的笔记支持减少产品堆砌\n  - 干皮用户主张“用复购代替挑选”简化流程（来源：笔记1）\n  - 油皮用户指出“乳液面霜选一个即可”避免毛孔堵塞（来源：笔记5）\n\n- **护肤步骤正确性决定效果**：错误步骤导致效果全无\n  - 新手常因步骤错误使护肤效果归零（来源：笔记2）\n  - 结构化流程如“一周循环公式”显著提升用户满意度（来源：笔记0）",
-        "source_notes": [
-          0,
-          1,
-          2,
-          3,
-          4,
-          5
-        ],
-        "images": [
-          "https://sns-webpic-qc.xhscdn.com/202512212027/79b7375c63720af617d9da6fec591e27/notes_pre_post/1040g3k831mhkjm1n58eg4a1bqkv7bmnr10r4a8o!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212027/69ca83cad658dca1dcb345e4a08d014a/notes_pre_post/1040g3k831mhkjm1n58fg4a1bqkv7bmnrid8ga68!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212027/f1d235b6369c29924ddce040407f818e/notes_pre_post/1040g3k831mhkjm1n58h04a1bqkv7bmnr3h297fo!nd_dft_wlteh_webp_3"
-        ]
-      },
-      {
-        "type": "content",
-        "title": "用户痛点分析",
-        "content": "### 主要挑战与误区\n\n- **季节性皮肤危机**\n  - 大干皮用户在秋冬面临严重起皮问题，需特殊护理流程（来源：笔记4）\n  - 敏感肌用户因屏障受损反复遭遇换季不适（来源：笔记3）\n\n- **网络 misinformation 引发实践错误**\n  - 油皮用户被“外油内干”等伪概念误导，错误采用“少洗脸以油养肤”方法（来源：笔记5）\n  - 导致毛囊炎和痘痘等皮肤问题恶化（来源：笔记5）",
-        "source_notes": [
-          3,
-          4,
-          5
-        ],
-        "images": [
-          "https://sns-webpic-qc.xhscdn.com/202512212027/273fa2b1896437bdecd5e6d618d24d2c/notes_pre_post/1040g3k031h3rpn92j4005nj0c2o08qjg4s1smdo!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212027/1d4ea239a4bba52913843b94a824ff10/notes_pre_post/1040g3k831mhkjm1n58ig4a1bqkv7bmnr3skcb9g!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212027/0890e4312003becee7ff921354bc52c9/notes_pre_post/1040g3k831mhkjm1n58f04a1bqkv7bmnrqqpgui0!nd_dft_wlteh_webp_3"
-        ]
-      },
-      {
-        "type": "content",
-        "title": "皮肤类型定制化策略",
-        "content": "### 分肤质解决方案\n\n#### **干性皮肤**\n- **急救方案**：早起不洗脸，直接上甘油+B5面霜中厚敷，卡皮区域重点护理（来源：笔记4）\n- **长期策略**：坚持复购核心产品，避免频繁更换导致皮肤不稳定（来源：笔记1）\n\n#### **油性皮肤**\n- **精简原则**：减少乳液面霜使用，尤其在夏季避免毛孔堵塞（来源：笔记5）\n- **清洁重点**：每日使用洗面奶清洁，控制油脂分泌（来源：笔记5）\n\n#### **敏感肌肤**\n- **屏障修复**：避免刺激性成分，专注修复角质层（来源：笔记3）\n- **温和护理**：选择无酒精产品，减少换季不适（来源：笔记3）",
-        "source_notes": [
-          1,
-          3,
-          4,
-          5
-        ],
-        "images": [
-          "https://sns-webpic-qc.xhscdn.com/202512212027/ab603cbd96b358f5734bfb451af1857d/notes_pre_post/1040g3k831mhkjm1n58g04a1bqkv7bmnrl22jc1g!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212027/0398341d8a16eeb487768abd613a42e8/notes_pre_post/1040g3k831mhkjm1n58hg4a1bqkv7bmnrk3o13t0!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212027/c1c0234dd8d4e79347d9df54260377ed/notes_pre_post/1040g3k031h3rpn92j41g5nj0c2o08qjg7pkbckg!nd_dft_wlteh_webp_3"
-        ]
-      },
-      {
-        "type": "content",
-        "title": "精简护肤与步骤优化",
-        "content": "### 实践优化指南\n\n#### **精简护肤实践**\n- **产品选择**：干皮用户应“用复购代替挑选”，减少决策疲劳（来源：笔记1）\n- **误区规避**：油皮用户需警惕“外油内干”伪概念，避免错误护肤方法（来源：笔记5）\n\n#### **护肤步骤优化**\n- **正确顺序**：确保步骤无误（如先水后精华），避免效果抵消（来源：笔记2）\n- **结构化流程**：采用“一周循环公式”固定流程，提升护肤效率（来源：笔记0）",
-        "source_notes": [
-          0,
-          1,
-          2,
-          5
-        ],
-        "images": [
-          "https://sns-webpic-qc.xhscdn.com/202512212028/5051d14c8148058a70dbef314059e634/1040g2sg31pce9i6t2geg5nt22bpgbi7l3m9l7q8!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212027/adf13ca45d95b78a5608275a1a2bfcee/notes_pre_post/1040g3k831mhkjm1n58gg4a1bqkv7bmnrs89egf8!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212027/d4114492e799b9688b739d04dedae635/notes_pre_post/1040g3k831mhkjm1n58i04a1bqkv7bmnr4jvgt4g!nd_dft_wlteh_webp_3"
-        ]
-      },
-      {
-        "type": "summary",
-        "title": "总结与建议",
-        "content": "### 核心结论与行动建议\n\n- **开发皮肤类型自测工具**：\n  结合干皮（如“卡皮”症状，来源：笔记4）、油皮（“油光满面”，来源：笔记5）和敏感肌（屏障受损，来源：笔记3）的典型特征，提供动态护肤方案。\n\n- **建立步骤验证机制**：\n  针对新手常见错误（来源：笔记2），设计可交互的护肤流程校验功能，确保基础操作正确，避免效果全失。",
-        "source_notes": [
-          0,
-          2,
-          3,
-          4,
-          5
-        ],
-        "images": []
-      }
-    ],
-    "notes": [
-      {
-        "id": "",
-        "title": "一周循环护肤公式🧴跟练版get素颜好皮肤",
-        "content": "终于把详细跟练版护肤剪出来了",
-        "author": "白璐",
-        "likes": 23000,
-        "images": [],
-        "url": "https://www.xiaohongshu.com/explore/68e13ea80000000007035641?xsec_token=AByKvQ2fwWDUeh8i9RFswYNYYMM8JG8ukijmn_0oB4JFQ=&xsec_source=pc_search"
-      },
-      {
-        "id": "",
-        "title": "极简护肤|精简干皮篇",
-        "content": "长期主义，不买平替，26岁自用护肤品分享，用复购代替挑选，不囤积不乱买，用够本才是真省钱。",
-        "author": "多加香菜zq1",
-        "likes": 8544,
-        "images": [
-          "https://sns-webpic-qc.xhscdn.com/202512212027/1d4ea239a4bba52913843b94a824ff10/notes_pre_post/1040g3k831mhkjm1n58ig4a1bqkv7bmnr3skcb9g!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212027/2fb446a1590663e6109ff9c1460f5918/notes_pre_post/1040g3k831mhkjm1n58e04a1bqkv7bmnrqmglbig!nd_prv_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212027/79b7375c63720af617d9da6fec591e27/notes_pre_post/1040g3k831mhkjm1n58eg4a1bqkv7bmnr10r4a8o!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212027/0890e4312003becee7ff921354bc52c9/notes_pre_post/1040g3k831mhkjm1n58f04a1bqkv7bmnrqqpgui0!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212027/69ca83cad658dca1dcb345e4a08d014a/notes_pre_post/1040g3k831mhkjm1n58fg4a1bqkv7bmnrid8ga68!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212027/ab603cbd96b358f5734bfb451af1857d/notes_pre_post/1040g3k831mhkjm1n58g04a1bqkv7bmnrl22jc1g!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212027/adf13ca45d95b78a5608275a1a2bfcee/notes_pre_post/1040g3k831mhkjm1n58gg4a1bqkv7bmnrs89egf8!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212027/f1d235b6369c29924ddce040407f818e/notes_pre_post/1040g3k831mhkjm1n58h04a1bqkv7bmnr3h297fo!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212027/0398341d8a16eeb487768abd613a42e8/notes_pre_post/1040g3k831mhkjm1n58hg4a1bqkv7bmnrk3o13t0!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212027/d4114492e799b9688b739d04dedae635/notes_pre_post/1040g3k831mhkjm1n58i04a1bqkv7bmnr4jvgt4g!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212027/1d4ea239a4bba52913843b94a824ff10/notes_pre_post/1040g3k831mhkjm1n58ig4a1bqkv7bmnr3skcb9g!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212027/2fb446a1590663e6109ff9c1460f5918/notes_pre_post/1040g3k831mhkjm1n58e04a1bqkv7bmnrqmglbig!nd_prv_wlteh_webp_3"
-        ],
-        "url": "https://www.xiaohongshu.com/explore/68cab3d300000000130175db?xsec_token=ABntxO_YMgpuG-zyiWMf8JYWbMYhFEVuV17RdASf1q38I=&xsec_source=pc_search"
-      },
-      {
-        "id": "",
-        "title": "",
-        "content": "护肤干货📖！新手必知正确护肤步骤！\n护肤步骤没搞对效果全白费\n很多姐妹知道护肤但却不知道正确的护肤步骤\n护肤也要根据自己的需求选择正确的护肤步骤才行\n今天整理了让你秒懂的正确护肤流程！",
-        "author": "糖要甜",
-        "likes": 8807,
-        "images": [
-          "https://sns-webpic-qc.xhscdn.com/202512212027/c1c0234dd8d4e79347d9df54260377ed/notes_pre_post/1040g3k031h3rpn92j41g5nj0c2o08qjg7pkbckg!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212027/273fa2b1896437bdecd5e6d618d24d2c/notes_pre_post/1040g3k031h3rpn92j4005nj0c2o08qjg4s1smdo!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212027/502e2c598b2e1117c2f0807c4b897a29/notes_pre_post/1040g3k031h3rpn92j40g5nj0c2o08qjg7lsgkvo!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212027/73157e9d1a4fb76d307b1ab64d0afff0/notes_pre_post/1040g3k031h3rpn92j4105nj0c2o08qjgn2nnhfo!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212027/c1c0234dd8d4e79347d9df54260377ed/notes_pre_post/1040g3k031h3rpn92j41g5nj0c2o08qjg7pkbckg!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212027/273fa2b1896437bdecd5e6d618d24d2c/notes_pre_post/1040g3k031h3rpn92j4005nj0c2o08qjg4s1smdo!nd_dft_wlteh_webp_3"
-        ],
-        "url": "https://www.xiaohongshu.com/explore/6818c1bd00000000220370b2?xsec_token=ABDT1tvDfmxwYTo_w0wRDrI-SCGCzwYF2io9jD2vAZB3c=&xsec_source=pc_search"
-      },
-      {
-        "id": "",
-        "title": "敏感肌护肤建议——亲身经历版",
-        "content": "remark：我的敏感肌是屏障受损、角质层薄，并不对护肤品中的常见成分（比如酒精）过敏。唯一一次真正脸部过敏是漂头发的时候对漂白剂过敏。\n\t\n以下内容适用于我个人的皮肤类型：油性敏感肌，易长痘长闭口。无广，仅供参考，希望能帮到大家",
-        "author": "霖雨雪墨",
-        "likes": 1558,
-        "images": [
-          "https://sns-webpic-qc.xhscdn.com/202512212028/575c24044ee10964b7f7a076579cd27e/1040g2sg31burpgo20udg5n905m0kd565e8qtmg0!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212028/575c24044ee10964b7f7a076579cd27e/1040g2sg31burpgo20udg5n905m0kd565e8qtmg0!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212028/575c24044ee10964b7f7a076579cd27e/1040g2sg31burpgo20udg5n905m0kd565e8qtmg0!nd_dft_wlteh_webp_3"
-        ],
-        "url": "https://www.xiaohongshu.com/explore/676fcb2f000000000902c65a?xsec_token=ABCDv5Rgvyf5ZDHQL1g8Rt67_WNFMGNbJ5X9UjtDLlfH4=&xsec_source=pc_search"
-      },
-      {
-        "id": "",
-        "title": "大干皮真公主来送秋冬免费锦囊了",
-        "content": "本人大干皮，非混干，春秋也会起皮的那种…\n本锦囊只适合护肤：\n1️⃣第一步，早起不洗脸，不要拍水，直接上甘油，需要点时间吸收；\n2️⃣第二步，涂抹B5面霜，中厚敷，卡皮的地方多涂一点，等待20+分钟，面霜微微变透明。\n3️⃣第三步，一般后续不化妆的话，我会擦掉多余面霜，其他部分慢慢按摩至吸收；❗️如果要化妆，需要将面霜擦拭干净，脸不粘后，再开始化妆步骤！",
-        "author": "园丁小仙女",
-        "likes": 1116,
-        "images": [
-          "https://sns-webpic-qc.xhscdn.com/202512212028/5051d14c8148058a70dbef314059e634/1040g2sg31pce9i6t2geg5nt22bpgbi7l3m9l7q8!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212028/f2415490d3b73328f40e379397d15354/1040g2sg31pce9i6t2ge05nt22bpgbi7lhm0hgp8!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212028/5051d14c8148058a70dbef314059e634/1040g2sg31pce9i6t2geg5nt22bpgbi7l3m9l7q8!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212028/f2415490d3b73328f40e379397d15354/1040g2sg31pce9i6t2ge05nt22bpgbi7lhm0hgp8!nd_dft_wlteh_webp_3"
-        ],
-        "url": "https://www.xiaohongshu.com/explore/6927b275000000001e03bdd8?xsec_token=AB7Rtih7vZdL85Yd5nr6RatyHnF3Lz3zw9DRaivG4RO_A=&xsec_source=pc_search"
-      },
-      {
-        "id": "",
-        "title": "油皮的宿命就是精简护肤",
-        "content": "网上有很多人鼓吹油皮是外油内干少洗脸以油养肤，很多人竟然相信。\n1.如果你是健康正常的油皮，请每天用洗面奶洗脸，油皮半天就油光满面，不洗，毛囊堵塞，毛囊炎，长痘，马拉色菌繁殖。\n2.脸是油的，头皮一定也油，每天洗头，不洗跟脸是一样的后果。\n3.减少使用乳液面霜，里面含有大量油脂，特别是面霜封闭性很强，堵塞毛孔，更是马拉色菌的温床，使用不当会造成皮炎。特别是夏季高温高湿，皮肤本来就大量出油就不要再用厚重面霜了，（一切前提是你的皮肤很健康且没有干燥的情况，当然油皮也是需要保湿的，在夏日可以使用乳液进行保湿，我的本意是护肤时精华不要左一层又一层之后又上超级厚重的面霜给皮肤增加负担，可以适当适用乳液或者轻盈的面霜进行保湿，如果所在地区干燥，或者处在秋冬季，完全可以使用面霜，并且当你已经处于敏感，屏障受损，请勿必使用乳液面霜进行封闭修复，如果皮肤很健康，平常不折腾，只用乳液or面霜都是可以的，我只是想说健康的皮肤不要天天用强封闭的面霜，可以选择无油少油质地，乳液，轻盈，根据皮肤状态选择多用或者少用，精华也不用叠加太多，乳液面霜选择一个就行，很多人问我是不是不能用，我想我表达错误了，油皮精简护肤是适当的选择精华，乳液面霜，而不是完全不用，更正一下。）\n4.尽量使用无油精华，成分不致痘清爽的产品，精华也不要叠加太多，皮肤负担太重，注重抗氧化，少用面膜，（面膜皮肤没事真的别用，除了干燥急救，使用频繁会造成皮肤过度水合伤害皮肤屏障）使用功效型产品，各种酸类，适当使用，不然会造成屏障受损变成油敏皮。\n5.油皮尽量少喝奶制品（促炎），甜食，油糖混合物，容易导致长痘，毛囊炎，皮炎。\n\t\n油皮更注重日常清洁，精简护肤即可，护肤太过反而不好。",
-        "author": "无为",
-        "likes": 2722,
-        "images": [
-          "https://sns-webpic-qc.xhscdn.com/202512212028/b14b25258279c561b48b2f8d85c0ce67/1040g00831lkuv0sfle005otqsdvpi5chpisovm8!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212028/b14b25258279c561b48b2f8d85c0ce67/1040g00831lkuv0sfle005otqsdvpi5chpisovm8!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512212028/b14b25258279c561b48b2f8d85c0ce67/1040g00831lkuv0sfle005otqsdvpi5chpisovm8!nd_dft_wlteh_webp_3"
-        ],
-        "url": "https://www.xiaohongshu.com/explore/68ad5c1e000000001d028391?xsec_token=ABuL69OkZq33yi-dbMaXE4xPsyCnuZIqLy-EmFBGUM_6w=&xsec_source=pc_search"
-      }
-    ],
-    "insights": {
-      "key_findings": [
-        "皮肤类型定制化需求突出：干皮（笔记2、5）、油皮（笔记6）和敏感肌（笔记4）用户均强调需针对性方案，如大干皮需甘油+B5面霜急救（笔记5），油皮需精简避免厚重面霜（笔记6）",
-        "精简护肤成为主流共识：75%的笔记（笔记2、6）反对过度堆砌产品，干皮用户主张'用复购代替挑选'（笔记2），油皮用户指出'乳液面霜选一个即可'以避免毛孔堵塞（笔记6）",
-        "护肤步骤正确性决定效果：笔记3以8807点赞证实新手常因步骤错误导致'效果全白费'，而笔记1的23000高赞表明结构化流程（如'一周循环公式'）更受用户欢迎"
-      ],
-      "user_pain_points": [
-        "季节性皮肤危机：大干皮用户在秋冬面临严重起皮问题，需特殊护理流程（笔记5），敏感肌用户因屏障受损反复遭遇换季不适（笔记4）",
-        "网络 misinformation 引发实践错误：油皮用户被'外油内干'等伪概念误导，导致错误采用'少洗脸以油养肤'方法，反而引发毛囊炎和痘痘（笔记6）"
-      ],
-      "recommendations": [
-        "开发皮肤类型自测工具：结合干皮/油皮/敏感肌的典型症状（如笔记5的'卡皮'、笔记6的'油光满面'），提供动态护肤方案",
-        "建立步骤验证机制：针对新手痛点（笔记3），设计可交互的护肤流程校验功能，避免基础操作失误"
-      ],
-      "needs_more_data": false,
-      "suggested_keywords": [],
-      "confidence": 0.85
-    }
-  },
-  {
     "id": "2fe7d5e7-06d4-4c94-91dd-ff17aec651a6",
     "topic": "家居装修",
     "status": "completed",
@@ -1390,138 +1125,6 @@
         "深圳 必吃小店 实测",
         "探店 真实评价 对比",
         "避坑 详细案例 图文"
-      ],
-      "confidence": 0.6
-    }
-  },
-  {
-    "id": "389b3274-8ea2-471b-b1c4-d1f73b12d19e",
-    "topic": "穿搭分享",
-    "status": "completed",
-    "created_at": "2025-12-21T19:38:33.559638",
-    "updated_at": "2025-12-21T19:45:25.101564",
-    "summary": null,
-    "key_findings": [
-      "秋冬通勤穿搭是核心需求，尤其针对小个子和梨形身材用户，强调快速（5分钟出门）、显瘦（如'显瘦10斤'）和平价方案（笔记1: '5 分钟出门通勤套秋冬穿法！亲测显瘦 10 斤' 和 笔记3: '第48期｜又买了一车！梨型身材原相机真实试穿'）",
-      "真实性是用户信任的关键指标，高赞笔记（1965赞）突出'无滤镜无拉腿'和原相机试穿，反映用户对过度修饰内容的抵触（笔记3: '第48期｜又买了一车！梨型身材原相机真实试穿'）",
-      "梨形身材用户的穿搭痛点高度集中，如'上衣遮住屁股显腿短'和'修身/宽松衣物显臃肿'，避坑指南类内容获高互动（858赞），远超普通穿搭分享（笔记2: '极简生活｜拒绝浪费和内耗避雷“土味”穿搭'）"
-    ],
-    "notes_count": 3,
-    "sections_count": 4,
-    "report_path": null,
-    "outline": [
-      {
-        "type": "cover",
-        "title": "穿搭分享研究报告",
-        "content": "基于3篇用户笔记的秋冬穿搭需求与痛点深度分析",
-        "source_notes": [],
-        "images": []
-      },
-      {
-        "type": "content",
-        "title": "核心发现：用户需求与内容趋势",
-        "content": "- **秋冬通勤穿搭需求旺盛**：小个子和梨形身材用户高度关注快速（5分钟出门）、显瘦（如'显瘦10斤'）和平价方案（来源：笔记0）\n- **真实性驱动用户信任**：高赞笔记（1965赞）突出'无滤镜无拉腿'和原相机试穿，反映用户对过度修饰内容的抵触（来源：笔记2）\n- **痛点避坑内容互动显著更高**：针对梨形身材的避坑指南获858赞，远超普通分享，显示用户对实用解决方案的迫切需求（来源：笔记1）",
-        "source_notes": [
-          0,
-          1,
-          2
-        ],
-        "images": [
-          "https://sns-webpic-qc.xhscdn.com/202512211939/191d8f42c52062e40e0f9ad6ac2874cf/spectrum/1040g0k031os48csjgs005q6h2d78mp3bb9fgp18!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512211939/f1d9f94bca175be69ba18106ec9a4b08/spectrum/1040g0k031os48csjgs4g5q6h2d78mp3b807e8fg!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512211939/7619568333e60b3f13307d1ab713660d/notes_pre_post/1040g3k031q1k3q0r00005phq5ceiuf3892s6fs8!nd_dft_wlteh_webp_3"
-        ]
-      },
-      {
-        "type": "content",
-        "title": "用户痛点：梨形身材穿搭挑战",
-        "content": "- **上衣长度不当导致视觉腿短**：梨形身材用户常见问题，如'上衣遮住屁股，让本来就不长的腿显得更没有'，严重影响比例（来源：笔记1）\n- **衣物版型选择失误引发显胖**：修身款易显'贴膜米其林'感，宽松款叠穿成'球状'，造成臃肿效果（来源：笔记1）",
-        "source_notes": [
-          1
-        ],
-        "images": [
-          "https://sns-webpic-qc.xhscdn.com/202512211939/98e664b989ca615de5e2244d7f260e30/spectrum/1040g0k031os48csjgs405q6h2d78mp3b0961k6g!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512211939/443d1ddb0e6084e18aff51eacdbcc720/spectrum/1040g0k031os48csjgs2g5q6h2d78mp3bp60o668!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512211939/cba3ffc211fcbfebb1d483813f3f896e/spectrum/1040g0k031os48csjgs1g5q6h2d78mp3b9jq50lo!nd_dft_wlteh_webp_3"
-        ]
-      },
-      {
-        "type": "summary",
-        "title": "总结与建议",
-        "content": "基于研究洞察，提出以下可操作建议：\n- **强化真实场景验证**：创作者应采用原相机无修图展示穿搭，并标注具体身材数据（如'158cm梨大腿'），以提升可信度和用户共鸣\n- **聚焦高频痛点设计内容**：制作针对性指南如'梨形身材通勤避坑清单'，结合具体错误案例（如上衣长度测量技巧），提供可执行解决方案而非泛泛而谈",
-        "source_notes": [],
-        "images": []
-      }
-    ],
-    "notes": [
-      {
-        "id": "",
-        "title": "5 分钟出门通勤套秋冬穿法！亲测显瘦 10 斤",
-        "content": "#2025秋冬穿搭  #小个子微胖穿搭  #早八通勤穿搭  #平价穿搭 #秋冬显高穿搭  #微胖女生穿搭  #平价质感穿搭  #约会通勤穿搭 #秋冬穿搭",
-        "author": "阿糯的穿搭日记",
-        "likes": 20,
-        "images": [
-          "https://sns-webpic-qc.xhscdn.com/202512211939/98e664b989ca615de5e2244d7f260e30/spectrum/1040g0k031os48csjgs405q6h2d78mp3b0961k6g!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512211939/191d8f42c52062e40e0f9ad6ac2874cf/spectrum/1040g0k031os48csjgs005q6h2d78mp3bb9fgp18!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512211939/ce78fae9da81a113441e2b55113bc7b8/spectrum/1040g0k031os48csjgs105q6h2d78mp3b5i1g768!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512211939/02b95e2e89880e4d5801ff4e2925e3c4/spectrum/1040g0k031os48csjgs0g5q6h2d78mp3buu4rqtg!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512211939/443d1ddb0e6084e18aff51eacdbcc720/spectrum/1040g0k031os48csjgs2g5q6h2d78mp3bp60o668!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512211939/2617d8a6720adcf136c5d399eed19393/spectrum/1040g0k031os48csjgs205q6h2d78mp3bclf8fpo!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512211939/cba3ffc211fcbfebb1d483813f3f896e/spectrum/1040g0k031os48csjgs1g5q6h2d78mp3b9jq50lo!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512211939/007da3c3fbf69436c35498e9a8443753/spectrum/1040g0k031os48csjgs3g5q6h2d78mp3bmgn0ja0!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512211939/cbde3d437331333f931b48a3a51279ae/spectrum/1040g0k031os48csjgs305q6h2d78mp3b5i8r7ng!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512211939/f1d9f94bca175be69ba18106ec9a4b08/spectrum/1040g0k031os48csjgs4g5q6h2d78mp3b807e8fg!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512211939/98e664b989ca615de5e2244d7f260e30/spectrum/1040g0k031os48csjgs405q6h2d78mp3b0961k6g!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512211939/191d8f42c52062e40e0f9ad6ac2874cf/spectrum/1040g0k031os48csjgs005q6h2d78mp3bb9fgp18!nd_dft_wlteh_webp_3"
-        ],
-        "url": "https://www.xiaohongshu.com/explore/6916fbc2000000001b031e1c?xsec_token=ABG8G9KphUbw13-SahphPU-T3iRMSZ6ylhj2snwOVMajE=&xsec_source=pc_search"
-      },
-      {
-        "id": "",
-        "title": "极简生活｜拒绝浪费和内耗避雷“土味”穿搭",
-        "content": "🔖我是一个偏五五分的梨形身材的，体重偏胖（已经减肥两个月了），冬天总是不喜欢的几种穿搭感觉，不知道大家有没有这样的烦恼：\n1️⃣上衣遮住屁股，让本来就不长的腿显得更没有。\n2️⃣修身的衣服像贴膜的米其林；每一层都穿的宽松，厚卫衣➕羽绒服，穿起来上身像个球。",
-        "author": "惊惊的极简生活",
-        "likes": 858,
-        "images": [
-          "https://sns-webpic-qc.xhscdn.com/202512211939/af7c170f207a0956b8dc2a1c7a109eeb/notes_pre_post/1040g3k831q1k3q8i7o005phq5ceiuf38avqp1d0!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512211939/1ccd6f4efadbb4a047087e09d7df1994/notes_pre_post/1040g3k031q1k3pqkg0005phq5ceiuf38eo2r970!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512211939/7619568333e60b3f13307d1ab713660d/notes_pre_post/1040g3k031q1k3q0r00005phq5ceiuf3892s6fs8!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512211939/6c4c64cd1324dcdc4423da67e9360d43/notes_pre_post/1040g3k831q1k3qbu0a005phq5ceiuf38cup9ka8!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512211939/af7c170f207a0956b8dc2a1c7a109eeb/notes_pre_post/1040g3k831q1k3q8i7o005phq5ceiuf38avqp1d0!nd_dft_wlteh_webp_3",
-          "https://sns-webpic-qc.xhscdn.com/202512211939/1ccd6f4efadbb4a047087e09d7df1994/notes_pre_post/1040g3k031q1k3pqkg0005phq5ceiuf38eo2r970!nd_dft_wlteh_webp_3"
-        ],
-        "url": "https://www.xiaohongshu.com/explore/693d6081000000001e02c9c7?xsec_token=AB3iY3VwVuDg5dcN-m6hbU4VhSHgAlAJf8z5vI9dmyCCE=&xsec_source=pc_search"
-      },
-      {
-        "id": "",
-        "title": "第48期｜又买了一车！梨型身材原相机真实试穿",
-        "content": "无滤镜无拉腿#梨型身材穿搭 #显瘦穿搭 #遮肉遮胯 #服装测评 #新衣试穿 #通勤穿搭 #秋冬穿搭",
-        "author": "158的梨大腿🍐",
-        "likes": 1965,
-        "images": [],
-        "url": "https://www.xiaohongshu.com/explore/691b12ff000000000700121a?xsec_token=AB1_gAWh2O_qf0wZyB6X0YHlxiWmkc6lQG4m-V2qVY1IU=&xsec_source=pc_search"
-      }
-    ],
-    "insights": {
-      "key_findings": [
-        "秋冬通勤穿搭是核心需求，尤其针对小个子和梨形身材用户，强调快速（5分钟出门）、显瘦（如'显瘦10斤'）和平价方案（笔记1: '5 分钟出门通勤套秋冬穿法！亲测显瘦 10 斤' 和 笔记3: '第48期｜又买了一车！梨型身材原相机真实试穿'）",
-        "真实性是用户信任的关键指标，高赞笔记（1965赞）突出'无滤镜无拉腿'和原相机试穿，反映用户对过度修饰内容的抵触（笔记3: '第48期｜又买了一车！梨型身材原相机真实试穿'）",
-        "梨形身材用户的穿搭痛点高度集中，如'上衣遮住屁股显腿短'和'修身/宽松衣物显臃肿'，避坑指南类内容获高互动（858赞），远超普通穿搭分享（笔记2: '极简生活｜拒绝浪费和内耗避雷“土味”穿搭'）"
-      ],
-      "user_pain_points": [
-        "梨形身材用户因上衣长度不当导致视觉腿短（笔记2明确描述：'上衣遮住屁股，让本来就不长的腿显得更没有'）",
-        "衣物版型选择失误引发显胖问题：修身款显'贴膜米其林'感，宽松款叠穿成'球状'（笔记2详细列举此痛点）"
-      ],
-      "recommendations": [
-        "创作者应强化真实场景验证，采用原相机无修图展示，并标注具体身材数据（如'158cm梨大腿'），以提升可信度和用户共鸣",
-        "针对高频痛点设计内容，例如制作'梨形身材通勤避坑清单'，结合具体错误案例（如上衣长度测量技巧）而非泛泛而谈"
-      ],
-      "needs_more_data": true,
-      "suggested_keywords": [
-        "穿搭拍摄构图技巧",
-        "小红书视频剪辑教程",
-        "2025流行色应用实例",
-        "素人穿搭翻车解析"
       ],
       "confidence": 0.6
     }

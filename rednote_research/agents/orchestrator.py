@@ -6,7 +6,7 @@ from .planner import PlannerAgent
 from .searcher import SearcherAgent
 from .analyzer import AnalyzerAgent
 from ..state import ResearchState
-from ..mcp.rednote import RedNoteMCPClient
+from ..mcp import XiaohongshuHTTPClient
 from ..config import Config
 
 
@@ -20,7 +20,7 @@ class ResearchOrchestrator:
     采用简单的状态机模式，降低复杂度
     """
     
-    def __init__(self, config: Config, mcp_client: Optional[RedNoteMCPClient] = None):
+    def __init__(self, config: Config, mcp_client: Optional[XiaohongshuHTTPClient] = None):
         """
         初始化编排器
         

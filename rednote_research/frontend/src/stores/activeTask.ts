@@ -3,10 +3,14 @@
  * 
  * 独立管理当前正在执行的研究任务状态
  * 与 research.ts（报告数据）完全解耦
+ * 
+ * 使用 localStorage 持久化，确保刷新页面后可恢复
  */
 
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
+
+const STORAGE_KEY = 'activeTask'
 
 export interface LogEntry {
     time: string
@@ -20,37 +24,87 @@ export interface TaskStats {
     insightsExtracted: number
 }
 
+interface PersistedState {
+    topic: string
+    isRunning: boolean
+    stage: string
+    completedStages: string[]
+    startTime: number
+    finalElapsedTime: number
+    logs: LogEntry[]
+    stats: TaskStats
+}
+
+// 从 localStorage 恢复状态
+const loadPersistedState = (): Partial<PersistedState> | null => {
+    try {
+        const saved = localStorage.getItem(STORAGE_KEY)
+        return saved ? JSON.parse(saved) : null
+    } catch {
+        return null
+    }
+}
+
+// 保存状态到 localStorage
+const saveState = (state: PersistedState) => {
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
+    } catch {
+        // ignore
+    }
+}
+
 export const useActiveTaskStore = defineStore('activeTask', () => {
+    // 恢复持久化状态
+    const persisted = loadPersistedState()
+
     // 当前任务主题
-    const topic = ref('')
+    const topic = ref(persisted?.topic || '')
 
     // 是否正在运行
-    const isRunning = ref(false)
+    const isRunning = ref(persisted?.isRunning || false)
 
     // 当前阶段
-    const stage = ref('')
+    const stage = ref(persisted?.stage || '')
 
     // 已完成阶段
-    const completedStages = ref<string[]>([])
+    const completedStages = ref<string[]>(persisted?.completedStages || [])
 
     // 任务开始时间戳（毫秒）
-    const startTime = ref<number>(0)
+    const startTime = ref<number>(persisted?.startTime || 0)
 
     // 任务完成时保存的最终耗时（秒）
-    const finalElapsedTime = ref<number>(0)
+    const finalElapsedTime = ref<number>(persisted?.finalElapsedTime || 0)
 
     // 用于触发UI更新的tick（每秒更新一次）
     const tick = ref(0)
 
     // 任务日志
-    const logs = ref<LogEntry[]>([])
+    const logs = ref<LogEntry[]>(persisted?.logs || [])
 
     // 统计数据
-    const stats = ref<TaskStats>({
+    const stats = ref<TaskStats>(persisted?.stats || {
         notesFound: 0,
         contentsAnalyzed: 0,
         insightsExtracted: 0
     })
+
+    // 持久化状态
+    const persistState = () => {
+        saveState({
+            topic: topic.value,
+            isRunning: isRunning.value,
+            stage: stage.value,
+            completedStages: completedStages.value,
+            startTime: startTime.value,
+            finalElapsedTime: finalElapsedTime.value,
+            logs: logs.value.slice(-100), // 只保留最后100条日志
+            stats: stats.value
+        })
+    }
+
+    // 监听状态变化并持久化
+    watch([topic, isRunning, stage, completedStages, startTime, finalElapsedTime, logs, stats], persistState, { deep: true })
 
     // 计算耗时（秒）- 基于开始时间戳，依赖tick触发更新
     const elapsedTime = computed(() => {
@@ -125,6 +179,8 @@ export const useActiveTaskStore = defineStore('activeTask', () => {
         tick.value = 0
         logs.value = []
         stats.value = { notesFound: 0, contentsAnalyzed: 0, insightsExtracted: 0 }
+        // 清除持久化数据
+        localStorage.removeItem(STORAGE_KEY)
     }
 
     // 是否有进行中的任务（正在运行）
@@ -158,3 +214,4 @@ export const useActiveTaskStore = defineStore('activeTask', () => {
         clearTask
     }
 })
+

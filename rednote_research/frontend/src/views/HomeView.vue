@@ -56,11 +56,11 @@
     
     <!-- 进行中任务入口（仅进行中显示，完成后消失）-->
     <div v-if="activeTaskStore.hasActiveTask" class="active-task-section">
-      <div class="active-task-card" @click="goToResearch">
-        <div class="task-icon">
+      <div class="active-task-card">
+        <div class="task-icon" @click="goToResearch">
           <span class="icon-spinning">🔄</span>
         </div>
-        <div class="task-info">
+        <div class="task-info" @click="goToResearch">
           <div class="task-status">进行中</div>
           <div class="task-topic">{{ activeTaskStore.topic }}</div>
           <div class="task-meta">
@@ -68,12 +68,15 @@
             <span class="task-time">{{ formatTime(activeTaskStore.elapsedTime) }}</span>
           </div>
         </div>
-        <div class="task-action">
-          <button class="task-btn">
+        <div class="task-actions">
+          <button class="task-btn" @click="goToResearch">
             查看进度
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <polyline points="9 18 15 12 9 6"/>
             </svg>
+          </button>
+          <button class="cancel-btn" @click.stop="cancelTask" title="取消任务">
+            ✕
           </button>
         </div>
       </div>
@@ -97,6 +100,25 @@
         </div>
       </div>
     </div>
+    
+    <!-- 取消任务确认弹窗 -->
+    <div v-if="showCancelDialog" class="dialog-overlay" @click.self="showCancelDialog = false">
+      <div class="dialog-box">
+        <div class="dialog-icon">⚠️</div>
+        <h3 class="dialog-title">确认取消任务？</h3>
+        <p class="dialog-message">
+          取消后当前研究任务将被清除。
+        </p>
+        <div class="dialog-actions">
+          <button class="dialog-btn secondary" @click="showCancelDialog = false">
+            返回
+          </button>
+          <button class="dialog-btn danger" @click="confirmCancelTask">
+            确认取消
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -111,6 +133,7 @@ const activeTaskStore = useActiveTaskStore()
 const topic = ref('')
 const isLoading = ref(false)
 const showTaskDialog = ref(false)
+const showCancelDialog = ref(false)
 let timer: number | null = null
 
 const hotTags = [
@@ -167,6 +190,19 @@ const goToResearch = () => {
 const confirmGoToResearch = () => {
   showTaskDialog.value = false
   router.push('/research')
+}
+
+const cancelTask = () => {
+  showCancelDialog.value = true
+}
+
+const confirmCancelTask = () => {
+  showCancelDialog.value = false
+  if (timer) {
+    clearInterval(timer)
+    timer = null
+  }
+  activeTaskStore.clearTask()
 }
 
 // 启动定时器刷新耗时显示
@@ -391,8 +427,11 @@ onUnmounted(() => {
   font-weight: 500;
 }
 
-.task-action {
+.task-action, .task-actions {
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .task-btn {
@@ -412,6 +451,27 @@ onUnmounted(() => {
 
 .task-btn:hover {
   transform: scale(1.05);
+}
+
+.cancel-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #e0e0e0;
+  background: white;
+  color: #999;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.cancel-btn:hover {
+  background: #fee;
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
 /* 动画 */

@@ -15,7 +15,7 @@ from pydantic import BaseModel
 
 from ..config import Config
 from ..state import ResearchState
-from ..mcp.rednote import RedNoteMCPClient
+from ..mcp import XiaohongshuHTTPClient
 from ..agents.orchestrator import ResearchOrchestrator
 from ..output.html_generator import HTMLReportGenerator
 from ..services.settings import get_settings_service, Settings
@@ -23,7 +23,7 @@ from ..services.settings import get_settings_service, Settings
 
 # 全局状态
 _orchestrator: Optional[ResearchOrchestrator] = None
-_mcp_client: Optional[RedNoteMCPClient] = None
+_mcp_client: Optional[XiaohongshuHTTPClient] = None
 _config: Optional[Config] = None
 
 
@@ -35,16 +35,11 @@ async def lifespan(app: FastAPI):
     # 启动时初始化
     _config = Config.from_env()
     
-    # MCP客户端路径（从环境变量获取）
-    mcp_path = os.getenv("REDNOTE_MCP_PATH", "")
-    if mcp_path:
-        # 支持相对路径：自动转换为绝对路径
-        if not os.path.isabs(mcp_path):
-            # 获取项目根目录（rednote_research 的父目录）
-            project_root = Path(__file__).parent.parent.parent
-            mcp_path = str((project_root / mcp_path).resolve())
-        _mcp_client = RedNoteMCPClient(mcp_path)
-        _orchestrator = ResearchOrchestrator(_config, _mcp_client)
+    # MCP客户端（使用 HTTP API）
+    mcp_url = os.getenv("XIAOHONGSHU_MCP_URL", "http://localhost:18060")
+    _mcp_client = XiaohongshuHTTPClient(base_url=mcp_url)
+    await _mcp_client.connect()
+    _orchestrator = ResearchOrchestrator(_config, _mcp_client)
     
     yield
     
@@ -503,44 +498,113 @@ async def test_imagegen_connection(request: ImageGenTestRequest):
 
 @app.post("/api/settings/test-mcp")
 async def test_mcp_connection():
-    """测试 MCP 连接（检查小红书登录状态）"""
-    global _mcp_client
-    
-    if not _mcp_client:
-        raise HTTPException(
-            status_code=400, 
-            detail="MCP 客户端未配置。请确保 REDNOTE_MCP_PATH 环境变量已设置。"
-        )
+    """测试 MCP 连接（完整测试：登录状态 + 搜索 + 获取详情）"""
+    from ..mcp.http_client import get_mcp_client
+    import httpx
     
     try:
-        # 连接 MCP
-        await _mcp_client.connect()
+        client = get_mcp_client()
         
-        # 尝试搜索一个测试关键词
-        results = await _mcp_client.search_notes("测试", limit=1)
+        # 1. 检查登录状态
+        status = await client.check_login_status()
         
-        # 断开连接
-        await _mcp_client.disconnect()
-        
-        if results:
+        if not status.get("is_logged_in"):
             return {
-                "status": "ok", 
-                "message": f"MCP 连接成功！小红书登录状态正常，找到 {len(results)} 条测试结果。"
+                "status": "warning",
+                "message": "MCP 服务正常，但未登录小红书。请扫码登录。"
             }
-        else:
+        
+        username = status.get('username', '未知')
+        
+        # 2. 测试搜索
+        try:
+            # 直接调用 API 查看原始响应
+            await client._ensure_connected()
+            response = await client._client.post("/api/v1/feeds/search", json={
+                "keyword": "奶茶"
+            })
+            raw_data = response.json()
+            
+            if raw_data.get("success"):
+                feeds = raw_data.get("data", {}).get("feeds", [])
+                search_count = len(feeds)
+                
+                # 3. 测试获取详情（如果有搜索结果）
+                detail_test = ""
+                if feeds:
+                    first_feed = feeds[0]
+                    feed_id = first_feed.get("id", "")
+                    xsec_token = first_feed.get("xsecToken", "")
+                    title = first_feed.get("noteCard", {}).get("displayTitle", "无标题")[:20]
+                    
+                    if feed_id and xsec_token:
+                        try:
+                            detail_response = await client._client.post("/api/v1/feeds/detail", json={
+                                "feed_id": feed_id,
+                                "xsec_token": xsec_token
+                            })
+                            detail_data = detail_response.json()
+                            if detail_data.get("success"):
+                                note_title = detail_data.get("data", {}).get("title", "")[:15]
+                                detail_test = f"，详情获取✓({note_title})"
+                            else:
+                                err_msg = detail_data.get('message', '') or detail_data.get('error', '') or '未知错误'
+                                detail_test = f"，详情获取✗({err_msg[:30]})"
+                        except Exception as e:
+                            detail_test = f"，详情获取异常({str(e)[:30]})"
+                    else:
+                        detail_test = f"，缺少token(id={feed_id[:8] if feed_id else 'N/A'})"
+                
+                return {
+                    "status": "ok",
+                    "message": f"MCP 连接成功！用户: {username}，搜索到 {search_count} 条结果{detail_test}"
+                }
+            else:
+                return {
+                    "status": "warning",
+                    "message": f"MCP 连接成功，用户: {username}，但搜索失败: {raw_data.get('message', '未知错误')}"
+                }
+                
+        except Exception as e:
             return {
-                "status": "ok", 
-                "message": "MCP 连接成功！但未找到测试结果，可能需要重新登录小红书。"
+                "status": "warning",
+                "message": f"MCP 连接成功，用户: {username}，但搜索测试失败: {str(e)[:100]}"
             }
             
     except Exception as e:
-        error_msg = str(e)
-        if "login" in error_msg.lower() or "登录" in error_msg:
-            raise HTTPException(
-                status_code=400, 
-                detail=f"MCP 连接失败：需要重新登录小红书。错误: {error_msg[:100]}"
-            )
-        raise HTTPException(status_code=400, detail=f"MCP 连接失败: {error_msg[:200]}")
+        raise HTTPException(status_code=400, detail=f"MCP 连接失败: {str(e)[:200]}")
+
+
+@app.get("/api/mcp/login/status")
+async def mcp_login_status():
+    """获取小红书登录状态"""
+    from ..mcp.http_client import get_mcp_client
+    
+    try:
+        client = get_mcp_client()
+        status = await client.check_login_status()
+        return {
+            "success": True,
+            "data": status
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"获取登录状态失败: {str(e)}")
+
+
+@app.get("/api/mcp/login/qrcode")
+async def mcp_login_qrcode():
+    """获取小红书登录二维码"""
+    from ..mcp.http_client import get_mcp_client
+    
+    try:
+        client = get_mcp_client()
+        qr_data = await client.get_login_qrcode()
+        return {
+            "success": True,
+            "data": qr_data
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"获取二维码失败: {str(e)}")
 
 
 

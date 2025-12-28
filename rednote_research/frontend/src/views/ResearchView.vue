@@ -75,12 +75,38 @@
         返回首页
       </button>
       <button 
+        v-if="activeTaskStore.isRunning" 
+        class="btn btn-danger" 
+        @click="stopTask"
+      >
+        停止任务
+      </button>
+      <button 
         v-if="isCompleted || activeTaskStore.hasCompletedTask" 
         class="btn btn-primary" 
         @click="goToOutline"
       >
         编辑大纲
       </button>
+    </div>
+    
+    <!-- 停止任务确认弹窗 -->
+    <div v-if="showStopDialog" class="dialog-overlay" @click.self="showStopDialog = false">
+      <div class="dialog-box">
+        <div class="dialog-icon">⚠️</div>
+        <h3 class="dialog-title">确认停止任务？</h3>
+        <p class="dialog-message">
+          停止后当前研究将中断，已收集的数据将保留。
+        </p>
+        <div class="dialog-actions">
+          <button class="dialog-btn secondary" @click="showStopDialog = false">
+            取消
+          </button>
+          <button class="dialog-btn danger" @click="confirmStopTask">
+            确认停止
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -98,6 +124,7 @@ const activeTaskStore = useActiveTaskStore()
 
 const logContainer = ref<HTMLElement | null>(null)
 const isCompleted = ref(false)
+const showStopDialog = ref(false)
 let timer: number | null = null
 
 const stages = [
@@ -171,10 +198,22 @@ const startResearch = async () => {
       eventSource.close()
       if (!isCompleted.value) {
         activeTaskStore.addLog('error', '连接中断')
+        // 标记任务结束，停止计时
+        activeTaskStore.markCompleted()
+        if (timer) {
+          clearInterval(timer)
+          timer = null
+        }
       }
     }
   } catch (error) {
     activeTaskStore.addLog('error', `研究失败: ${error}`)
+    // 标记任务结束
+    activeTaskStore.markCompleted()
+    if (timer) {
+      clearInterval(timer)
+      timer = null
+    }
   }
 }
 
@@ -292,6 +331,22 @@ const buildOutlineFromInsights = (insights: any, notes: any[]) => {
 
 const goBack = () => {
   router.push('/')
+}
+
+const stopTask = () => {
+  // 显示确认弹窗
+  showStopDialog.value = true
+}
+
+const confirmStopTask = () => {
+  showStopDialog.value = false
+  // 停止任务
+  activeTaskStore.addLog('warning', '用户主动停止任务')
+  activeTaskStore.markCompleted()
+  if (timer) {
+    clearInterval(timer)
+    timer = null
+  }
 }
 
 const goToOutline = () => {
