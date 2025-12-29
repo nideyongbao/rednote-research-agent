@@ -43,8 +43,25 @@ const router = createRouter({
             path: '/settings',
             name: 'settings',
             component: SettingsView
+        },
+        // 发布相关路由
+        {
+            path: '/publish/edit/:draftId?',
+            name: 'publish-edit',
+            component: () => import('../views/PublishEditView.vue')
+        },
+        {
+            path: '/publish/preview/:draftId',
+            name: 'publish-preview',
+            component: () => import('../views/PublishPreviewView.vue')
+        },
+        {
+            path: '/publish/result/:draftId',
+            name: 'publish-result',
+            component: () => import('../views/PublishResultView.vue')
         }
     ]
 })
 
 export default router
+

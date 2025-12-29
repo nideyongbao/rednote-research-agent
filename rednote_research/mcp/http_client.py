@@ -283,6 +283,77 @@ class XiaohongshuHTTPClient:
             except ValueError:
                 return 0
         return 0
+    
+    # ==== 发布相关 ====
+    
+    async def publish_content(
+        self,
+        title: str,
+        content: str,
+        images: list[str],
+        tags: list[str] = None
+    ) -> dict:
+        """
+        发布笔记到小红书
+        
+        Args:
+            title: 标题（≤20字）
+            content: 正文内容（≤200字，图文笔记）
+            images: 图片路径列表（1-9张，支持本地路径或在线URL）
+            tags: 标签列表（可选，3-5个）
+        
+        Returns:
+            {
+                "success": bool,
+                "note_id": str,
+                "url": str,
+                "error": str (if failed)
+            }
+        """
+        await self._ensure_connected()
+        
+        # 构建发布请求
+        publish_data = {
+            "title": title[:20],  # 确保标题不超过20字
+            "content": content[:1000],  # API 限制
+            "images": images,
+        }
+        
+        if tags:
+            publish_data["tags"] = tags[:8]  # 最多8个标签
+        
+        try:
+            response = await self._client.post(
+                "/api/v1/publish/note",
+                json=publish_data,
+                timeout=120.0  # 发布需要更长时间
+            )
+            data = response.json()
+            
+            if data.get("success"):
+                result_data = data.get("data", {})
+                note_id = result_data.get("note_id", "")
+                return {
+                    "success": True,
+                    "note_id": note_id,
+                    "url": f"https://www.xiaohongshu.com/explore/{note_id}" if note_id else "",
+                    "error": None
+                }
+            else:
+                return {
+                    "success": False,
+                    "note_id": None,
+                    "url": None,
+                    "error": data.get("message") or data.get("error") or "发布失败"
+                }
+                
+        except Exception as e:
+            return {
+                "success": False,
+                "note_id": None,
+                "url": None,
+                "error": str(e)
+            }
 
 
 # 全局客户端实例

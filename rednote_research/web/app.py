@@ -773,6 +773,266 @@ h1{{color:#ff2442;}}h2{{border-bottom:2px solid #ff2442;padding-bottom:8px;}}</s
         raise HTTPException(status_code=400, detail=f"不支持的格式: {request.format}")
 
 
+# ========== 发布 API ==========
+
+class CreatePublishRequest(BaseModel):
+    """创建发布草稿请求"""
+    topic: str
+    summary: str = ""
+    key_findings: list[str] = []
+    sections: list[dict] = []
+    notes: list[dict] = []
+
+
+class UpdatePublishRequest(BaseModel):
+    """更新发布草稿请求"""
+    title: str = None
+    content: str = None
+    tags: list[str] = None
+    cover_image: str = None
+    section_images: list[str] = None
+
+
+@app.post("/api/publish/create")
+async def create_publish_draft(request: CreatePublishRequest):
+    """创建发布草稿"""
+    from ..services.publisher import get_publish_service
+    
+    service = get_publish_service()
+    draft = service.create_draft(
+        topic=request.topic,
+        summary=request.summary,
+        key_findings=request.key_findings,
+        sections=request.sections,
+        notes=request.notes
+    )
+    
+    return {
+        "success": True,
+        "data": draft.model_dump()
+    }
+
+
+@app.get("/api/publish/{draft_id}")
+async def get_publish_draft(draft_id: str):
+    """获取发布草稿"""
+    from ..services.publisher import get_publish_service
+    
+    service = get_publish_service()
+    draft = service.get_draft(draft_id)
+    
+    if not draft:
+        raise HTTPException(status_code=404, detail="草稿不存在")
+    
+    return {
+        "success": True,
+        "data": draft.model_dump()
+    }
+
+
+@app.put("/api/publish/{draft_id}")
+async def update_publish_draft(draft_id: str, request: UpdatePublishRequest):
+    """更新发布草稿"""
+    from ..services.publisher import get_publish_service
+    
+    service = get_publish_service()
+    
+    updates = {}
+    if request.title is not None:
+        updates["title"] = request.title[:20]  # 限制20字
+    if request.content is not None:
+        updates["content"] = request.content[:200]  # 限制200字
+    if request.tags is not None:
+        updates["tags"] = request.tags[:8]
+    if request.cover_image is not None:
+        updates["cover_image"] = request.cover_image
+    if request.section_images is not None:
+        updates["section_images"] = request.section_images
+    
+    draft = service.update_draft(draft_id, updates)
+    
+    if not draft:
+        raise HTTPException(status_code=404, detail="草稿不存在")
+    
+    return {
+        "success": True,
+        "data": draft.model_dump()
+    }
+
+
+@app.delete("/api/publish/{draft_id}")
+async def delete_publish_draft(draft_id: str):
+    """删除发布草稿"""
+    from ..services.publisher import get_publish_service
+    
+    service = get_publish_service()
+    
+    if service.delete_draft(draft_id):
+        return {"success": True, "message": "已删除"}
+    
+    raise HTTPException(status_code=404, detail="草稿不存在")
+
+
+@app.get("/api/publish")
+async def list_publish_drafts(limit: int = Query(20, ge=1, le=50)):
+    """列出所有发布草稿"""
+    from ..services.publisher import get_publish_service
+    
+    service = get_publish_service()
+    drafts = service.list_drafts(limit=limit)
+    
+    return {
+        "success": True,
+        "data": [d.model_dump() for d in drafts]
+    }
+
+
+@app.post("/api/publish/{draft_id}/generate-images")
+async def generate_publish_images(draft_id: str):
+    """
+    SSE: 生成发布图片（封面+章节图）
+    
+    返回实时进度日志
+    """
+    import json
+    from ..services.publisher import get_publish_service
+    
+    service = get_publish_service()
+    draft = service.get_draft(draft_id)
+    
+    if not draft:
+        raise HTTPException(status_code=404, detail="草稿不存在")
+    
+    async def event_generator():
+        logs = []
+        
+        def on_log(msg: str):
+            logs.append(msg)
+        
+        try:
+            # 发送开始消息
+            yield {"data": json.dumps({
+                "type": "start",
+                "message": "开始生成图片..."
+            }, ensure_ascii=False)}
+            
+            # 异步生成图片
+            async def generate_with_logs():
+                nonlocal logs
+                await service.generate_images(draft_id, on_log=on_log)
+            
+            # 启动生成任务
+            task = asyncio.create_task(generate_with_logs())
+            
+            # 定期发送日志
+            last_log_count = 0
+            while not task.done():
+                await asyncio.sleep(0.5)
+                
+                # 发送新增日志
+                if len(logs) > last_log_count:
+                    for log in logs[last_log_count:]:
+                        yield {"data": json.dumps({
+                            "type": "log",
+                            "message": log
+                        }, ensure_ascii=False)}
+                    last_log_count = len(logs)
+            
+            # 等待任务完成
+            await task
+            
+            # 发送剩余日志
+            for log in logs[last_log_count:]:
+                yield {"data": json.dumps({
+                    "type": "log",
+                    "message": log
+                }, ensure_ascii=False)}
+            
+            # 获取最新草稿
+            updated_draft = service.get_draft(draft_id)
+            
+            yield {"data": json.dumps({
+                "type": "complete",
+                "data": updated_draft.model_dump() if updated_draft else {}
+            }, ensure_ascii=False)}
+            
+        except Exception as e:
+            yield {"data": json.dumps({
+                "type": "error",
+                "message": str(e)
+            }, ensure_ascii=False)}
+    
+    return EventSourceResponse(event_generator())
+
+
+@app.post("/api/publish/{draft_id}/execute")
+async def execute_publish(draft_id: str):
+    """
+    SSE: 执行发布到小红书
+    
+    返回实时进度日志
+    """
+    import json
+    from ..services.publisher import get_publish_service
+    
+    service = get_publish_service()
+    draft = service.get_draft(draft_id)
+    
+    if not draft:
+        raise HTTPException(status_code=404, detail="草稿不存在")
+    
+    async def event_generator():
+        logs = []
+        
+        def on_log(msg: str):
+            logs.append(msg)
+        
+        try:
+            yield {"data": json.dumps({
+                "type": "start",
+                "message": "开始发布..."
+            }, ensure_ascii=False)}
+            
+            # 执行发布
+            updated_draft = await service.publish(draft_id, on_log=on_log)
+            
+            # 发送所有日志
+            for log in logs:
+                yield {"data": json.dumps({
+                    "type": "log",
+                    "message": log
+                }, ensure_ascii=False)}
+            
+            yield {"data": json.dumps({
+                "type": "complete",
+                "success": updated_draft.status == "published",
+                "data": updated_draft.model_dump()
+            }, ensure_ascii=False)}
+            
+        except Exception as e:
+            yield {"data": json.dumps({
+                "type": "error",
+                "message": str(e)
+            }, ensure_ascii=False)}
+    
+    return EventSourceResponse(event_generator())
+
+
+@app.get("/api/publish/{draft_id}/images/{image_name}")
+async def serve_publish_image(draft_id: str, image_name: str):
+    """提供发布图片访问"""
+    from ..services.publisher import get_publish_service
+    
+    service = get_publish_service()
+    draft_dir = service._get_draft_dir(draft_id)
+    image_path = os.path.join(draft_dir, "images", image_name)
+    
+    if not os.path.exists(image_path):
+        raise HTTPException(status_code=404, detail="图片不存在")
+    
+    return FileResponse(image_path)
+
+
 # ============ 设置相关 API ============
 
 def get_effective_config() -> Config:

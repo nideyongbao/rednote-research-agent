@@ -27,6 +27,13 @@
             <button @click="exportReport('pdf')">📕 PDF</button>
           </div>
         </div>
+        <button class="btn btn-xiaohongshu" @click="goToPublish">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 2 11 13"/>
+            <path d="m22 2-7 20-4-9-9-4 20-7z"/>
+          </svg>
+          发布到小红书
+        </button>
       </div>
     </div>
     
@@ -617,6 +624,10 @@ const goBack = () => {
   router.push('/outline')
 }
 
+const goToPublish = () => {
+  router.push('/publish/edit')
+}
+
 // 监听滚动更新当前章节
 let scrollHandler: (() => void) | null = null
 
@@ -714,6 +725,33 @@ onUnmounted(() => {
 
 .export-menu button:not(:last-child) {
   border-bottom: 1px solid #f0f0f0;
+}
+
+/* 小红书按钮 */
+.btn-xiaohongshu {
+  background: linear-gradient(135deg, #ff2442 0%, #ff6b81 100%);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(255, 36, 66, 0.3);
+}
+
+.btn-xiaohongshu:hover {
+  background: linear-gradient(135deg, #e6203a 0%, #ff5470 100%);
+  box-shadow: 0 4px 12px rgba(255, 36, 66, 0.4);
+  transform: translateY(-1px);
+}
+
+.btn-xiaohongshu svg {
+  margin-right: 2px;
 }
 
 /* 布局 */
