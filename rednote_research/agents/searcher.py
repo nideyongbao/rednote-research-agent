@@ -7,19 +7,7 @@ from .base import BaseAgent
 from ..state import ResearchState, NoteData
 from ..mcp import XiaohongshuHTTPClient
 from ..services.settings import get_settings_service
-
-
-SEARCHER_PROMPT = """你是一个数据筛选专家。给定一组小红书笔记的标题和摘要，判断它们与研究主题的相关性。
-
-## 筛选标准
-1. 直接相关：标题或内容直接涉及研究主题
-2. 间接相关：提供有价值的背景信息或用户体验
-3. 不相关：广告、无关话题、纯推广
-
-## 需注意
-- 优先选择高点赞数的笔记（通常质量更高）
-- 优先选择有实际体验的笔记（而非纯转载）
-- 避免明显的软广"""
+from ..prompts.searcher import SEARCHER_PROMPT
 
 
 class SearcherAgent(BaseAgent):
