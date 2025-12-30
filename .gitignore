@@ -50,3 +50,11 @@ rednote_research/services/settings.json
 # Keep .env files for configuration examples
 !rednote_research/.env
 !.env.docker
+
+# Runtime data (Do not commit)
+data/
+output/
+reports/
+!reports/.gitkeep
+!data/.gitkeep
+!output/.gitkeep

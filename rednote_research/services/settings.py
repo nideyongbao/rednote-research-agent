@@ -73,15 +73,61 @@ class SettingsService:
         self.config_path = config_path
     
     def load(self) -> Settings:
-        """加载配置"""
+        """加载配置（优先级：环境变量 > 配置文件 > 默认值）"""
+        import os
+        
+        # 1. 基础配置
+        settings = Settings()
+        
+        # 2. 如果文件存在，先加载文件
         if self.config_path.exists():
             try:
                 with open(self.config_path, "r", encoding="utf-8") as f:
-                    data = json.load(f)
-                return Settings(**data)
+                    file_data = json.load(f)
+                    # 使用 update 逻辑而不是直接覆盖，保留默认结构
+                    # 这里简单起见，利用 Pydantic 的自动转换
+                    # 注意：如果文件结构不完整，Pydantic 会用默认值补全
+                    settings = Settings(**file_data)
             except (json.JSONDecodeError, Exception):
                 pass
-        return Settings()
+        
+        # 3. 环境变量覆盖 (Docker 部署的核心逻辑)
+        # LLM
+        if env_key := os.getenv("OPENAI_API_KEY"):
+            settings.llm.api_key = env_key
+        if env_base := os.getenv("OPENAI_BASE_URL"):
+            settings.llm.base_url = env_base
+        if env_model := os.getenv("OPENAI_MODEL"):
+            settings.llm.model = env_model
+            
+        # VLM (可选)
+        if env_vlm_enable := os.getenv("VLM_ENABLED"):
+             settings.vlm.enabled = env_vlm_enable.lower() == "true"
+        if env_vlm_key := os.getenv("VLM_API_KEY"):
+            settings.vlm.api_key = env_vlm_key
+        if env_vlm_base := os.getenv("VLM_BASE_URL"):
+            settings.vlm.base_url = env_vlm_base
+        if env_vlm_model := os.getenv("VLM_MODEL"):
+            settings.vlm.model = env_vlm_model
+        
+        # ImageGen (可选)
+        if env_img_enable := os.getenv("IMAGE_GEN_ENABLED"):
+             settings.imageGen.enabled = env_img_enable.lower() == "true"
+        if env_img_key := os.getenv("IMAGE_GEN_API_KEY"):
+            settings.imageGen.api_key = env_img_key
+        if env_img_base := os.getenv("IMAGE_GEN_BASE_URL"):
+            settings.imageGen.base_url = env_img_base
+        if env_img_model := os.getenv("IMAGE_GEN_MODEL"):
+            settings.imageGen.model = env_img_model
+            
+        # Search Config
+        if env_notes_limit := os.getenv("SEARCH_NOTES_PER_KEYWORD"):
+            try:
+                settings.search.notes_per_keyword = int(env_notes_limit)
+            except ValueError:
+                pass
+             
+        return settings
     
     def save(self, settings: Settings) -> None:
         """保存配置"""
