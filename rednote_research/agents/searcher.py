@@ -32,6 +32,10 @@ class SearcherAgent(BaseAgent):
     输出：笔记数据列表（含详情）
     """
     
+    # 搜索重试配置
+    MAX_SEARCH_RETRIES = 3
+    SEARCH_RETRY_DELAY = 2.0
+    
     def __init__(
         self, 
         llm_client: AsyncOpenAI, 
@@ -45,6 +49,63 @@ class SearcherAgent(BaseAgent):
             model=model
         )
         self.mcp = mcp_client
+    
+    async def _search_with_retry(
+        self, 
+        keyword: str, 
+        limit: int,
+        state: ResearchState,
+        on_log: Optional[Callable[[str], None]] = None
+    ) -> list:
+        """
+        带重试机制的搜索
+        
+        Args:
+            keyword: 搜索关键词
+            limit: 结果数量限制
+            state: 研究状态（用于日志）
+            on_log: 日志回调
+            
+        Returns:
+            搜索结果列表
+        """
+        last_exception = None
+        
+        for attempt in range(self.MAX_SEARCH_RETRIES):
+            try:
+                previews = await self.mcp.search_notes(keyword, limit=limit)
+                
+                if previews:
+                    if attempt > 0:
+                        self._log(state, f"    ✓ 重试成功 (第{attempt + 1}次)", on_log)
+                    return previews
+                
+                # 空结果时重试
+                if attempt < self.MAX_SEARCH_RETRIES - 1:
+                    self._log(
+                        state, 
+                        f"    ⚠ 搜索返回空结果，{self.SEARCH_RETRY_DELAY}s后重试 ({attempt + 1}/{self.MAX_SEARCH_RETRIES})", 
+                        on_log
+                    )
+                    await asyncio.sleep(self.SEARCH_RETRY_DELAY)
+                    
+            except Exception as e:
+                last_exception = e
+                if attempt < self.MAX_SEARCH_RETRIES - 1:
+                    self._log(
+                        state, 
+                        f"    ⚠ 搜索异常: {str(e)[:50]}，{self.SEARCH_RETRY_DELAY}s后重试 ({attempt + 1}/{self.MAX_SEARCH_RETRIES})", 
+                        on_log
+                    )
+                    await asyncio.sleep(self.SEARCH_RETRY_DELAY)
+        
+        # 所有重试都失败
+        if last_exception:
+            self._log(state, f"    ✗ 搜索最终失败: {str(last_exception)[:50]}", on_log)
+        else:
+            self._log(state, f"    ✗ 搜索多次返回空结果", on_log)
+        
+        return []
     
     async def run(
         self, 
@@ -79,8 +140,8 @@ class SearcherAgent(BaseAgent):
             self._log(state, f"搜索关键词 [{i+1}/{len(keywords_to_search)}]: {keyword}", on_log)
             
             try:
-                # 1. 广度搜索
-                previews = await self.mcp.search_notes(keyword, limit=notes_per_keyword)
+                # 1. 广度搜索（使用带重试的方法）
+                previews = await self._search_with_retry(keyword, notes_per_keyword, state, on_log)
                 self._log(state, f"  找到 {len(previews)} 篇笔记", on_log)
                 
                 if not previews:
