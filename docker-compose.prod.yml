@@ -29,6 +29,7 @@ services:
       - PYTHONUNBUFFERED=1
       - XIAOHONGSHU_MCP_URL=http://xiaohongshu-mcp:18060
       - HISTORY_STORAGE_PATH=/app/data/history.json
+      - PUBLISH_OUTPUT_DIR=/app/output/publish
     volumes:
       - ./reports:/app/reports
       - ./data:/app/data

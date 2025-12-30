@@ -833,15 +833,16 @@ class CreatePublishRequest(BaseModel):
     key_findings: list[str] = []
     sections: list[dict] = []
     notes: list[dict] = []
+    source_id: Optional[str] = None  # 关联的原始研究记录ID
 
 
 class UpdatePublishRequest(BaseModel):
     """更新发布草稿请求"""
-    title: str = None
-    content: str = None
-    tags: list[str] = None
-    cover_image: str = None
-    section_images: list[str] = None
+    title: Optional[str] = None
+    content: Optional[str] = None
+    tags: Optional[list[str]] = None
+    cover_image: Optional[str] = None
+    section_images: Optional[list[str]] = None
 
 
 @app.post("/api/publish/create")
@@ -857,6 +858,24 @@ async def create_publish_draft(request: CreatePublishRequest):
         sections=request.sections,
         notes=request.notes
     )
+    
+    # 如果有 source_id，关联到历史记录
+    if request.source_id:
+        try:
+            from ..services.history import get_history_service
+            history_service = get_history_service()
+            history_service.save_report_data(
+                record_id=request.source_id,
+                outline=request.sections,
+                notes=request.notes,
+                insights={
+                    "key_findings": request.key_findings,
+                    "summary": request.summary
+                },
+                draft_id=draft.id
+            )
+        except Exception as e:
+            print(f"Failed to link draft to history: {e}")
     
     return {
         "success": True,
@@ -939,7 +958,7 @@ async def list_publish_drafts(limit: int = Query(20, ge=1, le=50)):
 
 
 @app.get("/api/publish/{draft_id}/generate-images")
-async def generate_publish_images(draft_id: str):
+async def generate_publish_images(draft_id: str, type: str = Query("all")):
     """
     SSE: 生成发布图片（封面+章节图）
     
@@ -970,7 +989,7 @@ async def generate_publish_images(draft_id: str):
             # 异步生成图片
             async def generate_with_logs():
                 nonlocal logs
-                await service.generate_images(draft_id, on_log=on_log)
+                await service.generate_images(draft_id, generation_type=type, on_log=on_log)
             
             # 启动生成任务
             task = asyncio.create_task(generate_with_logs())
@@ -990,7 +1009,12 @@ async def generate_publish_images(draft_id: str):
                     last_log_count = len(logs)
             
             # 等待任务完成
-            await task
+            # 尝试更新历史记录中的 draft_id
+
+            yield {"data": json.dumps({
+                "type": "log",
+                "message": "正在生成并保存..."
+            }, ensure_ascii=False)}
             
             # 发送剩余日志
             for log in logs[last_log_count:]:
@@ -1016,7 +1040,7 @@ async def generate_publish_images(draft_id: str):
     return EventSourceResponse(event_generator())
 
 
-@app.post("/api/publish/{draft_id}/execute")
+@app.get("/api/publish/{draft_id}/execute")
 async def execute_publish(draft_id: str):
     """
     SSE: 执行发布到小红书

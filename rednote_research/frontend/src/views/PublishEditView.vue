@@ -1,5 +1,22 @@
 <template>
   <div class="publish-edit-view">
+    <!-- Lightbox 图片查看器 -->
+    <Teleport to="body">
+      <div v-if="lightboxVisible" class="lightbox-overlay" @click="closeLightbox">
+        <button class="lightbox-close" @click="closeLightbox">×</button>
+        <img 
+          :src="lightboxImage" 
+          class="lightbox-image" 
+          referrerpolicy="no-referrer"
+          @click.stop
+        />
+        <div v-if="lightboxImages.length > 1" class="lightbox-nav">
+          <button @click.stop="prevImage" :disabled="lightboxIndex <= 0">‹</button>
+          <span>{{ lightboxIndex + 1 }} / {{ lightboxImages.length }}</span>
+          <button @click.stop="nextImage" :disabled="lightboxIndex >= lightboxImages.length - 1">›</button>
+        </div>
+      </div>
+    </Teleport>
     <div class="page-header">
       <div class="header-left">
         <button class="btn btn-ghost" @click="goBack">
@@ -125,7 +142,7 @@
               :class="{ empty: !draft.cover_image }"
             >
               <div v-if="draft.cover_image" class="image-content">
-                <img :src="getImageUrl(draft.cover_image)" alt="封面图" />
+                <img :src="getImageUrl(draft.cover_image)" alt="封面图" @click="viewImage(getImageUrl(draft.cover_image))" class="clickable-image" />
                 <div class="image-overlay">
                   <span class="image-label">封面</span>
                   <button class="btn-icon" @click="removeCoverImage">×</button>
@@ -144,7 +161,7 @@
               class="image-item"
             >
               <div class="image-content">
-                <img :src="getImageUrl(img)" :alt="`内容图 ${index + 1}`" />
+                <img :src="getImageUrl(img)" :alt="`内容图 ${index + 1}`" @click="viewImage(getImageUrl(img))" class="clickable-image" />
                 <div class="image-overlay">
                   <span class="image-label">{{ index + 1 }}</span>
                   <button class="btn-icon" @click="removeSectionImage(index)">×</button>
@@ -175,7 +192,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, watch, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useResearchStore } from '../stores/research'
 
@@ -202,6 +219,12 @@ const saving = ref(false)
 const generating = ref(false)
 const generatingLogs = ref<string[]>([])
 
+// Lightbox 状态
+const lightboxVisible = ref(false)
+const lightboxImage = ref('')
+const lightboxImages = ref<string[]>([])
+const lightboxIndex = ref(0)
+
 // 计算属性
 const totalImages = computed(() => {
   return (draft.value.cover_image ? 1 : 0) + draft.value.section_images.length
@@ -216,12 +239,23 @@ onMounted(async () => {
   const draftId = route.params.draftId as string
   
   if (draftId) {
+    if (store.currentDraftId !== draftId) {
+      store.setDraftId(draftId)
+    }
     // 加载已有草稿
     await loadDraft(draftId)
   } else {
     // 从 store 创建新草稿
     await createDraft()
   }
+  
+  isInitialized.value = true
+  
+  window.addEventListener('keydown', handleKeydown)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeydown)
 })
 
 // 加载草稿
@@ -245,6 +279,13 @@ async function loadDraft(draftId: string) {
 
 // 创建新草稿
 async function createDraft() {
+  // 检查是否有关联的研究数据
+  if (!store.topic && !store.id) {
+    alert('未找到关联的研究数据，请先选择一份研究报告')
+    router.push('/history')
+    return
+  }
+
   try {
     const response = await fetch('/api/publish/create', {
       method: 'POST',
@@ -254,7 +295,8 @@ async function createDraft() {
         summary: store.summary,
         key_findings: store.keyFindings,
         sections: store.outline,
-        notes: store.notes
+        notes: store.notes,
+        source_id: store.id // 关联原始研究记录
       })
     })
     
@@ -262,10 +304,12 @@ async function createDraft() {
     
     if (result.success) {
       draft.value = result.data
+      store.setDraftId(result.data.id)
+      isInitialized.value = true
       // 更新 URL
       router.replace({ params: { draftId: result.data.id } })
     } else {
-      alert('创建草稿失败')
+      alert('创建草稿失败: ' + (result.message || '未知错误'))
     }
   } catch (error) {
     console.error('Create draft error:', error)
@@ -274,7 +318,7 @@ async function createDraft() {
 }
 
 // 保存草稿
-async function saveDraft() {
+async function saveDraft(silent = false) {
   if (!draft.value.id) return
   
   saving.value = true
@@ -296,10 +340,11 @@ async function saveDraft() {
     
     if (result.success) {
       draft.value = result.data
+      if (!silent) alert('保存成功！')
     }
   } catch (error) {
     console.error('Save draft error:', error)
-    alert('保存失败')
+    if (!silent) alert('保存失败')
   } finally {
     saving.value = false
   }
@@ -307,26 +352,37 @@ async function saveDraft() {
 
 // 自动保存
 let autoSaveTimer: any = null
+const isInitialized = ref(false)
+
 watch(
   () => [draft.value.title, draft.value.content, draft.value.tags],
-  () => {
+  (newVal, oldVal) => {
+    // 首次加载不触发
+    if (!isInitialized.value) return
+    
+    // 避免保存后的回显触发自动保存
+    if (saving.value) return
+    
+    // 简单比较是否真的有变动
+    if (JSON.stringify(newVal) === JSON.stringify(oldVal)) return
+
     if (autoSaveTimer) clearTimeout(autoSaveTimer)
     autoSaveTimer = setTimeout(() => {
-      if (draft.value.id) saveDraft()
+      if (draft.value.id && !saving.value) saveDraft(true)
     }, 2000)
   },
   { deep: true }
 )
 
-// 生成封面图
-async function generateCoverImage() {
+// 生成图片通用方法
+async function generateImages(type: 'cover' | 'section') {
   if (!draft.value.id) return
   
   generating.value = true
   generatingLogs.value = []
   
   try {
-    const eventSource = new EventSource(`/api/publish/${draft.value.id}/generate-images`)
+    const eventSource = new EventSource(`/api/publish/${draft.value.id}/generate-images?type=${type}`)
     
     eventSource.onmessage = (event) => {
       const data = JSON.parse(event.data)
@@ -354,9 +410,14 @@ async function generateCoverImage() {
   }
 }
 
-// 生成章节图（复用同一个API）
+// 生成封面图
+function generateCoverImage() {
+  generateImages('cover')
+}
+
+// 生成章节图
 function generateSectionImages() {
-  generateCoverImage()
+  generateImages('section')
 }
 
 // 标签管理
@@ -401,6 +462,45 @@ function goToPreview() {
     saveDraft()
     router.push({ name: 'publish-preview', params: { draftId: draft.value.id } })
   }
+}
+
+// Lightbox 逻辑
+const viewImage = (url: string) => {
+  const images: string[] = []
+  if (draft.value.cover_image) images.push(getImageUrl(draft.value.cover_image))
+  draft.value.section_images.forEach(img => images.push(getImageUrl(img)))
+  
+  lightboxImages.value = images
+  lightboxIndex.value = images.indexOf(url)
+  if (lightboxIndex.value === -1) lightboxIndex.value = 0
+  
+  lightboxImage.value = url
+  lightboxVisible.value = true
+}
+
+const closeLightbox = () => {
+  lightboxVisible.value = false
+}
+
+const prevImage = () => {
+  if (lightboxIndex.value > 0) {
+    lightboxIndex.value--
+    lightboxImage.value = lightboxImages.value[lightboxIndex.value]
+  }
+}
+
+const nextImage = () => {
+  if (lightboxIndex.value < lightboxImages.value.length - 1) {
+    lightboxIndex.value++
+    lightboxImage.value = lightboxImages.value[lightboxIndex.value]
+  }
+}
+
+const handleKeydown = (e: KeyboardEvent) => {
+  if (!lightboxVisible.value) return
+  if (e.key === 'Escape') closeLightbox()
+  if (e.key === 'ArrowLeft') prevImage()
+  if (e.key === 'ArrowRight') nextImage()
 }
 </script>
 
@@ -781,5 +881,76 @@ function goToPreview() {
   .images-grid {
     grid-template-columns: repeat(3, 1fr);
   }
+}
+
+
+/* Lightbox 样式 */
+.clickable-image {
+  cursor: zoom-in;
+}
+
+.lightbox-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-image {
+  max-width: 90vw;
+  max-height: 80vh;
+  object-fit: contain;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 32px;
+  cursor: pointer;
+  z-index: 10000;
+}
+
+.lightbox-nav {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  color: white;
+}
+
+.lightbox-nav button {
+  background: rgba(255,255,255,0.2);
+  border: none;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.lightbox-nav button:hover:not(:disabled) {
+  background: rgba(255,255,255,0.3);
+}
+
+.lightbox-nav button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
 }
 </style>

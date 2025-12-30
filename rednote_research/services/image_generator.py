@@ -238,66 +238,82 @@ class ImageGenerator:
         # 确保输出目录存在
         Path(output_path).parent.mkdir(parents=True, exist_ok=True)
         
-        # 根据模型类型选择生成方式
-        if "wanx" in self.model.lower():
-            return await self._generate_with_wanx(prompt, output_path, size)
+        # 根据 Base URL 判断是否使用 ModelScope 接口
+        if "modelscope.cn" in self.base_url:
+            return await self._generate_with_modelscope(prompt, output_path, size)
         else:
             return await self._generate_with_openai(prompt, output_path, size)
     
-    async def _generate_with_wanx(
+    async def _generate_with_modelscope(
         self,
         prompt: str,
         output_path: str,
         size: str
     ) -> Optional[str]:
-        """使用通义万相生成图片"""
-        # 转换尺寸格式
-        wanx_size = size.replace("x", "*")
-        
+        """使用 ModelScope 异步 API 生成图片"""
         async with httpx.AsyncClient(timeout=120.0) as client:
+            headers = {
+                "Authorization": f"Bearer {self.api_key}",
+                "Content-Type": "application/json",
+                "X-ModelScope-Async-Mode": "true"
+            }
+            
             # 1. 提交任务
+            # 处理 base_url，避免重复 /v1
+            base_url = self.base_url.rstrip('/')
+            if base_url.endswith('/v1'):
+                base_url = base_url[:-3]
+            
+            generate_url = f"{base_url}/v1/images/generations"
+            
             response = await client.post(
-                f"{self.base_url}/services/aigc/text2image/image-synthesis",
-                headers={
-                    "Authorization": f"Bearer {self.api_key}",
-                    "Content-Type": "application/json",
-                    "X-DashScope-Async": "enable"
-                },
+                generate_url,
+                headers=headers,
                 json={
                     "model": self.model,
-                    "input": {"prompt": prompt},
-                    "parameters": {
-                        "n": 1,
-                        "size": wanx_size
-                    }
+                    "prompt": prompt,
+                    "n": 1,
+                    "size": size
+                    # 注意：如果需要 params 如 loras，需在此处扩展
                 }
             )
             
-            if response.status_code not in [200, 202]:
-                raise Exception(f"创建任务失败: {response.text[:100]}")
+            if response.status_code != 200:
+                raise Exception(f"创建任务失败: {response.text[:200]}")
             
             data = response.json()
-            task_id = data.get("output", {}).get("task_id")
+            task_id = data.get("task_id")
             
             if not task_id:
-                raise Exception("未获取到任务ID")
+                raise Exception(f"未获取到任务ID: {data}")
+            
+            print(f"[ModelScope] Task submitted: {task_id}")
             
             # 2. 轮询任务状态
-            for _ in range(60):  # 最多等待 2 分钟
-                await asyncio.sleep(2)
+            task_url = f"{base_url}/v1/tasks/{task_id}"
+            poll_headers = {
+                "Authorization": f"Bearer {self.api_key}",
+                "X-ModelScope-Task-Type": "image_generation"
+            }
+            
+            for _ in range(60):  # 最多等待 5 分钟
+                await asyncio.sleep(5)
                 
-                status_response = await client.get(
-                    f"{self.base_url}/tasks/{task_id}",
-                    headers={"Authorization": f"Bearer {self.api_key}"}
-                )
+                status_response = await client.get(task_url, headers=poll_headers)
                 
+                if status_response.status_code != 200:
+                    print(f"[ModelScope] Check status failed: {status_response.status_code}")
+                    continue
+                    
                 status_data = status_response.json()
-                task_status = status_data.get("output", {}).get("task_status")
+                task_status = status_data.get("task_status")
                 
-                if task_status == "SUCCEEDED":
-                    results = status_data.get("output", {}).get("results", [])
-                    if results:
-                        image_url = results[0].get("url")
+                print(f"[Debug] Task {task_id} status: {task_status}")
+                
+                if task_status in ["SUCCEEDED", "SUCCEED"]:
+                    output_images = status_data.get("output_images", [])
+                    if output_images:
+                        image_url = output_images[0]
                         if image_url:
                             # 下载图片
                             img_response = await client.get(image_url)
@@ -307,9 +323,9 @@ class ImageGenerator:
                     raise Exception("未获取到图片URL")
                     
                 elif task_status == "FAILED":
-                    raise Exception(status_data.get("output", {}).get("message", "任务失败"))
+                    raise Exception("图片生成任务失败")
             
-            raise Exception("任务超时")
+            raise Exception(f"任务超时 (5分钟). 最后状态: {task_status}")
     
     async def _generate_with_openai(
         self,

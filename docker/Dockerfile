@@ -46,7 +46,8 @@ RUN python3.11 -m pip install --no-cache-dir \
     "uvicorn>=0.20.0" \
     "pyyaml>=6.0.0" \
     "python-dotenv>=1.0.0" \
-    "httpx>=0.24.0"
+    "httpx>=0.24.0" \
+    "aiohttp>=3.9.0"
 
 # Install Python application
 COPY rednote_research/ ./rednote_research/

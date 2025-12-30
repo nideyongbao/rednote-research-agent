@@ -36,11 +36,11 @@ class VLMSettings(BaseModel):
 
 
 class ImageGenSettings(BaseModel):
-    """图片生成配置 - Tongyi-MAI/Z-Image-Turbo"""
+    """图片生成配置 - Qwen/Qwen-Image"""
     enabled: bool = False
     api_key: str = "ms-04d662ab-d9b4-46db-a13e-9082887778d3"
     base_url: str = "https://api-inference.modelscope.cn/v1"
-    model: str = "Tongyi-MAI/Z-Image-Turbo"
+    model: str = "Qwen/Qwen-Image"
     # 图片生成参数（蒸馏模型特有）
     num_inference_steps: int = 8  # Turbo甜点区8-9
     guidance_scale: float = 0.0  # 蒸馏模型不需CFG

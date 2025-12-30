@@ -35,6 +35,9 @@ export interface ResearchReport {
 }
 
 export const useResearchStore = defineStore('research', () => {
+    // 研究记录 ID
+    const id = ref<string | null>(null)
+
     // 当前研究主题
     const topic = ref('')
 
@@ -53,8 +56,20 @@ export const useResearchStore = defineStore('research', () => {
     // 是否完成
     const isCompleted = ref(false)
 
+    // 当前正在编辑发布的草稿ID
+    const currentDraftId = ref<string | null>(null)
+
     // 生成唯一 ID
     const generateId = () => `section_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+
+    const setDraftId = (id: string | null) => {
+        currentDraftId.value = id
+    }
+
+    // 设置研究ID
+    const setId = (newId: string) => {
+        id.value = newId
+    }
 
     // 设置主题
     const setTopic = (newTopic: string) => {
@@ -128,6 +143,7 @@ export const useResearchStore = defineStore('research', () => {
         summary.value = ''
         keyFindings.value = []
         isCompleted.value = false
+        currentDraftId.value = null
     }
 
     // 获取报告数据
@@ -142,22 +158,27 @@ export const useResearchStore = defineStore('research', () => {
 
     // 从 JSON 加载
     const loadFromJSON = (data: any) => {
+        if (data.id) id.value = data.id
         if (data.topic) topic.value = data.topic
         if (data.outline) outline.value = data.outline
         if (data.notes) notes.value = data.notes
         if (data.summary) summary.value = data.summary
         if (data.keyFindings) keyFindings.value = data.keyFindings
         if (data.isCompleted) isCompleted.value = data.isCompleted
+        if (data.currentDraftId) currentDraftId.value = data.currentDraftId
+        if (data.draft_id) currentDraftId.value = data.draft_id
     }
 
     return {
         // State
+        id,
         topic,
         outline,
         notes,
         summary,
         keyFindings,
         isCompleted,
+        currentDraftId,
 
         // Actions
         setTopic,
@@ -170,6 +191,8 @@ export const useResearchStore = defineStore('research', () => {
         setSummary,
         setKeyFindings,
         markCompleted,
+        setDraftId,
+        setId,
         reset,
         loadFromJSON,
 

@@ -324,7 +324,7 @@ class XiaohongshuHTTPClient:
         
         try:
             response = await self._client.post(
-                "/api/v1/publish/note",
+                "/api/v1/publish",
                 json=publish_data,
                 timeout=120.0  # 发布需要更长时间
             )
@@ -333,6 +333,10 @@ class XiaohongshuHTTPClient:
             if data.get("success"):
                 result_data = data.get("data", {})
                 note_id = result_data.get("note_id", "")
+                # 有些版本 API 可能直接返回 note_id 字符串
+                if not note_id and isinstance(result_data, str):
+                    note_id = result_data
+
                 return {
                     "success": True,
                     "note_id": note_id,

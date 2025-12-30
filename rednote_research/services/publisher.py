@@ -267,15 +267,55 @@ class PublishService:
         notes: list[dict] = None
     ) -> PublishDraft:
         """创建发布草稿"""
+        # 生成ID
+        draft_id = uuid.uuid4().hex
+        now = datetime.now().isoformat()
+        
         # 转换内容
         converted = self.convert_to_xiaohongshu(
             topic, summary, key_findings, sections, notes
         )
         
         # 创建草稿
-        draft_id = str(uuid.uuid4())[:8]
-        now = datetime.now().isoformat()
+        # 创建草稿目录
+        draft_dir = self._get_draft_dir(draft_id)
+        images_dir = os.path.join(draft_dir, "images")
+        Path(images_dir).mkdir(parents=True, exist_ok=True)
         
+        # 提取并复制已有图片
+        import shutil
+        existing_images = []
+        if sections:
+            for section in sections:
+                if section.get("images"):
+                    for img_path in section["images"]:
+                        try:
+                            # 处理源路径
+                            src_path = img_path
+                            # 如果是相对路径，尝试解析（假设相对于 output_base_dir 或项目根目录）
+                            if not os.path.isabs(src_path):
+                                # 尝试在 reports 目录下寻找
+                                # 这里需要一种更可靠的方式找到源文件，目前假设是绝对路径或相对于项目根目录
+                                # 简单起见，如果文件存在且可读才复制
+                                potential_paths = [
+                                    src_path,
+                                    os.path.join(self.output_base_dir, "..", src_path), # 尝试相对于 output 目录
+                                    os.path.abspath(src_path)
+                                ]
+                                for p in potential_paths:
+                                    if os.path.exists(p):
+                                        src_path = p
+                                        break
+                            
+                            if os.path.exists(src_path):
+                                filename = os.path.basename(src_path)
+                                dst_path = os.path.join(images_dir, filename)
+                                shutil.copy2(src_path, dst_path)
+                                # 记录新路径（绝对路径，保持一致性）
+                                existing_images.append(dst_path)
+                        except Exception as e:
+                            print(f"Copy image failed: {e}")
+                            
         draft = PublishDraft(
             id=draft_id,
             topic=topic,
@@ -284,6 +324,7 @@ class PublishService:
             tags=converted["tags"],
             key_findings=key_findings,
             sections=sections,
+            section_images=existing_images[:9],  # 最多9张
             status="draft",
             created_at=now,
             updated_at=now
@@ -369,6 +410,7 @@ class PublishService:
     async def generate_images(
         self,
         draft_id: str,
+        generation_type: str = "all",  # all | cover | section
         on_log: Callable[[str], None] = None
     ) -> PublishDraft:
         """
@@ -376,6 +418,7 @@ class PublishService:
         
         Args:
             draft_id: 草稿ID
+            generation_type: 生成类型 (all/cover/section)
             on_log: 日志回调
             
         Returns:
@@ -396,41 +439,55 @@ class PublishService:
         Path(images_dir).mkdir(parents=True, exist_ok=True)
         
         try:
+            cover_path = draft.cover_image
+            section_images = list(draft.section_images)
+            
             # 1. 生成封面图
-            if on_log:
-                on_log("📸 开始生成封面图...")
-            
-            cover_path = await generator.generate_cover(
-                topic=draft.topic,
-                key_findings=draft.key_findings,
-                output_dir=images_dir,
-                on_log=on_log
-            )
-            
-            if cover_path:
-                draft = self.update_draft(draft_id, {"cover_image": cover_path})
+            if generation_type in ["all", "cover"]:
+                if on_log:
+                    on_log("📸 开始生成封面图...")
+                
+                new_cover = await generator.generate_cover(
+                    topic=draft.topic,
+                    key_findings=draft.key_findings,
+                    output_dir=images_dir,
+                    on_log=on_log
+                )
+                
+                if new_cover:
+                    cover_path = new_cover
+                    draft = self.update_draft(draft_id, {"cover_image": cover_path})
             
             # 2. 生成章节图
-            if on_log:
-                on_log("📸 开始生成章节配图...")
-            
-            section_images = await generator.generate_section_images(
-                sections=draft.sections,
-                topic=draft.topic,
-                output_dir=images_dir,
-                max_images=5,
-                on_log=on_log
-            )
-            
-            if section_images:
-                draft = self.update_draft(draft_id, {"section_images": section_images})
+            if generation_type in ["all", "section"]:
+                if on_log:
+                    on_log("📸 开始生成章节配图...")
+                
+                new_sections = await generator.generate_section_images(
+                    sections=draft.sections,
+                    topic=draft.topic,
+                    output_dir=images_dir,
+                    max_images=5,
+                    on_log=on_log
+                )
+                
+                if new_sections:
+                    # 如果是单独生成章节图，追加还是覆盖？
+                    # 现在的逻辑是覆盖，或者我们可以追加。
+                    # 为了简单，如果是"section"类型，我们追加？
+                    # 但用户可能想重生成。通常"生成"意味着重生成。
+                    # 保持覆盖逻辑，如果需要追加，需另加参数。
+                    # 这里保持跟原来一致：generate_section_images返回整个列表。
+                    section_images = new_sections
+                    draft = self.update_draft(draft_id, {"section_images": section_images})
             
             # 更新状态
             draft = self.update_draft(draft_id, {"status": "ready"})
             
             if on_log:
+                # 统计当前总数
                 total_images = (1 if cover_path else 0) + len(section_images)
-                on_log(f"✅ 图片生成完成，共 {total_images} 张")
+                on_log(f"✅ 图片生成完成，当前共 {total_images} 张")
             
             return draft
             
@@ -583,5 +640,7 @@ def get_publish_service() -> PublishService:
     """获取发布服务实例"""
     global _publish_service
     if _publish_service is None:
-        _publish_service = PublishService()
+        # 优先使用环境变量配置
+        output_dir = os.getenv("PUBLISH_OUTPUT_DIR")
+        _publish_service = PublishService(output_base_dir=output_dir)
     return _publish_service

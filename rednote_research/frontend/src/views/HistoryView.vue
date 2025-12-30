@@ -213,6 +213,7 @@ const viewDetail = async (item: HistoryItem) => {
       
       // 加载数据到 research store（独立于当前进行中任务）
       store.reset()
+      store.setId(item.id)
       store.setTopic(fullRecord.topic || '')
       
       // 加载大纲

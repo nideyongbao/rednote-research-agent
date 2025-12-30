@@ -26,6 +26,7 @@ class ResearchRecord(BaseModel):
     notes_count: int = 0
     sections_count: int = 0
     report_path: Optional[str] = None
+    draft_id: Optional[str] = None  # 关联的发布草稿ID
 
 
 class FullResearchRecord(ResearchRecord):
@@ -135,7 +136,8 @@ class HistoryService:
         record_id: str, 
         outline: List[dict],
         notes: List[dict],
-        insights: dict
+        insights: dict,
+        draft_id: Optional[str] = None
     ) -> Optional[FullResearchRecord]:
         """保存完整报告数据（用于历史恢复编辑）"""
         records = self._load_all()
@@ -146,6 +148,8 @@ class HistoryService:
                 r["insights"] = insights
                 r["notes_count"] = len(notes)
                 r["sections_count"] = len(outline)
+                if draft_id:
+                    r["draft_id"] = draft_id
                 # 从insights提取key_findings
                 if insights and "key_findings" in insights:
                     r["key_findings"] = insights["key_findings"]

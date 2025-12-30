@@ -52,9 +52,9 @@ rednote_research/services/settings.json
 !.env.docker
 
 # Runtime data (Do not commit)
-data/
-output/
-reports/
+/data/
+/output/
+/reports/
 !reports/.gitkeep
 !data/.gitkeep
 !output/.gitkeep

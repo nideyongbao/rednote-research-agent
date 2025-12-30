@@ -27,7 +27,7 @@
             <button @click="exportReport('pdf')">📕 PDF</button>
           </div>
         </div>
-        <button class="btn btn-xiaohongshu" @click="goToPublish">
+        <button class="btn btn-xiaohongshu" @click="goToPublish" title="去发布页面编辑草稿">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M22 2 11 13"/>
             <path d="m22 2-7 20-4-9-9-4 20-7z"/>
@@ -625,7 +625,11 @@ const goBack = () => {
 }
 
 const goToPublish = () => {
-  router.push('/publish/edit')
+  if (store.currentDraftId) {
+    router.push(`/publish/edit/${store.currentDraftId}`)
+  } else {
+    router.push('/publish/edit')
+  }
 }
 
 // 监听滚动更新当前章节
