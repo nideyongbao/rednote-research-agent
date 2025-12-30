@@ -12,6 +12,35 @@
 
 ---
 
+## Docker 部署（进阶）
+
+### 构建与推送镜像
+
+本项目提供了辅助脚本用于构建和推送 Docker 镜像：
+
+```bash
+# 构建并推送到 Docker Hub
+./scripts/build_and_push.sh [tag]
+
+# 示例：构建 latest 版本
+./scripts/build_and_push.sh
+
+# 示例：构建 v1.0.0 版本
+./scripts/build_and_push.sh v1.0.0
+```
+
+手动构建命令：
+
+```bash
+# 构建镜像
+docker build -t brooksli1/rednote-research-agent:latest -f docker/Dockerfile .
+
+# 推送镜像
+docker push brooksli1/rednote-research-agent:latest
+```
+
+---
+
 ## 快速开始（Docker Compose）
 
 ### 1. 启动服务
