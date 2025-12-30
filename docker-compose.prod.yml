@@ -7,21 +7,18 @@ services:
     init: true
     tty: true
     volumes:
-      - ./data:/app/data # 修改：挂载整个data目录，与rednote一致
-      - ./output:/app/output # 共享发布输出
+      - ./data:/app/data # 统一挂载
+      - ./output:/app/output # 共享输出
     environment:
       - ROD_BROWSER_BIN=/usr/bin/google-chrome
-      - COOKIES_PATH=/app/data/mcp/cookies.json # 更新：路径变更为子目录
+      - COOKIES_PATH=/app/data/mcp/cookies.json
     ports:
       - "18060:18060"
     networks:
       - rednote-network
 
-  # 研究代理服务
+  # 研究代理服务 (纯镜像模式，无构建上下文)
   rednote-research:
-    build:
-      context: .
-      dockerfile: docker/Dockerfile
     image: brooksli1/rednote-research-agent:latest
     container_name: rednote-research
     ports:
@@ -31,11 +28,11 @@ services:
     environment:
       - PYTHONUNBUFFERED=1
       - XIAOHONGSHU_MCP_URL=http://xiaohongshu-mcp:18060
-      - HISTORY_STORAGE_PATH=/app/data/history.json # 新增：指定历史记录路径
+      - HISTORY_STORAGE_PATH=/app/data/history.json
     volumes:
       - ./reports:/app/reports
-      - ./data:/app/data # 修改：挂载整个data目录
-      - ./output:/app/output # 新增：挂载输出目录
+      - ./data:/app/data
+      - ./output:/app/output
     depends_on:
       - xiaohongshu-mcp
     restart: unless-stopped

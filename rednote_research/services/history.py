@@ -46,7 +46,20 @@ class HistoryService:
     
     def __init__(self, storage_path: Optional[Path] = None):
         if storage_path is None:
-            storage_path = Path(__file__).parent / "history.json"
+            # 优先使用环境变量
+            env_path = os.getenv("HISTORY_STORAGE_PATH")
+            if env_path:
+                storage_path = Path(env_path)
+            else:
+                # 默认存储在 data 目录（容器中为 /app/data）
+                # 回退兼容：如果 data 目录不存在，则使用旧路径
+                project_root = Path(__file__).parent.parent.parent
+                data_dir = project_root / "data"
+                if data_dir.exists():
+                    storage_path = data_dir / "history.json"
+                else:
+                    storage_path = Path(__file__).parent / "history.json"
+        
         self.storage_path = storage_path
         self._ensure_storage()
     

@@ -537,20 +537,20 @@ class PublishService:
         将本地路径转换为 Docker 容器路径
         
         规则：
-        - 工作区路径挂载到 /app/workspace
-        - 例：D:/work/workspace/1228_1/... → /app/workspace/...
+        - output 目录挂载到 /app/output
+        - 例：.../output/publish/... → /app/output/publish/...
         """
         docker_paths = []
         
-        # 尝试从环境变量获取工作区映射
-        workspace_mount = os.getenv("WORKSPACE_MOUNT_PATH", "/app/workspace")
+        # 容器内输出目录挂载点
+        mount_base = "/app/output"
         
         for path in local_paths:
             if not path:
                 continue
             
-            # 已经是容器路径
-            if path.startswith("/app/"):
+            # 已经是目标容器路径
+            if path.startswith(mount_base):
                 docker_paths.append(path)
                 continue
             
@@ -559,17 +559,17 @@ class PublishService:
                 docker_paths.append(path)
                 continue
             
-            # 本地路径转换
+            # 路径转换
             normalized = path.replace("\\", "/")
             
-            # 尝试提取相对路径
-            # 假设路径格式：D:/work/workspace/xxxx/output/publish/...
+            # 提取相对路径
+            # 假设路径格式：.../output/publish/...
             if "/output/" in normalized:
                 rel_path = normalized.split("/output/", 1)[1]
-                docker_path = f"{workspace_mount}/output/{rel_path}"
+                docker_path = f"{mount_base}/{rel_path}"
                 docker_paths.append(docker_path)
             else:
-                # 无法转换，保持原样
+                # 无法转换，保持原样（可能是绝对路径或其他挂载）
                 docker_paths.append(path)
         
         return docker_paths

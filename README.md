@@ -39,11 +39,33 @@ docker build -t brooksli1/rednote-research-agent:latest -f docker/Dockerfile .
 docker push brooksli1/rednote-research-agent:latest
 ```
 
+### 生产环境部署（仅拉取镜像）
+
+如果你在服务器上部署，推荐使用 `docker-compose.prod.yml`，它会直接从 Docker Hub 拉取镜像而不进行构建：
+
+```bash
+# 1. 配置环境变量
+cp .env.docker .env
+
+# 2. 启动服务（使用 prod 配置）
+docker compose -f docker-compose.prod.yml up -d
+```
+
 ---
 
 ## 快速开始（Docker Compose）
 
-### 1. 启动服务
+### 1. 配置环境变量
+
+复制并编辑环境变量文件 `cp .env.docker .env` 或直接创建 `.env.docker`：
+
+```env
+OPENAI_API_KEY=your-api-key-here
+OPENAI_BASE_URL=https://api-inference.modelscope.cn/v1
+OPENAI_MODEL=Qwen/Qwen3-235B-A22B-Thinking-2507
+```
+
+### 2. 启动服务
 
 ```bash
 # 克隆项目
@@ -55,16 +77,6 @@ docker compose up -d
 
 # 查看日志
 docker compose logs -f
-```
-
-### 2. 配置环境变量
-
-编辑 `.env.docker`：
-
-```env
-OPENAI_API_KEY=your-api-key-here
-OPENAI_BASE_URL=https://api-inference.modelscope.cn/v1
-OPENAI_MODEL=Qwen/Qwen3-235B-A22B-Thinking-2507
 ```
 
 ### 3. 访问并登录
@@ -110,16 +122,13 @@ rednote-research-agent/
 ├── docker-compose.yml      # Docker 编排配置
 ├── rednote_research/       # Python 研究智能体
 │   ├── agents/             # 智能体层
-│   ├── mcp/                # MCP 客户端（HTTP API）
-│   │   ├── http_client.py  # xiaohongshu-mcp HTTP 客户端
-│   │   └── xiaohongshu.py  # Docker exec 客户端（备用）
 │   ├── web/                # FastAPI 后端
 │   │   └── app.py          # API 路由
 │   ├── frontend/           # Vue.js 前端源码
 │   └── .env                # 环境配置
-├── data/                   # 数据目录（自动创建）
-│   ├── mcp/                # cookies 持久化
-│   └── images/             # 发布图片缓存
+├── data/                   # 数据持久化
+│   ├── mcp/                # cookies (挂载共享)
+│   └── images/             # 发布图片 (挂载共享)
 └── reports/                # 报告输出
 ```
 
