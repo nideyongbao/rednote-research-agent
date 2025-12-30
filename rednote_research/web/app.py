@@ -908,7 +908,7 @@ async def list_publish_drafts(limit: int = Query(20, ge=1, le=50)):
     }
 
 
-@app.post("/api/publish/{draft_id}/generate-images")
+@app.get("/api/publish/{draft_id}/generate-images")
 async def generate_publish_images(draft_id: str):
     """
     SSE: 生成发布图片（封面+章节图）
