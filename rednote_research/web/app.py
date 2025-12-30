@@ -7,8 +7,8 @@ from datetime import datetime
 from typing import Optional
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, Query, HTTPException
-from fastapi.responses import HTMLResponse, FileResponse
+from fastapi import FastAPI, Query, HTTPException, UploadFile, File
+from fastapi.responses import HTMLResponse, FileResponse, Response
 from fastapi.staticfiles import StaticFiles
 from sse_starlette.sse import EventSourceResponse
 from pydantic import BaseModel
@@ -374,6 +374,36 @@ async def health_check():
         "mcp_configured": _mcp_client is not None,
         "timestamp": datetime.now().isoformat()
     }
+
+
+# ========== 历史记录 API ==========
+
+@app.get("/api/history")
+async def list_history(page: int = 1, page_size: int = 10):
+    """获取历史记录列表"""
+    from ..services.history import get_history_service
+    return get_history_service().list(page, page_size)
+
+@app.get("/api/history/export")
+async def export_history():
+    """导出历史记录备份"""
+    from ..services.history import get_history_service
+    json_str = get_history_service().export_json()
+    filename = f"history_backup_{datetime.now().strftime('%Y%m%d%H%M%S')}.json"
+    return Response(
+        content=json_str,
+        media_type="application/json",
+        headers={"Content-Disposition": f"attachment; filename={filename}"}
+    )
+
+@app.post("/api/history/import")
+async def import_history(file: UploadFile = File(...)):
+    """导入历史记录备份"""
+    from ..services.history import get_history_service
+    content = await file.read()
+    json_str = content.decode("utf-8")
+    result = get_history_service().import_json(json_str)
+    return {"success": True, "data": result}
 
 
 # ========== 设置 API ==========

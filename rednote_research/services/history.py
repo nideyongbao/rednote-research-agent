@@ -211,6 +211,53 @@ class HistoryService:
         
         return results
 
+    def export_json(self) -> str:
+        """导出所有数据为JSON字符串"""
+        records = self._load_all()
+        return json.dumps(records, ensure_ascii=False, indent=2)
+    
+    def import_json(self, json_data: str) -> dict:
+        """
+        从JSON导入数据
+        
+        Returns:
+            {"added": int, "updated": int, "total": int}
+        """
+        try:
+            new_records = json.loads(json_data)
+            if not isinstance(new_records, list):
+                raise ValueError("Format error: root must be a list")
+            
+            current_records = {r["id"]: r for r in self._load_all()}
+            added = 0
+            updated = 0
+            
+            for r in new_records:
+                if "id" not in r:
+                    continue
+                
+                if r["id"] in current_records:
+                    # 更新现有记录（如果导入的更新时间较新）
+                    curr = current_records[r["id"]]
+                    if r.get("updated_at", "") > curr.get("updated_at", ""):
+                        current_records[r["id"]] = r
+                        updated += 1
+                else:
+                    # 添加新记录
+                    current_records[r["id"]] = r
+                    added += 1
+            
+            # 保存合并后的结果
+            final_records = list(current_records.values())
+            # 按更新时间倒序排序
+            final_records.sort(key=lambda x: x.get("updated_at", ""), reverse=True)
+            self._save_all(final_records)
+            
+            return {"added": added, "updated": updated, "total": len(final_records)}
+            
+        except json.JSONDecodeError:
+            raise ValueError("Invalid JSON format")
+
 
 # 全局单例
 _history_service: Optional[HistoryService] = None
