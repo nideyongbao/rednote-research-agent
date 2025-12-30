@@ -102,6 +102,8 @@ async def research_stream(topic: str = Query(None), task: str = Query(None, min_
     record_id = record.id
     
     async def event_generator():
+        from ..services.timer import StageTimer
+        timer = StageTimer()
         stats = {"notesFound": 0, "contentsAnalyzed": 0, "insightsExtracted": 0}
         final_status = "failed"  # 默认失败，成功时更新
         
@@ -158,9 +160,11 @@ async def research_stream(topic: str = Query(None), task: str = Query(None, min_
             state = ResearchState(task=research_topic)
             
             # 阶段1: 规划
+            timer.start_stage("规划")
             yield make_msg("progress", percent=10)
             yield make_msg("log", level="info", message="📋 [Planner] 分析研究主题...")
             state = await orchestrator.planner.run(state)
+            timer.end_stage()
             if state.plan:
                 yield make_msg("log", level="success", message=f"📋 [Planner] 生成了 {len(state.plan.keywords)} 个搜索关键词")
                 yield make_msg("log", level="info", message=f"💡 理解: {state.plan.understanding}")
@@ -170,6 +174,7 @@ async def research_stream(topic: str = Query(None), task: str = Query(None, min_
                 yield make_msg("log", level="info", message=f"📐 [阶段1统计] 关键词: {len(state.plan.keywords)}个 | 维度: {len(state.plan.dimensions)}个 | LLM调用: 1次")
             
             # 阶段2: 搜索
+            timer.start_stage("搜索")
             yield make_msg("stage", stage="searching")
             yield make_msg("progress", percent=25)
             yield make_msg("log", level="info", message="🔍 [Searcher] 开始搜索笔记...")
@@ -194,8 +199,10 @@ async def research_stream(topic: str = Query(None), task: str = Query(None, min_
             total_text_length = sum(len(note.detail.content or "") for note in state.documents)
             avg_text_length = total_text_length // len(state.documents) if state.documents else 0
             yield make_msg("log", level="info", message=f"📊 [统计] 共 {total_images} 张图片，总文本 {total_text_length} 字，平均每篇 {avg_text_length} 字")
+            timer.end_stage()
             
             # 阶段3: 分析
+            timer.start_stage("分析")
             yield make_msg("stage", stage="analyzing")
             yield make_msg("progress", percent=45)
             yield make_msg("log", level="info", message="🧠 [Analyzer] 分析数据中...")
@@ -207,8 +214,10 @@ async def research_stream(topic: str = Query(None), task: str = Query(None, min_
                 yield make_msg("stats", stats=stats)
                 yield make_msg("log", level="success", message=f"🧠 [Analyzer] 提取了 {stats['insightsExtracted']} 条核心发现")
                 yield make_msg("log", level="info", message=f"📐 [阶段3统计] 分析笔记: {len(state.documents)}篇 | 提取发现: {stats['insightsExtracted']}条 | LLM调用: 1次")
+            timer.end_stage()
             
             # 阶段4: 图片VLM分析（提前到大纲之前）
+            timer.start_stage("图片分析")
             yield make_msg("progress", percent=55)
             yield make_msg("log", level="info", message="🖼️ [ImageAnalyzer] VLM分析图片...")
             
@@ -240,8 +249,10 @@ async def research_stream(topic: str = Query(None), task: str = Query(None, min_
                 yield make_msg("log", level="info", message=f"📐 [阶段4统计] 分类: {cat_str} | VLM调用: {vlm_calls}次")
             except Exception as e:
                 yield make_msg("log", level="warning", message=f"⚠ 图片分析失败: {str(e)[:100]}")
+            timer.end_stage()
             
             # 阶段5: 生成结构化大纲（含图片上下文）
+            timer.start_stage("大纲生成")
             yield make_msg("stage", stage="generating")
             yield make_msg("progress", percent=65)
             yield make_msg("log", level="info", message="📑 [OutlineGenerator] 生成结构化大纲（含图片上下文）...")
@@ -256,8 +267,10 @@ async def research_stream(topic: str = Query(None), task: str = Query(None, min_
             except Exception as e:
                 yield make_msg("log", level="warning", message=f"⚠ 大纲生成失败: {str(e)[:100]}, 使用备用方案")
                 structured_outline = outline_generator._generate_fallback_outline(state)
+            timer.end_stage()
             
             # 阶段6: 图片分配（基于VLM分析结果）
+            timer.start_stage("图片分配")
             yield make_msg("progress", percent=75)
             yield make_msg("log", level="info", message="🎯 [ImageAssigner] 分配图片到章节...")
             
@@ -280,8 +293,10 @@ async def research_stream(topic: str = Query(None), task: str = Query(None, min_
                 yield make_msg("log", level="info", message=f"📐 [阶段6统计] 分配图片: {assigned_count}张")
             except Exception as e:
                 yield make_msg("log", level="warning", message=f"⚠ 图片分配失败: {str(e)[:100]}")
+            timer.end_stage()
             
             # 阶段7: 生成HTML报告
+            timer.start_stage("报告生成")
             yield make_msg("progress", percent=85)
             yield make_msg("log", level="info", message="📝 [Writer] 生成图文交错报告...")
             html_generator = HTMLReportGenerator(_config.get_llm_client(), model=_config.llm.model)
@@ -295,6 +310,12 @@ async def research_stream(topic: str = Query(None), task: str = Query(None, min_
             yield make_msg("progress", percent=100)
             yield make_msg("log", level="success", message="✅ 报告生成完成！")
             yield make_msg("log", level="info", message=f"📐 [阶段7统计] 报告HTML长度: {len(html_report)}字符 | 章节数: {len(structured_outline)} | LLM调用: {len(structured_outline)+1}次")
+            timer.end_stage()
+            
+            # 输出耗时统计
+            yield make_msg("log", level="info", message=timer.get_summary())
+            for rec in timer.get_recommendations():
+                yield make_msg("log", level="info", message=rec)
             
             # 传递报告数据给前端（包含结构化大纲）
             report_data = {
