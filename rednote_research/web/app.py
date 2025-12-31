@@ -12,7 +12,7 @@ from ..config import Config
 from ..mcp import XiaohongshuHTTPClient
 from ..agents.orchestrator import ResearchOrchestrator
 from .context import global_context
-from .routers import research, history, settings, publish, tools
+from .routers import research, history, settings, publish, tools, mcp
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -52,6 +52,7 @@ def create_app() -> FastAPI:
     app.include_router(settings.router)
     app.include_router(publish.router)
     app.include_router(tools.router)
+    app.include_router(mcp.router)
     
     # 挂载静态文件
     static_dir = Path(__file__).parent / "static"

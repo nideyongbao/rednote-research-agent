@@ -26,12 +26,9 @@ class ImageAssigner:
         self.used_images: set[str] = set()
         
         # 初始化图片生成客户端
-        if self.settings.imageGen.enabled:
-            gen_api_key = self.settings.imageGen.api_key or self.settings.llm.api_key
-            self.gen_client = AsyncOpenAI(
-                api_key=gen_api_key,
-                base_url=self.settings.imageGen.base_url
-            )
+        # if self.settings.imageGen.enabled:
+        #    # ImageAssigner 现在直接使用 ImageGenerator 服务，不再自行维护 client
+        #    pass
     
     async def assign(
         self,
@@ -228,6 +225,9 @@ class ImageAssigner:
         if not self.settings.imageGen.enabled:
             return []
         
+        from ..services.image_generator import get_image_generator
+        generator = get_image_generator()
+        
         generated = []
         
         # 使用LLM动态构建Image Prompt
@@ -235,21 +235,37 @@ class ImageAssigner:
         logger.info(f"[ImageAssigner] 生成图片Prompt: {prompt}")
         
         for i in range(count):
+            # 速率限制：如果启用，每次请求前等待
+            if self.settings.imageGen.rate_limit_mode:
+                logger.info(f"[ImageAssigner] 速率限制模式启用，等待 3 秒...")
+                await asyncio.sleep(3)
+
             try:
-                response = await self.gen_client.images.generate(
-                    model=self.settings.imageGen.model,
+                # 使用 ImageGenerator 生成，返回 URL (output_path=None)
+                # ModelScope 需要 1024x1024 (必须符合 API 要求?) 
+                # ModelScope Qwen-Image 似乎支持 1024x1024. ImageGenerator 默认 1024x1536 (3:4)
+                # 我们可以尝试使用 1024x1024 以保持兼容性，或者使用 generator 的默认
+                # 但 Searcher/Outline 中的图片通常是方形或 flexible
+                # 让我们指定 1024x1024，因为之前失败的是 1024x1024 400 error，
+                # 但现在我们将使用 async mode，这通常更加宽容或者明确支持。
+                # Qwen-Image 支持多种分辨率。
+                
+                image_url = await generator._generate_image(
                     prompt=prompt,
-                    n=1,
-                    size="1024x1024"
+                    output_path=None, # 获取 URL
+                    size="1024x1024" # Qwen-Image 应该使用 1024x1024 (WxH)
                 )
                 
-                if response.data:
-                    url = response.data[0].url
-                    generated.append(url)
+                if image_url:
+                    generated.append(image_url)
                     logger.info(f"[ImageAssigner] 生成图片 {i+1}/{count} 成功")
                     
             except Exception as e:
                 logger.error(f"[ImageAssigner] 生成图片失败: {e}")
+                # 遇到 429 Too Many Requests 时增加额外等待
+                if "429" in str(e):
+                    logger.warning("[ImageAssigner] 触发限流，额外等待 10 秒...")
+                    await asyncio.sleep(10)
         
         return generated
 

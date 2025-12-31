@@ -23,13 +23,14 @@ class HTMLReportGenerator:
         self.model = model
         self.settings = get_settings_service().load()
     
-    async def generate(self, state: ResearchState, on_progress: Optional[Callable[[int, str], None]] = None) -> str:
+    async def generate(self, state: ResearchState, on_progress: Optional[Callable[[int, str], None]] = None, on_log: Optional[Callable[[str], None]] = None) -> str:
         """
         分章节生成HTML报告
         
         Args:
             state: 研究状态
             on_progress: 进度回调 (章节索引, 章节标题)
+            on_log: 日志回调
             
         Returns:
             完整HTML文档
@@ -57,7 +58,7 @@ class HTMLReportGenerator:
             logger.info(f"[HTMLGenerator] 生成章节 {i+1}/{len(outline)}: {section_title}")
             
             try:
-                section_html = await self._generate_section(section, state)
+                section_html = await self._generate_section(section, state, on_log)
                 sections_html.append(section_html)
             except Exception as e:
                 logger.warning(f"[HTMLGenerator] 章节生成失败: {e}, 使用备用内容")
@@ -66,7 +67,7 @@ class HTMLReportGenerator:
         # 组装完整HTML
         return self._assemble_html(state.task, state.insights, sections_html, state.documents)
     
-    async def _generate_section(self, section: dict, state: ResearchState) -> str:
+    async def _generate_section(self, section: dict, state: ResearchState, on_log: Optional[Callable[[str], None]] = None) -> str:
         """生成单个章节的HTML"""
         section_type = section.get('type', 'content')
         section_title = section.get('title', '')
@@ -107,6 +108,16 @@ class HTMLReportGenerator:
             temperature=self.settings.llm.temperature
         )
         
+        # Log usage
+        usage = response.usage
+        if on_log:
+            log_msg = (
+                f"LLM请求成功 | "
+                f"输入: {usage.prompt_tokens if usage else 'N/A'} | "
+                f"输出: {usage.completion_tokens if usage else 'N/A'}"
+            )
+            on_log(f"🤖 [HTML] {log_msg}")
+        
         html = response.choices[0].message.content or ""
         html = self._clean_markdown_wrapper(html)
         html = self._ensure_referrer_policy(html)
@@ -145,7 +156,11 @@ class HTMLReportGenerator:
         if insights and "key_findings" in insights:
             findings_html = '<div class="findings-section"><h2>✨ 关键发现</h2><ul>'
             for finding in insights["key_findings"]:  # 全量展示
-                findings_html += f'<li>{finding}</li>'
+                text = finding
+                if isinstance(finding, dict):
+                    # 优先使用 statement，其次 point，最后 fallback 到字符串
+                    text = finding.get("statement") or finding.get("point") or str(finding)
+                findings_html += f'<li>{text}</li>'
             findings_html += '</ul></div>'
         
         # 数据来源
@@ -330,7 +345,10 @@ class HTMLReportGenerator:
         if "key_findings" in insights:
             parts.append("### 核心发现")
             for finding in insights["key_findings"]:
-                parts.append(f"- {finding}")
+                text = finding
+                if isinstance(finding, dict):
+                     text = finding.get("statement") or finding.get("point") or str(finding)
+                parts.append(f"- {text}")
         
         if "user_pain_points" in insights:
             parts.append("\n### 用户痛点")

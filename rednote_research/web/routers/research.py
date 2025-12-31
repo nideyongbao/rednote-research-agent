@@ -82,7 +82,16 @@ async def research_stream(topic: str = Query(None), task: str = Query(None, min_
             timer.start_stage("规划")
             yield yield_msg(type="progress", percent=10)
             yield yield_msg(type="log", level="info", message="📋 [Planner] 分析研究主题...")
-            state = await ctx.orchestrator.planner.run(state)
+            
+            planner_logs = []
+            def capture_planner_log(msg):
+                planner_logs.append(msg)
+            
+            state = await ctx.orchestrator.planner.run(state, on_log=capture_planner_log)
+            
+            for log in planner_logs:
+                yield yield_msg(type="log", level="info", message=f"  {log}")
+                
             timer.end_stage()
             if state.plan:
                 yield yield_msg(type="log", level="success", message=f"📋 [Planner] 生成了 {len(state.plan.keywords)} 个搜索关键词")
@@ -114,7 +123,16 @@ async def research_stream(topic: str = Query(None), task: str = Query(None, min_
             yield yield_msg(type="stage", stage="analyzing")
             yield yield_msg(type="progress", percent=45)
             yield yield_msg(type="log", level="info", message="🧠 [Analyzer] 分析数据中...")
-            state = await ctx.orchestrator.analyzer.run(state)
+            
+            analyzer_logs = []
+            def capture_analyzer_log(msg):
+                analyzer_logs.append(msg)
+                
+            state = await ctx.orchestrator.analyzer.run(state, on_log=capture_analyzer_log)
+            
+            for log in analyzer_logs:
+                yield yield_msg(type="log", level="info", message=f"  {log}")
+
             stats["contentsAnalyzed"] = len(state.documents)
             if state.insights:
                 findings = state.insights.get("key_findings", [])
@@ -149,8 +167,15 @@ async def research_stream(topic: str = Query(None), task: str = Query(None, min_
             yield yield_msg(type="log", level="info", message="📑 [OutlineGenerator] 生成结构化大纲...")
             
             outline_generator = OutlineGenerator(ctx.config.get_llm_client(), model=ctx.config.llm.model)
+            
+            outline_logs = []
+            def capture_outline_log(msg):
+                outline_logs.append(msg)
+                
             try:
-                structured_outline = await outline_generator.generate(state)
+                structured_outline = await outline_generator.generate(state, on_log=capture_outline_log)
+                for log in outline_logs:
+                    yield yield_msg(type="log", level="info", message=f"  {log}")
                 yield yield_msg(type="log", level="success", message=f"📑 生成了 {len(structured_outline)} 个章节")
             except Exception as e:
                 yield yield_msg(type="log", level="warning", message=f"⚠ 大纲生成失败: {e}, 使用备用")
@@ -181,8 +206,15 @@ async def research_stream(topic: str = Query(None), task: str = Query(None, min_
             yield yield_msg(type="log", level="info", message="📝 [Writer] 生成图文报告...")
             
             html_generator = HTMLReportGenerator(ctx.config.get_llm_client(), model=ctx.config.llm.model)
+            
+            html_logs = []
+            def capture_html_log(msg):
+                html_logs.append(msg)
+                
             try:
-                html_report = await html_generator.generate(state)
+                html_report = await html_generator.generate(state, on_log=capture_html_log)
+                for log in html_logs:
+                    yield yield_msg(type="log", level="info", message=f"  {log}")
             except Exception as e:
                 yield yield_msg(type="log", level="warning", message=f"⚠ 报告生成失败: {e}")
                 html_report = html_generator.generate_fallback_html(state)

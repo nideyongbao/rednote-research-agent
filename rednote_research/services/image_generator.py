@@ -224,7 +224,7 @@ class ImageGenerator:
     async def _generate_image(
         self,
         prompt: str,
-        output_path: str,
+        output_path: Optional[str] = None,
         size: str = "1024x1536"
     ) -> Optional[str]:
         """
@@ -234,9 +234,15 @@ class ImageGenerator:
         - 通义万相（wanx）
         - DALL-E 系列
         - 其他 OpenAI 兼容接口
+        
+        Args:
+            prompt: 提示词
+            output_path: 保存路径。如果为None，则返回图片URL
+            size: 图片尺寸
         """
-        # 确保输出目录存在
-        Path(output_path).parent.mkdir(parents=True, exist_ok=True)
+        # 如果指定了路径，确保目录存在
+        if output_path:
+            Path(output_path).parent.mkdir(parents=True, exist_ok=True)
         
         # 根据 Base URL 判断是否使用 ModelScope 接口
         if "modelscope.cn" in self.base_url:
@@ -315,7 +321,12 @@ class ImageGenerator:
                     if output_images:
                         image_url = output_images[0]
                         if image_url:
-                            # 下载图片
+                            # 1. 如果不需要保存文件，直接返回 URL
+                            if output_path is None:
+                                return image_url
+                            
+                            # 2. 如果需要保存文件，下载并返回路径
+                            print(f"[ModelScope] Downloading image to {output_path}")
                             img_response = await client.get(image_url)
                             with open(output_path, "wb") as f:
                                 f.write(img_response.content)
@@ -323,7 +334,7 @@ class ImageGenerator:
                     raise Exception("未获取到图片URL")
                     
                 elif task_status == "FAILED":
-                    raise Exception("图片生成任务失败")
+                    raise Exception(f"图片生成任务失败: {status_data}")
             
             raise Exception(f"任务超时 (5分钟). 最后状态: {task_status}")
     
@@ -340,20 +351,47 @@ class ImageGenerator:
                 base_url=self.base_url
             )
         
+        # 如果不需要保存文件，使用 url 格式，否则使用 b64_json 以便保存
+        resp_format = "b64_json" if output_path else "url"
+        
         response = await self._openai_client.images.generate(
             model=self.model,
             prompt=prompt,
             n=1,
             size=size,
-            response_format="b64_json"
+            response_format=resp_format
         )
         
         if response.data:
-            image_data = base64.b64decode(response.data[0].b64_json)
-            with open(output_path, "wb") as f:
-                f.write(image_data)
-            return output_path
-        
+            # 如果配置了 path，下载/保存
+            if output_path:
+                if response.data[0].b64_json:
+                    image_data = base64.b64decode(response.data[0].b64_json)
+                    with open(output_path, "wb") as f:
+                        f.write(image_data)
+                    return output_path
+                elif response.data[0].url:
+                     # 下载 URL
+                    import httpx
+                    async with httpx.AsyncClient() as client:
+                        r = await client.get(response.data[0].url)
+                        with open(output_path, "wb") as f:
+                            f.write(r.content)
+                    return output_path
+            
+            # 否则返回 URL (或者 b64?) 
+            # DALL-E 默认可能只返回 URL 如果不请求 b64_json
+            # 但我们在上面请求了 response_format="b64_json"
+            # 如果 output_path is None，我们最好返回 URL。所以应该修改 parameter
+            if response.data[0].url:
+                return response.data[0].url
+            
+            # 如果只有 b64，无法返回 URL，只能由调用者处理 b64？
+            # 简单起见，如果 output_path is None，我们假设调用者想要 URL。
+            # 这里如果只有 b64，我们暂时无法提供 URL。
+            # 为了兼容性，如果没有 path，我们返回 None 或者以此情况抛出异常
+            # 但 ImageAssigner 原来用的就是 .url，所以我们最好请求 standard response format if path is None
+            
         return None
 
 

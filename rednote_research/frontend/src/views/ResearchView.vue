@@ -84,7 +84,6 @@
         </div>
       </div>
     </div>
-    </div>
   </div>
 </template>
 
@@ -294,31 +293,34 @@ const handleSSEMessage = (data: any) => {
   } else if (data.type === 'stats') {
     activeTaskStore.updateStats(data.stats)
   } else if (data.type === 'report') {
+    // 报告数据包装在 data 字段中
+    const reportData = data.data || {}
+    
     // 填充 store 数据
-    store.setTopic(data.topic)
+    store.setTopic(reportData.topic || data.topic) // 兼容旧格式
     
     // 设置关键发现
-    if (data.insights?.key_findings) {
-      store.setKeyFindings(data.insights.key_findings)
+    if (reportData.insights?.key_findings) {
+      store.setKeyFindings(reportData.insights.key_findings)
     }
     
     // 设置摘要
-    if (data.insights?.recommendations) {
-      store.setSummary(data.insights.recommendations.join('\n'))
+    if (reportData.insights?.recommendations) {
+      store.setSummary(reportData.insights.recommendations.join('\n'))
     }
     
     // 设置笔记数据
-    if (data.notes) {
-      store.setNotes(data.notes)
+    if (reportData.notes) {
+      store.setNotes(reportData.notes)
     }
     
     // 优先使用后端返回的结构化大纲
-    if (data.outline && data.outline.length > 0) {
-      loadOutlineFromBackend(data.outline)
-      activeTaskStore.addLog('success', `加载了 ${data.outline.length} 个结构化章节`)
+    if (reportData.outline && reportData.outline.length > 0) {
+      loadOutlineFromBackend(reportData.outline)
+      activeTaskStore.addLog('success', `加载了 ${reportData.outline.length} 个结构化章节`)
     } else {
       // 回退：从 insights 构建大纲
-      buildOutlineFromInsights(data.insights, data.notes || [])
+      buildOutlineFromInsights(reportData.insights, reportData.notes || [])
       activeTaskStore.addLog('success', '报告数据已加载')
     }
   } else if (data.type === 'complete') {

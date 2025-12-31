@@ -74,7 +74,8 @@ class BaseAgent(ABC):
         temperature: Optional[float] = None,
         max_tokens: Optional[int] = None,
         top_p: Optional[float] = None,
-        presence_penalty: Optional[float] = None
+        presence_penalty: Optional[float] = None,
+        on_log: Optional[Callable[[str], None]] = None
     ) -> str:
         """
         调用LLM并返回响应（带重试机制）
@@ -85,6 +86,7 @@ class BaseAgent(ABC):
             max_tokens: 最大token数（None则使用settings默认值）
             top_p: top_p采样参数
             presence_penalty: 存在惩罚参数
+            on_log: 日志回调
             
         Returns:
             LLM响应文本
@@ -139,12 +141,15 @@ class BaseAgent(ABC):
                 
                 # 日志：请求成功
                 usage = response.usage
-                logger.info(
-                    f"[{self.name}] LLM请求成功 | 耗时: {elapsed:.2f}s | "
-                    f"输入tokens: {usage.prompt_tokens if usage else 'N/A'} | "
-                    f"输出tokens: {usage.completion_tokens if usage else 'N/A'} | "
-                    f"响应长度: {len(content)}字符"
+                log_msg = (
+                    f"LLM请求成功 | 耗时: {elapsed:.2f}s | "
+                    f"输入: {usage.prompt_tokens if usage else 'N/A'} | "
+                    f"输出: {usage.completion_tokens if usage else 'N/A'}"
                 )
+                logger.info(f"[{self.name}] {log_msg} | 响应长度: {len(content)}字符")
+                
+                if on_log:
+                    on_log(f"🤖 {log_msg}")
                 
                 return content
                 

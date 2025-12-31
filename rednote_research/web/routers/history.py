@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Query, HTTPException, UploadFile, File, Response
 from typing import Optional
+from pydantic import BaseModel
 from datetime import datetime
 
 from ...services.history import get_history_service

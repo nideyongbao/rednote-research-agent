@@ -186,8 +186,12 @@ class SearcherAgent(BaseAgent):
         settings = get_settings_service().load()
         notes_per_keyword = settings.search.notes_per_keyword
         
+        # 从配置读取并发数
+        concurrency = settings.search.concurrency
+        self.MAX_CONCURRENT_SEARCHES = concurrency  # 更新实例变量以便记录
+        
         # 使用 Semaphore 控制并发数
-        semaphore = asyncio.Semaphore(self.MAX_CONCURRENT_SEARCHES)
+        semaphore = asyncio.Semaphore(concurrency)
         
         # 并行执行所有搜索任务
         tasks = [

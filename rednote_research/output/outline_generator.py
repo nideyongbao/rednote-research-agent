@@ -99,6 +99,16 @@ class OutlineGenerator:
                 max_tokens=4000,
                 temperature=0.5
             )
+
+            # Log usage
+            usage = response.usage
+            if on_log:
+                log_msg = (
+                    f"LLM请求成功 | "
+                    f"输入: {usage.prompt_tokens if usage else 'N/A'} | "
+                    f"输出: {usage.completion_tokens if usage else 'N/A'}"
+                )
+                on_log(f"🤖 [Outline] {log_msg}")
             
             content = response.choices[0].message.content or "[]"
             

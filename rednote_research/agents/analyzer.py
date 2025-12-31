@@ -94,7 +94,7 @@ class AnalyzerAgent(BaseAgent):
         ]
         
         self._log(state, "正在分析数据...", on_log)
-        response = await self._invoke_llm(messages, temperature=0.5, max_tokens=4000)
+        response = await self._invoke_llm(messages, temperature=0.5, max_tokens=4000, on_log=on_log)
         
         # 解析响应
         try:

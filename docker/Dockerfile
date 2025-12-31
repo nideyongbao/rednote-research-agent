@@ -5,7 +5,7 @@ FROM node:20-slim AS frontend-builder
 
 WORKDIR /frontend
 COPY rednote_research/frontend/package*.json ./
-RUN npm ci
+RUN npm install --legacy-peer-deps
 
 COPY rednote_research/frontend/ ./
 RUN npm run build

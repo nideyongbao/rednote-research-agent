@@ -54,6 +54,7 @@ class ImageGenSettings(BaseModel):
 class SearchSettings(BaseModel):
     """搜索配置"""
     notes_per_keyword: int = 1  # 每个关键词搜索的笔记数量（默认1，可调高）
+    concurrency: int = 3  # 搜索并发数（建议3-5，过高易触发风控）
 
 
 class Settings(BaseModel):
@@ -126,6 +127,12 @@ class SettingsService:
                 settings.search.notes_per_keyword = int(env_notes_limit)
             except ValueError:
                 pass
+        
+        if env_concurrency := os.getenv("SEARCH_CONCURRENCY"):
+            try:
+                settings.search.concurrency = int(env_concurrency)
+            except ValueError:
+                pass
              
         return settings
     
@@ -164,7 +171,8 @@ class SettingsService:
                 "rateLimitMode": settings.imageGen.rate_limit_mode
             },
             "search": {
-                "notesPerKeyword": settings.search.notes_per_keyword
+                "notesPerKeyword": settings.search.notes_per_keyword,
+                "concurrency": settings.search.concurrency
             }
         }
 

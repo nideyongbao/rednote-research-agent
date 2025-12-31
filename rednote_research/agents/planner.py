@@ -50,7 +50,7 @@ class PlannerAgent(BaseAgent):
         ]
         
         # 调用LLM
-        response = await self._invoke_llm(messages, temperature=0.7)
+        response = await self._invoke_llm(messages, temperature=0.7, on_log=on_log)
         
         # 解析响应
         plan = self._parse_plan(response)

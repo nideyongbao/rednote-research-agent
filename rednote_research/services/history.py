@@ -10,7 +10,7 @@ import uuid
 import os
 from datetime import datetime
 from pathlib import Path
-from typing import Optional, List, Any
+from typing import Optional, List, Any, Union
 from pydantic import BaseModel
 
 
@@ -22,7 +22,7 @@ class ResearchRecord(BaseModel):
     created_at: str
     updated_at: str
     summary: Optional[str] = None
-    key_findings: List[str] = []
+    key_findings: List[Union[str, dict]] = []
     notes_count: int = 0
     sections_count: int = 0
     report_path: Optional[str] = None
