@@ -59,6 +59,10 @@ class PlannerAgent(BaseAgent):
         state.plan = plan
         state.search_keywords = plan.keywords.copy()
         
+        # 输出 CoT 分析过程（如果有）
+        if plan.reasoning:
+            self._log(state, f"💭 分析过程: {plan.reasoning}", on_log)
+        
         self._log(
             state, 
             f"生成了 {len(plan.keywords)} 个搜索关键词: {plan.keywords}", 
@@ -77,6 +81,7 @@ class PlannerAgent(BaseAgent):
                 json_str = response[json_start:json_end]
                 data = json.loads(json_str)
                 return ResearchPlan(
+                    reasoning=data.get("reasoning", ""),
                     understanding=data.get("understanding", ""),
                     dimensions=data.get("dimensions", []),
                     keywords=data.get("keywords", [])

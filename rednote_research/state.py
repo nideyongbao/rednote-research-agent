@@ -37,6 +37,7 @@ class NoteData(BaseModel):
 
 class ResearchPlan(BaseModel):
     """研究计划"""
+    reasoning: str = Field(default="", description="LLM 分析过程（CoT）")
     understanding: str = Field(default="", description="对用户意图的理解")
     dimensions: list[str] = Field(default_factory=list, description="分析维度")
     keywords: list[str] = Field(default_factory=list, description="搜索关键词列表")
