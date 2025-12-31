@@ -95,13 +95,77 @@ class SearcherAgent(BaseAgent):
         
         return []
     
+    # 并发控制
+    MAX_CONCURRENT_SEARCHES = 3  # 限制同时搜索的关键词数量
+    
+    async def _search_single_keyword(
+        self,
+        keyword: str,
+        index: int,
+        total: int,
+        limit: int,
+        state: ResearchState,
+        semaphore: asyncio.Semaphore,
+        on_log: Optional[Callable[[str], None]] = None
+    ) -> list[NoteData]:
+        """
+        单个关键词搜索（并行友好）
+        
+        Args:
+            keyword: 搜索关键词
+            index: 当前索引
+            total: 总数
+            limit: 结果数量限制
+            state: 研究状态
+            semaphore: 并发控制信号量
+            on_log: 日志回调
+            
+        Returns:
+            该关键词搜索到的笔记列表
+        """
+        async with semaphore:
+            self._log(state, f"搜索关键词 [{index+1}/{total}]: {keyword}", on_log)
+            
+            try:
+                # 1. 广度搜索（使用带重试的方法）
+                previews = await self._search_with_retry(keyword, limit, state, on_log)
+                self._log(state, f"  找到 {len(previews)} 篇笔记", on_log)
+                
+                if not previews:
+                    return []
+                
+                # 2. 按点赞数排序
+                sorted_previews = sorted(previews, key=lambda x: x.likes, reverse=True)
+                
+                # 3. 获取详情
+                notes = []
+                for j, preview in enumerate(sorted_previews):
+                    self._log(
+                        state, 
+                        f"  获取详情 [{j+1}/{len(sorted_previews)}]: {preview.title[:30]}...", 
+                        on_log
+                    )
+                    
+                    try:
+                        note_data = await self.mcp.get_note_with_detail(preview, delay=1.0)
+                        notes.append(note_data)
+                    except Exception as e:
+                        self._log(state, f"  ⚠ 获取详情失败: {str(e)}", on_log)
+                        notes.append(NoteData(preview=preview))
+                
+                return notes
+                
+            except Exception as e:
+                self._log(state, f"  ⚠ 搜索失败: {str(e)}", on_log)
+                return []
+    
     async def run(
         self, 
         state: ResearchState,
         on_log: Optional[Callable[[str], None]] = None
     ) -> ResearchState:
         """
-        执行搜索
+        执行搜索（并行优化版）
         
         Args:
             state: 共享状态
@@ -110,54 +174,45 @@ class SearcherAgent(BaseAgent):
         Returns:
             更新后的状态（包含documents）
         """
-        all_notes: list[NoteData] = []
-        
         # 处理补充关键词
         keywords_to_search = state.search_keywords.copy()
         if state.additional_keywords:
             keywords_to_search.extend(state.additional_keywords)
             state.additional_keywords = []
         
-        self._log(state, f"开始搜索 {len(keywords_to_search)} 个关键词", on_log)
+        self._log(state, f"开始并行搜索 {len(keywords_to_search)} 个关键词 (并发={self.MAX_CONCURRENT_SEARCHES})", on_log)
         
         # 从配置读取每个关键词搜索的笔记数量
         settings = get_settings_service().load()
         notes_per_keyword = settings.search.notes_per_keyword
         
-        for i, keyword in enumerate(keywords_to_search):
-            self._log(state, f"搜索关键词 [{i+1}/{len(keywords_to_search)}]: {keyword}", on_log)
-            
-            try:
-                # 1. 广度搜索（使用带重试的方法）
-                previews = await self._search_with_retry(keyword, notes_per_keyword, state, on_log)
-                self._log(state, f"  找到 {len(previews)} 篇笔记", on_log)
-                
-                if not previews:
-                    continue
-                
-                # 2. 按点赞数排序，取Top N
-                sorted_previews = sorted(previews, key=lambda x: x.likes, reverse=True)
-                top_previews = sorted_previews  # 全量处理、不截断
-                
-                # 3. 获取详情
-                for j, preview in enumerate(top_previews):
-                    self._log(
-                        state, 
-                        f"  获取详情 [{j+1}/{len(top_previews)}]: {preview.title[:30]}...", 
-                        on_log
-                    )
-                    
-                    try:
-                        note_data = await self.mcp.get_note_with_detail(preview, delay=1.0)
-                        all_notes.append(note_data)
-                    except Exception as e:
-                        self._log(state, f"  ⚠ 获取详情失败: {str(e)}", on_log)
-                        # 使用预览信息创建NoteData
-                        all_notes.append(NoteData(preview=preview))
-                
-            except Exception as e:
-                self._log(state, f"  ⚠ 搜索失败: {str(e)}", on_log)
-                continue
+        # 使用 Semaphore 控制并发数
+        semaphore = asyncio.Semaphore(self.MAX_CONCURRENT_SEARCHES)
+        
+        # 并行执行所有搜索任务
+        tasks = [
+            self._search_single_keyword(
+                keyword=kw,
+                index=i,
+                total=len(keywords_to_search),
+                limit=notes_per_keyword,
+                state=state,
+                semaphore=semaphore,
+                on_log=on_log
+            )
+            for i, kw in enumerate(keywords_to_search)
+        ]
+        
+        # 等待所有任务完成
+        results = await asyncio.gather(*tasks, return_exceptions=True)
+        
+        # 合并结果
+        all_notes: list[NoteData] = []
+        for result in results:
+            if isinstance(result, Exception):
+                self._log(state, f"⚠ 搜索任务异常: {str(result)[:50]}", on_log)
+            elif isinstance(result, list):
+                all_notes.extend(result)
         
         # 更新状态
         state.documents.extend(all_notes)
