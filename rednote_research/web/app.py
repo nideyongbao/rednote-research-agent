@@ -57,6 +57,12 @@ def create_app() -> FastAPI:
         lifespan=lifespan
     )
     
+    # P1 重构：注册拆分后的路由模块
+    from .routes import history_router, settings_router, publish_router
+    app.include_router(history_router)
+    app.include_router(settings_router)
+    app.include_router(publish_router)
+    
     # 挂载静态文件（生产环境：前端构建产物）
     static_dir = Path(__file__).parent / "static"
     if static_dir.exists():
