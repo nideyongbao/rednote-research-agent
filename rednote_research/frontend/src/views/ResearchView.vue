@@ -8,33 +8,11 @@
     </div>
     
     <!-- 进度指示器 -->
-    <div class="research-progress">
-      <div 
-        v-for="(step, index) in stages" 
-        :key="step.key"
-        class="progress-step"
-      >
-        <div 
-          class="step-icon"
-          :class="{ 
-            active: activeTaskStore.stage === step.key,
-            completed: activeTaskStore.completedStages.includes(step.key)
-          }"
-        >
-          <span v-if="activeTaskStore.completedStages.includes(step.key)">✓</span>
-          <span v-else>{{ index + 1 }}</span>
-        </div>
-        <span 
-          class="step-label"
-          :class="{ 
-            active: activeTaskStore.stage === step.key,
-            completed: activeTaskStore.completedStages.includes(step.key)
-          }"
-        >
-          {{ step.label }}
-        </span>
-      </div>
-    </div>
+    <ProgressSteps 
+      :stages="stages"
+      :currentStage="activeTaskStore.stage"
+      :completedStages="activeTaskStore.completedStages"
+    />
     
     <!-- 研究摘要 -->
     <div class="research-summary">
@@ -57,17 +35,7 @@
     </div>
     
     <!-- 日志容器 -->
-    <div class="log-container" ref="logContainer">
-      <div 
-        v-for="(log, index) in activeTaskStore.logs" 
-        :key="index"
-        class="log-entry log-entry-enter"
-      >
-        <span class="log-time">{{ log.time }}</span>
-        <span class="log-level" :class="log.level">{{ log.level }}</span>
-        <span class="log-message">{{ log.message }}</span>
-      </div>
-    </div>
+    <LogTerminal :logs="activeTaskStore.logs" />
     
     <!-- 控制按钮 -->
     <div class="research-controls">
@@ -88,6 +56,14 @@
       >
         编辑大纲
       </button>
+      <div class="export-group" v-if="isCompleted || activeTaskStore.hasCompletedTask">
+         <button class="btn btn-secondary" @click="exportReport('markdown')" :disabled="exporting">
+          ⬇️ Markdown
+        </button>
+        <button class="btn btn-secondary" @click="exportReport('pdf')" :disabled="exporting">
+          ⬇️ PDF
+        </button>
+      </div>
     </div>
     
     <!-- 停止任务确认弹窗 -->
@@ -108,21 +84,58 @@
         </div>
       </div>
     </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, nextTick, watch } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useResearchStore } from '../stores/research'
 import { useActiveTaskStore } from '../stores/activeTask'
+import ProgressSteps from '../components/ProgressSteps.vue'
+import LogTerminal from '../components/LogTerminal.vue'
 
 const route = useRoute()
 const router = useRouter()
 const store = useResearchStore()
 const activeTaskStore = useActiveTaskStore()
 
-const logContainer = ref<HTMLElement | null>(null)
+const publishing = ref(false)
+const exporting = ref(false)
+
+const exportReport = async (format: 'markdown' | 'pdf') => {
+  exporting.value = true
+  try {
+    const response = await axios.post('/api/export', {
+      format,
+      topic: store.topic,
+      insights: { key_findings: store.keyFindings },
+      outline: store.outline.map(s => ({ title: s.title, content: s.content, images: s.images })),
+      notes: store.notes
+    }, {
+      responseType: 'blob'
+    })
+    
+    // Download file
+    const url = window.URL.createObjectURL(new Blob([response.data]))
+    const link = document.createElement('a')
+    link.href = url
+    const ext = format === 'markdown' ? 'md' : 'pdf'
+    link.setAttribute('download', `${store.topic}_report.${ext}`)
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  } catch (e) {
+    console.error('Export failed:', e)
+    alert('导出失败')
+  } finally {
+    exporting.value = false
+  }
+}
+
+const publishContent = () => {} // Placeholder for the actual publishContent function
+
 const isCompleted = ref(false)
 const showStopDialog = ref(false)
 let timer: number | null = null
@@ -149,18 +162,6 @@ const formatTime = (seconds: number): string => {
   const secs = seconds % 60
   return `${mins}:${secs.toString().padStart(2, '0')}`
 }
-
-// 滚动到日志底部
-const scrollToBottom = () => {
-  nextTick(() => {
-    if (logContainer.value) {
-      logContainer.value.scrollTop = logContainer.value.scrollHeight
-    }
-  })
-}
-
-// 监听日志变化
-watch(() => activeTaskStore.logs.length, scrollToBottom)
 
 // 计算重连延迟（指数退避）
 const getRetryDelay = (attempt: number): number => {
@@ -261,7 +262,6 @@ const startResearch = async () => {
     timer = window.setInterval(() => {
       activeTaskStore.updateTick()
     }, 1000)
-    scrollToBottom()
     return
   }
   

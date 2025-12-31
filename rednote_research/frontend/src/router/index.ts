@@ -44,6 +44,11 @@ const router = createRouter({
             name: 'settings',
             component: SettingsView
         },
+        {
+            path: '/compare',
+            name: 'compare',
+            component: () => import('../views/CompareView.vue')
+        },
         // 发布相关路由
         {
             path: '/publish/edit/:draftId?',

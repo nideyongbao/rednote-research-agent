@@ -6,6 +6,9 @@
         <p class="page-subtitle">查看过往的研究报告</p>
       </div>
       <div class="header-actions">
+        <button v-if="selectedIds.length === 2" class="btn-compare" @click="goToCompare">
+          开始对比 (2/2)
+        </button>
         <div class="search-box">
           <input 
             v-model="searchKeyword"
@@ -30,8 +33,17 @@
         v-for="item in historyItems" 
         :key="item.id"
         class="history-item"
+        :class="{ selected: selectedIds.includes(item.id) }"
         @click="viewDetail(item)"
       >
+        <div class="item-select" @click.stop>
+          <input 
+            type="checkbox" 
+            :checked="selectedIds.includes(item.id)"
+            @change="toggleSelection(item.id)"
+            :disabled="selectedIds.length >= 2 && !selectedIds.includes(item.id)"
+          />
+        </div>
         <div class="item-icon">
           <span v-if="item.status === 'completed'">✅</span>
           <span v-else-if="item.status === 'running'">🔄</span>
@@ -130,8 +142,28 @@ const currentPage = ref(1)
 const totalPages = ref(1)
 const pageSize = 10
 const searchKeyword = ref('')
+const selectedIds = ref<string[]>([])
 const showDeleteDialog = ref(false)
 const deleteTargetId = ref('')
+
+const toggleSelection = (id: string) => {
+  if (selectedIds.value.includes(id)) {
+    selectedIds.value = selectedIds.value.filter(i => i !== id)
+  } else {
+    if (selectedIds.value.length < 2) {
+      selectedIds.value.push(id)
+    }
+  }
+}
+
+const goToCompare = () => {
+  if (selectedIds.value.length === 2) {
+    router.push({
+      path: '/compare',
+      query: { ids: selectedIds.value.join(',') }
+    })
+  }
+}
 
 const statusText = (status: string) => {
   const statusMap: Record<string, string> = {
@@ -576,5 +608,20 @@ onMounted(() => {
 .dialog-btn.danger {
   background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
   color: white;
+}
+.btn-compare {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.item-select {
+  padding-top: 6px;
+  margin-right: 8px;
 }
 </style>
