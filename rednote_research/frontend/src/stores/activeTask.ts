@@ -33,6 +33,7 @@ interface PersistedState {
     finalElapsedTime: number
     logs: LogEntry[]
     stats: TaskStats
+    progress: number  // P2.1: 进度百分比
 }
 
 // 从 localStorage 恢复状态
@@ -89,6 +90,18 @@ export const useActiveTaskStore = defineStore('activeTask', () => {
         insightsExtracted: 0
     })
 
+    // P2.1: 进度百分比（基于后端 progress 事件或阶段推算）
+    const progress = ref<number>(persisted?.progress || 0)
+
+    // 阶段对应的进度范围
+    const stageProgressMap: Record<string, number> = {
+        'planning': 15,
+        'searching': 40,
+        'analyzing': 60,
+        'generating': 85
+    }
+
+
     // 持久化状态
     const persistState = () => {
         saveState({
@@ -99,7 +112,8 @@ export const useActiveTaskStore = defineStore('activeTask', () => {
             startTime: startTime.value,
             finalElapsedTime: finalElapsedTime.value,
             logs: logs.value.slice(-100), // 只保留最后100条日志
-            stats: stats.value
+            stats: stats.value,
+            progress: progress.value  // P2.1: 持久化进度
         })
     }
 
@@ -141,6 +155,13 @@ export const useActiveTaskStore = defineStore('activeTask', () => {
             completedStages.value.push(stage.value)
         }
         stage.value = newStage
+        // P2.1: 自动更新进度百分比
+        progress.value = stageProgressMap[newStage] || progress.value
+    }
+
+    // P2.1: 更新进度（用于后端精确进度事件）
+    const setProgress = (value: number) => {
+        progress.value = Math.min(100, Math.max(0, value))
     }
 
     // 添加日志
@@ -198,6 +219,7 @@ export const useActiveTaskStore = defineStore('activeTask', () => {
         startTime,
         logs,
         stats,
+        progress,  // P2.1: 进度百分比
 
         // Getters (computed)
         elapsedTime,
@@ -211,7 +233,8 @@ export const useActiveTaskStore = defineStore('activeTask', () => {
         updateStats,
         updateTick,
         markCompleted,
-        clearTask
+        clearTask,
+        setProgress  // P2.1: 设置进度
     }
 })
 
