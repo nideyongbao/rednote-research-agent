@@ -17,8 +17,20 @@ ANALYZER_PROMPT = """你是一个专业的数据分析师和内容撰写专家�
 请以JSON格式输出：
 ```json
 {
-  "key_findings": ["发现1", "发现2", "发现3"],
-  "user_pain_points": ["痛点1", "痛点2"],
+  "key_findings": [
+    {
+      "statement": "发现1：核心观点描述...",
+      "source_ids": [1, 3],  // 支撑该观点的笔记序号
+      "confidence": "high"
+    }
+  ],
+  "user_pain_points": [
+    {
+      "point": "痛点1描述...",
+      "severity": "high",
+      "source_ids": [2]
+    }
+  ],
   "recommendations": ["建议1", "建议2"],
   "needs_more_data": false,
   "suggested_keywords": [],

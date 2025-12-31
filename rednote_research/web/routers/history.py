@@ -99,12 +99,20 @@ async def compare_history(request: CompareRequest):
         keywords = set()
         if record.insights and "key_findings" in record.insights:
             for finding in record.insights["key_findings"]:
-                keywords.update([w for w in finding if len(w) > 1]) # 简化：粗略提取
+                # 兼容结构化对象和字符串
+                text = finding.get("statement", "") if isinstance(finding, dict) else str(finding)
+                keywords.update([w for w in text if len(w) > 1]) # 简化：粗略提取
         return keywords
         
     # 由于没有直接的关键词提取器，我们构造一个简单的响应结构
     # 在实际生产中，这里应该调用 LLM 进行深度对比
     
+    def get_findings_text(record):
+        if not record.insights:
+            return []
+        findings = record.insights.get("key_findings", [])
+        return [f.get("statement", "") if isinstance(f, dict) else str(f) for f in findings]
+
     return {
         "records": [
             {"id": record1.id, "topic": record1.topic, "time": record1.created_at},
@@ -113,8 +121,8 @@ async def compare_history(request: CompareRequest):
         "comparison": {
             "topic_similarity": "高" if record1.topic == record2.topic else "低",
             "common_findings": [], # Placeholder for commonality
-            "unique_findings_1": record1.insights.get("key_findings", [])[:3] if record1.insights else [],
-            "unique_findings_2": record2.insights.get("key_findings", [])[:3] if record2.insights else [],
+            "unique_findings_1": get_findings_text(record1)[:3],
+            "unique_findings_2": get_findings_text(record2)[:3],
             "summary": f"对比分析：'{record1.topic}' 与 '{record2.topic}'"
         }
     }

@@ -148,12 +148,16 @@ class OutlineGenerator:
         if "key_findings" in insights:
             parts.append("### 核心发现")
             for i, finding in enumerate(insights["key_findings"]):
-                parts.append(f"{i+1}. {finding}")
+                # 兼容结构化对象和字符串
+                text = finding.get("statement", "") if isinstance(finding, dict) else str(finding)
+                parts.append(f"{i+1}. {text}")
         
         if "user_pain_points" in insights:
             parts.append("\n### 用户痛点")
             for point in insights["user_pain_points"]:
-                parts.append(f"- {point}")
+                # 兼容结构化对象和字符串
+                text = point.get("point", "") if isinstance(point, dict) else str(point)
+                parts.append(f"- {text}")
         
         if "recommendations" in insights:
             parts.append("\n### 建议")
@@ -247,7 +251,8 @@ class OutlineGenerator:
             findings = state.insights["key_findings"]
             content = "## 核心发现\n\n"
             for i, f in enumerate(findings):
-                content += f"{i+1}. {f}\n"
+                text = f.get("statement", "") if isinstance(f, dict) else str(f)
+                content += f"{i+1}. {text}\n"
             
             outline.append({
                 "type": "content",
@@ -262,7 +267,8 @@ class OutlineGenerator:
             points = state.insights["user_pain_points"]
             content = "## 用户痛点\n\n"
             for p in points:
-                content += f"- {p}\n"
+                text = p.get("point", "") if isinstance(p, dict) else str(p)
+                content += f"- {text}\n"
             
             outline.append({
                 "type": "content",
