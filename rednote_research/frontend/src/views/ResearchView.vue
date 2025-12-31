@@ -127,6 +127,16 @@ const isCompleted = ref(false)
 const showStopDialog = ref(false)
 let timer: number | null = null
 
+// SSE 重连配置
+const SSE_MAX_RETRIES = 5
+const SSE_INITIAL_RETRY_DELAY = 1000 // 1秒
+const SSE_MAX_RETRY_DELAY = 30000 // 最大30秒
+
+let eventSource: EventSource | null = null
+let retryCount = ref(0)
+let retryTimeout: number | null = null
+let currentTopic = ''
+
 const stages = [
   { key: 'planning', label: '规划' },
   { key: 'searching', label: '搜索' },
@@ -151,6 +161,95 @@ const scrollToBottom = () => {
 
 // 监听日志变化
 watch(() => activeTaskStore.logs.length, scrollToBottom)
+
+// 计算重连延迟（指数退避）
+const getRetryDelay = (attempt: number): number => {
+  const delay = Math.min(
+    SSE_INITIAL_RETRY_DELAY * Math.pow(2, attempt),
+    SSE_MAX_RETRY_DELAY
+  )
+  // 添加随机抖动 (±20%)
+  return delay * (0.8 + Math.random() * 0.4)
+}
+
+// SSE 连接函数
+const connectSSE = (topic: string) => {
+  if (eventSource) {
+    eventSource.close()
+  }
+  
+  currentTopic = topic
+  
+  try {
+    eventSource = new EventSource(`/api/research?topic=${encodeURIComponent(topic)}`)
+    
+    eventSource.onopen = () => {
+      // 连接成功，重置重试计数
+      if (retryCount.value > 0) {
+        activeTaskStore.addLog('success', `重连成功 (第${retryCount.value}次尝试)`)
+      }
+      retryCount.value = 0
+    }
+    
+    eventSource.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data)
+        handleSSEMessage(data)
+      } catch (e) {
+        activeTaskStore.addLog('info', event.data)
+      }
+    }
+    
+    eventSource.onerror = () => {
+      eventSource?.close()
+      eventSource = null
+      
+      if (isCompleted.value) {
+        return // 任务已完成，无需重连
+      }
+      
+      // 尝试重连
+      if (retryCount.value < SSE_MAX_RETRIES) {
+        const delay = getRetryDelay(retryCount.value)
+        retryCount.value++
+        activeTaskStore.addLog('warning', `连接中断，${(delay / 1000).toFixed(1)}秒后重试 (${retryCount.value}/${SSE_MAX_RETRIES})`)
+        
+        retryTimeout = window.setTimeout(() => {
+          if (!isCompleted.value && currentTopic) {
+            connectSSE(currentTopic)
+          }
+        }, delay)
+      } else {
+        // 达到最大重试次数
+        activeTaskStore.addLog('error', `重连失败已达最大次数 (${SSE_MAX_RETRIES})，请检查网络后刷新页面`)
+        activeTaskStore.markCompleted()
+        if (timer) {
+          clearInterval(timer)
+          timer = null
+        }
+      }
+    }
+  } catch (error) {
+    activeTaskStore.addLog('error', `建立连接失败: ${error}`)
+    activeTaskStore.markCompleted()
+    if (timer) {
+      clearInterval(timer)
+      timer = null
+    }
+  }
+}
+
+// 清理 SSE 连接
+const cleanupSSE = () => {
+  if (eventSource) {
+    eventSource.close()
+    eventSource = null
+  }
+  if (retryTimeout) {
+    clearTimeout(retryTimeout)
+    retryTimeout = null
+  }
+}
 
 const startResearch = async () => {
   const topicParam = route.query.topic as string || ''
@@ -181,40 +280,9 @@ const startResearch = async () => {
     activeTaskStore.updateTick()
   }, 1000)
   
-  // 使用 SSE 连接后端
-  try {
-    const eventSource = new EventSource(`/api/research?topic=${encodeURIComponent(topicParam)}`)
-    
-    eventSource.onmessage = (event) => {
-      try {
-        const data = JSON.parse(event.data)
-        handleSSEMessage(data)
-      } catch (e) {
-        activeTaskStore.addLog('info', event.data)
-      }
-    }
-    
-    eventSource.onerror = () => {
-      eventSource.close()
-      if (!isCompleted.value) {
-        activeTaskStore.addLog('error', '连接中断')
-        // 标记任务结束，停止计时
-        activeTaskStore.markCompleted()
-        if (timer) {
-          clearInterval(timer)
-          timer = null
-        }
-      }
-    }
-  } catch (error) {
-    activeTaskStore.addLog('error', `研究失败: ${error}`)
-    // 标记任务结束
-    activeTaskStore.markCompleted()
-    if (timer) {
-      clearInterval(timer)
-      timer = null
-    }
-  }
+  // 使用带重连机制的 SSE 连接
+  retryCount.value = 0
+  connectSSE(topicParam)
 }
 
 const handleSSEMessage = (data: any) => {
@@ -341,6 +409,7 @@ const stopTask = () => {
 const confirmStopTask = () => {
   showStopDialog.value = false
   // 停止任务
+  cleanupSSE()
   activeTaskStore.addLog('warning', '用户主动停止任务')
   activeTaskStore.markCompleted()
   if (timer) {
@@ -360,8 +429,10 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  cleanupSSE()
   if (timer) {
     clearInterval(timer)
   }
 })
 </script>
+

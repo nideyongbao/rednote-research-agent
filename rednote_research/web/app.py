@@ -153,6 +153,19 @@ async def research_stream(topic: str = Query(None), task: str = Query(None, min_
             await _mcp_client.connect()
             yield make_msg("log", level="success", message="✅ MCP连接成功")
             
+            # P0.2: 主动检测登录状态
+            login_status = await _mcp_client.check_login_status()
+            if not login_status.get("is_logged_in"):
+                yield make_msg("log", level="error", message="❌ 小红书未登录或登录已过期！")
+                yield make_msg("log", level="warning", message="💡 请前往设置页面扫码登录后重试")
+                yield make_msg("error", message="需要登录小红书账号才能进行研究，请在设置页面扫码登录")
+                history_service.update(record_id, {"status": "failed"})
+                yield make_msg("complete")
+                return
+            else:
+                username = login_status.get("username", "用户")
+                yield make_msg("log", level="success", message=f"✅ 已登录账号: {username}")
+            
             # 创建编排器
             orchestrator = ResearchOrchestrator(_config, _mcp_client)
             

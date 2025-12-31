@@ -199,4 +199,11 @@ export const useResearchStore = defineStore('research', () => {
         // Getters
         getReport
     }
+}, {
+    // P0.3: Store 持久化配置
+    persist: {
+        key: 'rednote-research-store',
+        storage: localStorage,
+        paths: ['id', 'topic', 'outline', 'notes', 'summary', 'keyFindings', 'isCompleted', 'currentDraftId']
+    }
 })
